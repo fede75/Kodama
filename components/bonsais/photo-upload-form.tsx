@@ -89,18 +89,22 @@ export function PhotoUploadForm({
       </FormField>
 
       {error ? (
-        <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-800">
+        <p className="rounded-2xl bg-red-500/12 px-4 py-3 text-sm text-red-100">
           {error}
         </p>
       ) : null}
 
       {success ? (
-        <p className="rounded-2xl bg-moss-50 px-4 py-3 text-sm text-moss-800">
+        <p className="rounded-2xl bg-moss-500/12 px-4 py-3 text-sm text-moss-200">
           {success}
         </p>
       ) : null}
 
-      <Button type="submit" disabled={isUploading}>
+      <Button
+        type="submit"
+        disabled={isUploading}
+        className="w-full bg-moss-500 text-paper hover:bg-moss-400 sm:w-auto"
+      >
         {isUploading ? "Subiendo foto..." : "Subir foto"}
       </Button>
     </form>

@@ -92,7 +92,7 @@ export function CareEventPhotoUploadForm({
         <Button
           type="submit"
           disabled={isUploading}
-          className="bg-moss-500 text-paper hover:bg-moss-400"
+          className="w-full bg-moss-500 text-paper hover:bg-moss-400 md:w-auto"
         >
           {isUploading ? "Subiendo..." : "Subir"}
         </Button>

@@ -35,7 +35,48 @@ export function CareEventsList({
   }
 
   return (
-    <div className="overflow-hidden rounded-[2rem] border border-white/8 bg-white/[0.04] shadow-card">
+    <>
+      <div className="space-y-3 md:hidden">
+        {items.map((item) => (
+          <article
+            key={item.id}
+            className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4 shadow-card"
+          >
+            <div className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.18em] text-paper/38">
+                {formatDateTime(item.performedAt)}
+              </p>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss-200">
+                {CARE_EVENT_LABELS[item.type]}
+              </p>
+              <p className="text-sm leading-7 text-paper/62">
+                {item.notes ?? "Sin notas"}
+              </p>
+              {item.photos[0] ? (
+                <div className="w-20 overflow-hidden rounded-[1rem] border border-white/8 bg-black/20">
+                  <img
+                    src={item.photos[0].imageUrl}
+                    alt={item.photos[0].caption ?? "Imagen principal del cuidado"}
+                    className="aspect-square w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ) : null}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <Link
+                  href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
+                  className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
+                >
+                  Editar
+                </Link>
+                <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="hidden overflow-hidden rounded-[2rem] border border-white/8 bg-white/[0.04] shadow-card md:block">
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse">
           <thead>
@@ -104,6 +145,7 @@ export function CareEventsList({
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

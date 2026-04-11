@@ -36,30 +36,30 @@ export default async function BonsaiDetailPage({
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-8 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)] lg:p-10">
+      <section className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)] sm:rounded-[2.5rem] sm:p-8 lg:p-10">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 rounded-full bg-clay-700/18 blur-3xl" />
         <div className="grid gap-6 xl:grid-cols-[1.05fr_1fr]">
           <div className="space-y-6">
-            <div className="flex flex-wrap gap-3">
-              <Link href="/bonsais">
+            <div className="grid gap-3 sm:flex sm:flex-wrap">
+              <Link href="/bonsais" className="block sm:inline-flex">
                 <Button
                   variant="secondary"
-                  className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+                  className="w-full border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper sm:w-auto"
                 >
                   Volver
                 </Button>
               </Link>
-              <Link href={`/bonsais/${bonsai.id}/editar`}>
+              <Link href={`/bonsais/${bonsai.id}/editar`} className="block sm:inline-flex">
                 <Button
                   variant="secondary"
-                  className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+                  className="w-full border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper sm:w-auto"
                 >
                   Editar
                 </Button>
               </Link>
-              <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`}>
-                <Button className="bg-moss-500 text-paper hover:bg-moss-400">
+              <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
+                <Button className="w-full bg-moss-500 text-paper hover:bg-moss-400 sm:w-auto">
                   Añadir cuidado
                 </Button>
               </Link>
@@ -67,7 +67,7 @@ export default async function BonsaiDetailPage({
             </div>
 
             <div>
-              <h1 className="font-display text-5xl leading-none text-paper">
+              <h1 className="font-display text-4xl leading-none text-paper sm:text-5xl">
                 {bonsai.name}
               </h1>
               <p className="mt-3 text-sm uppercase tracking-[0.22em] text-paper/42">
@@ -113,10 +113,10 @@ export default async function BonsaiDetailPage({
                 <img
                   src={mainPhoto.imageUrl}
                   alt={mainPhoto.caption ?? `Foto principal de ${bonsai.name}`}
-                  className="h-[420px] w-full object-cover"
+                  className="h-[280px] w-full object-cover sm:h-[360px] lg:h-[420px]"
                 />
               ) : (
-                <div className="flex h-[420px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6">
+                <div className="flex h-[280px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6 sm:h-[360px] lg:h-[420px]">
                   <div className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
                     Sin foto
                   </div>
@@ -137,7 +137,7 @@ export default async function BonsaiDetailPage({
         </div>
       </section>
 
-      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
+      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-card sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <h2 className="font-display text-3xl text-paper">Fotos</h2>
         </div>
@@ -157,11 +157,11 @@ export default async function BonsaiDetailPage({
         )}
       </section>
 
-      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
-        <div className="flex items-center justify-between gap-4">
+      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-card sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="font-display text-3xl text-paper">Cuidados</h2>
-          <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`}>
-            <Button className="bg-moss-500 text-paper hover:bg-moss-400">
+          <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
+            <Button className="w-full bg-moss-500 text-paper hover:bg-moss-400 sm:w-auto">
               Añadir cuidado
             </Button>
           </Link>

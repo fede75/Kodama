@@ -13,16 +13,16 @@ export default async function BonsaisPage() {
   return (
     <div className="space-y-10">
       <section className="space-y-5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="font-display text-3xl text-paper">
             Tus bonsáis
           </h2>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <p className="text-sm uppercase tracking-[0.24em] text-paper/42">
               {bonsais.length} registrados
             </p>
-            <Link href="/bonsais/new">
-              <Button className="bg-moss-500 text-paper hover:bg-moss-400">
+            <Link href="/bonsais/new" className="block sm:inline-flex">
+              <Button className="w-full bg-moss-500 text-paper hover:bg-moss-400 sm:w-auto">
                 Crear bonsái
               </Button>
             </Link>
