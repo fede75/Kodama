@@ -24,6 +24,12 @@ export default async function BonsaiDetailPage({
   }
 
   const { bonsai, items } = result;
+  const photoGalleryItems = bonsai.photos.map((photo) => ({
+    id: photo.id,
+    imageUrl: photo.imageUrl,
+    caption: photo.caption,
+    takenAt: photo.takenAt.toISOString()
+  }));
 
   return (
     <div className="space-y-8">
@@ -105,8 +111,8 @@ export default async function BonsaiDetailPage({
               <PhotoUploadForm bonsaiId={bonsai.id} />
             </div>
             <div className="mt-4 space-y-3">
-              {bonsai.photos.length > 0 ? (
-                <PhotoGallery photos={bonsai.photos} />
+              {photoGalleryItems.length > 0 ? (
+                <PhotoGallery photos={photoGalleryItems} />
               ) : (
                 <p className="rounded-2xl border border-dashed border-bark-200 px-4 py-5 text-sm text-bark-600">
                   Aún no hay fotos registradas.

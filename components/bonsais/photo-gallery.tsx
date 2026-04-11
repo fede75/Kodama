@@ -56,6 +56,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
   }, [activeIndex, photos.length]);
 
   const activePhoto = activeIndex === null ? null : photos[activeIndex];
+  const activePhotoNumber = activeIndex === null ? null : activeIndex + 1;
 
   function showPreviousPhoto() {
     setActiveIndex((current) => {
@@ -160,9 +161,9 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
               ) : null}
             </div>
 
-            {photos.length > 1 ? (
+            {photos.length > 1 && activePhotoNumber !== null ? (
               <p className="text-center text-sm text-white/75">
-                {activeIndex + 1} / {photos.length}. Usa las flechas del teclado
+                {activePhotoNumber} / {photos.length}. Usa las flechas del teclado
                 para navegar.
               </p>
             ) : null}
