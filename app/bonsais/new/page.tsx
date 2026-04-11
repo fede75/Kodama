@@ -2,6 +2,8 @@ import Link from "next/link";
 import { BonsaiForm } from "@/components/bonsais/bonsai-form";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 export default function NewBonsaiPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-8">

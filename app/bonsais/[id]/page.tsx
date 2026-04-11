@@ -6,6 +6,8 @@ import { getDefaultUser } from "@/lib/default-user";
 import { getBonsaiTimeline } from "@/lib/timeline";
 import { formatDate } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function BonsaiDetailPage({
   params
 }: {

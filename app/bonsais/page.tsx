@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { getLatestCareEvents, listBonsais } from "@/lib/bonsais";
 import { getDefaultUser } from "@/lib/default-user";
 
+export const dynamic = "force-dynamic";
+
 export default async function BonsaisPage() {
   const user = await getDefaultUser();
   const [bonsais, latestCare] = await Promise.all([

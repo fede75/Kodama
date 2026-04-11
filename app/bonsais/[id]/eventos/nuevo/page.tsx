@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { getBonsaiDetail } from "@/lib/bonsais";
 import { getDefaultUser } from "@/lib/default-user";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewCareEventPage({
   params
 }: {
