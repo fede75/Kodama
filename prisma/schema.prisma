@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum BonsaiStatus {
+  ACTIVE
+  RECOVERING
+  DORMANT
+}
+
+enum CareEventType {
+  WATERING
+  FERTILIZING
+  PRUNING
+  REPOTTING
+  WIRING
+}
+
+enum ReminderType {
+  WATERING
+  FERTILIZING
+  PRUNING
+  REPOTTING
+  WIRING
+  HEALTH_CHECK
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  bonsais   Bonsai[]
+  reminders Reminder[]
+}
+
+model Bonsai {
+  id           String         @id @default(cuid())
+  userId       String
+  name         String
+  species      String
+  style        String?
+  acquiredAt   DateTime?
+  location     String?
+  notes        String?
+  status       BonsaiStatus   @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  careEvents   CareEvent[]
+  healthIssues HealthIssue[]
+  journal      JournalEntry[]
+  photos       Photo[]
+  reminders    Reminder[]
+
+  @@index([userId, name])
+}
+
+model CareEvent {
+  id          String        @id @default(cuid())
+  bonsaiId    String
+  type        CareEventType
+  performedAt DateTime
+  title       String?
+  notes       String?
+  createdAt   DateTime      @default(now())
+  bonsai      Bonsai        @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+
+  @@index([bonsaiId, performedAt])
+}
+
+model HealthIssue {
+  id          String   @id @default(cuid())
+  bonsaiId    String
+  title       String
+  description String?
+  detectedAt  DateTime @default(now())
+  resolvedAt  DateTime?
+  severity    String?
+  createdAt   DateTime @default(now())
+  bonsai      Bonsai   @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+
+  @@index([bonsaiId, detectedAt])
+}
+
+model JournalEntry {
+  id        String   @id @default(cuid())
+  bonsaiId  String
+  title     String?
+  content   String
+  entryDate DateTime @default(now())
+  createdAt DateTime @default(now())
+  bonsai    Bonsai   @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+
+  @@index([bonsaiId, entryDate])
+}
+
+model Photo {
+  id          String   @id @default(cuid())
+  bonsaiId    String
+  imageUrl    String
+  caption     String?
+  takenAt     DateTime @default(now())
+  createdAt   DateTime @default(now())
+  bonsai      Bonsai   @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+
+  @@index([bonsaiId, takenAt])
+}
+
+model Reminder {
+  id          String       @id @default(cuid())
+  userId      String
+  bonsaiId    String?
+  type        ReminderType
+  title       String
+  description String?
+  dueAt       DateTime
+  completedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bonsai      Bonsai?      @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+
+  @@index([userId, dueAt])
+  @@index([bonsaiId, dueAt])
+}
