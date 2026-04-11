@@ -54,19 +54,24 @@ export function CareEventsList({
                   <p className="text-xs uppercase tracking-[0.18em] text-paper/34">
                     {formatDateTime(item.performedAt)}
                   </p>
-                  <p className="mt-3 font-display text-[2rem] leading-none text-paper">
-                    {CARE_EVENT_LABELS[item.type]}
-                  </p>
+                  {readOnly ? (
+                    <p className="mt-3 font-display text-[2rem] leading-none text-paper">
+                      {CARE_EVENT_LABELS[item.type]}
+                    </p>
+                  ) : (
+                    <Link
+                      href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
+                      className="mt-3 inline-flex font-display text-[2rem] leading-none text-paper transition hover:text-moss-200"
+                    >
+                      {CARE_EVENT_LABELS[item.type]}
+                    </Link>
+                  )}
                 </div>
                 {!readOnly ? (
                   <div className="flex flex-wrap items-center gap-2">
-                    <Link
-                      href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
-                      className="rounded-full bg-white/[0.05] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-paper/72 transition hover:bg-white/[0.1] hover:text-paper"
-                    >
-                      Editar
-                    </Link>
-                    <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+                    <div className="scale-[0.92] origin-left">
+                      <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+                    </div>
                   </div>
                 ) : null}
               </div>
