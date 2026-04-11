@@ -8,7 +8,7 @@ import { TogglePanel } from "@/components/bonsais/toggle-panel";
 import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { COLLECTION_STATUS_LABELS } from "@/lib/constants";
-import { getBonsaiDetail } from "@/lib/bonsais";
+import { getBonsaiDetail, listBonsais } from "@/lib/bonsais";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -20,13 +20,21 @@ export default async function BonsaiDetailPage({
 }) {
   const { id } = await params;
   const user = await requireCurrentUser();
-  const bonsai = await getBonsaiDetail(id, user.id);
+  const [bonsai, bonsais] = await Promise.all([
+    getBonsaiDetail(id, user.id),
+    listBonsais(user.id)
+  ]);
 
   if (!bonsai) {
     notFound();
   }
   const mainPhoto = bonsai.photos[0] ?? null;
-  const photoGalleryItems = bonsai.photos.map((photo) => ({
+  const photoGalleryItems = [...bonsai.photos]
+    .sort(
+      (a, b) =>
+        new Date(b.takenAt).getTime() - new Date(a.takenAt).getTime()
+    )
+    .map((photo) => ({
     id: photo.id,
     bonsaiId: bonsai.id,
     imageUrl: photo.imageUrl,
@@ -34,123 +42,131 @@ export default async function BonsaiDetailPage({
     isPrimary: photo.isPrimary,
     takenAt: photo.takenAt.toISOString()
   }));
+  const currentIndex = bonsais.findIndex((item) => item.id === bonsai.id);
+  const previousBonsai =
+    currentIndex > 0 ? bonsais[currentIndex - 1] : null;
+  const nextBonsai =
+    currentIndex >= 0 && currentIndex < bonsais.length - 1
+      ? bonsais[currentIndex + 1]
+      : null;
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)] sm:rounded-[2.5rem] sm:p-8 lg:p-10">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 rounded-full bg-clay-700/18 blur-3xl" />
-        <div className="grid gap-6 xl:grid-cols-[1.05fr_1fr]">
-          <div className="space-y-6">
-            <div className="grid gap-3 sm:flex sm:flex-wrap">
-              <Link href="/bonsais" className="block sm:inline-flex">
-                <Button
-                  variant="secondary"
-                  className="w-full border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper sm:w-auto"
-                >
-                  Volver
-                </Button>
-              </Link>
-              <Link href={`/bonsais/${bonsai.id}/editar`} className="block sm:inline-flex">
-                <Button
-                  variant="secondary"
-                  className="w-full border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper sm:w-auto"
-                >
-                  Editar
-                </Button>
-              </Link>
-              <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
-                <Button className="w-full bg-moss-500 text-paper hover:bg-moss-400 sm:w-auto">
-                  Añadir cuidado
-                </Button>
-              </Link>
-              <DeleteBonsaiForm bonsaiId={bonsai.id} />
+      <section className="relative overflow-hidden rounded-[2.4rem] surface-panel p-4 sm:p-6 xl:p-7">
+        <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
+        <div className="grid gap-5 xl:grid-cols-[1.35fr_0.9fr]">
+          <div className="relative overflow-hidden rounded-[2rem] bg-black/20">
+            {mainPhoto ? (
+              <img
+                src={mainPhoto.imageUrl}
+                alt={mainPhoto.caption ?? `Foto principal de ${bonsai.name}`}
+                className="h-[360px] w-full object-cover sm:h-[460px] xl:h-[620px]"
+              />
+            ) : (
+              <div className="flex h-[360px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6 sm:h-[460px] xl:h-[620px]">
+                <div className="rounded-full bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
+                  Sin foto
+                </div>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.5))]" />
+            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+              <div className="max-w-xl rounded-[1.7rem] bg-black/36 p-5 backdrop-blur-md">
+                <p className="editorial-kicker text-[10px]">Ficha</p>
+                <h1 className="mt-3 font-display text-4xl leading-none text-paper sm:text-5xl xl:text-[4.6rem]">
+                  {bonsai.name}
+                </h1>
+                <p className="mt-3 text-sm uppercase tracking-[0.18em] text-paper/46">
+                  {bonsai.species}
+                </p>
+                {bonsai.notes ? (
+                  <p className="mt-4 max-w-2xl text-sm leading-7 text-paper/62 sm:text-base">
+                    {bonsai.notes}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div className="rounded-[2rem] surface-soft p-5 sm:p-6">
+              <div className="flex flex-wrap gap-3">
+                <Link href="/bonsais" className="block sm:inline-flex">
+                  <Button variant="secondary" className="w-full sm:w-auto">
+                    Volver
+                  </Button>
+                </Link>
+                <Link href={`/bonsais/${bonsai.id}/editar`} className="block sm:inline-flex">
+                  <Button variant="secondary" className="w-full sm:w-auto">
+                    Editar
+                  </Button>
+                </Link>
+                <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
+                  <Button className="w-full sm:w-auto">Añadir cuidado</Button>
+                </Link>
+                <DeleteBonsaiForm bonsaiId={bonsai.id} />
+              </div>
             </div>
 
-            <div>
-              <h1 className="font-display text-4xl leading-none text-paper sm:text-5xl">
-                {bonsai.name}
-              </h1>
-              <p className="mt-3 text-sm uppercase tracking-[0.22em] text-paper/42">
-                {bonsai.species}
-              </p>
-            </div>
-
-            {bonsai.notes ? (
-              <p className="max-w-2xl text-base leading-8 text-paper/62">
-                {bonsai.notes}
-              </p>
+            {(previousBonsai || nextBonsai) ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {previousBonsai ? (
+                  <Link href={`/bonsais/${previousBonsai.id}`} className="rounded-[1.6rem] surface-soft p-4 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]">
+                    <p className="editorial-kicker text-[10px]">Anterior</p>
+                    <p className="mt-3 font-display text-3xl text-paper">
+                      {previousBonsai.name}
+                    </p>
+                  </Link>
+                ) : <div />}
+                {nextBonsai ? (
+                  <Link href={`/bonsais/${nextBonsai.id}`} className="rounded-[1.6rem] surface-soft p-4 text-right transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]">
+                    <p className="editorial-kicker text-[10px]">Siguiente</p>
+                    <p className="mt-3 font-display text-3xl text-paper">
+                      {nextBonsai.name}
+                    </p>
+                  </Link>
+                ) : null}
+              </div>
             ) : null}
 
-            <div className="grid gap-4 rounded-[2rem] border border-white/8 bg-black/30 p-6 text-paper shadow-card sm:grid-cols-2">
-              <div>
-                <p className="text-sm text-paper/42">Estado</p>
-                <p className="mt-1 text-lg font-semibold">{bonsai.status}</p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[1.6rem] surface-soft p-4">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Estado</p>
+                <p className="mt-3 text-lg text-paper">{bonsai.status}</p>
               </div>
-              <div>
-                <p className="text-sm text-paper/42">Colección</p>
-                <p className="mt-1 text-lg font-semibold">
-                  {COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}
-                </p>
+              <div className="rounded-[1.6rem] surface-soft p-4">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Colección</p>
+                <p className="mt-3 text-lg text-paper">{COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}</p>
               </div>
-              <div>
-                <p className="text-sm text-paper/42">Ubicación</p>
-                <p className="mt-1 text-lg font-semibold">
-                  {bonsai.location ?? "No indicada"}
-                </p>
+              <div className="rounded-[1.6rem] surface-soft p-4">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Ubicación</p>
+                <p className="mt-3 text-lg text-paper">{bonsai.location ?? "No indicada"}</p>
               </div>
-              <div>
-                <p className="text-sm text-paper/42">Estilo</p>
-                <p className="mt-1 text-lg font-semibold">
-                  {bonsai.style ?? "Sin definir"}
-                </p>
+              <div className="rounded-[1.6rem] surface-soft p-4">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Estilo</p>
+                <p className="mt-3 text-lg text-paper">{bonsai.style ?? "Sin definir"}</p>
               </div>
-              <div>
-                <p className="text-sm text-paper/42">Adquirido</p>
-                <p className="mt-1 text-lg font-semibold">
+              <div className="rounded-[1.6rem] surface-soft p-4 sm:col-span-2">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Adquirido</p>
+                <p className="mt-3 text-lg text-paper">
                   {bonsai.acquiredAt ? formatDate(bonsai.acquiredAt) : "Sin fecha"}
                 </p>
               </div>
             </div>
           </div>
-
-          <div className="space-y-4">
-            <div className="overflow-hidden rounded-[2.2rem] border border-white/8 bg-white/[0.04] shadow-paper">
-              {mainPhoto ? (
-                <img
-                  src={mainPhoto.imageUrl}
-                  alt={mainPhoto.caption ?? `Foto principal de ${bonsai.name}`}
-                  className="h-[280px] w-full object-cover sm:h-[360px] lg:h-[420px]"
-                />
-              ) : (
-                <div className="flex h-[280px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6 sm:h-[360px] lg:h-[420px]">
-                  <div className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
-                    Sin foto
-                  </div>
-                </div>
-              )}
-            </div>
-            {mainPhoto ? (
-              <div className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] px-5 py-4 text-sm text-paper/62 shadow-card">
-                <p className="font-semibold text-paper">
-                  {mainPhoto.caption ?? "Foto"}
-                </p>
-                <p className="mt-1 uppercase tracking-[0.18em] text-paper/38">
-                  {formatDate(mainPhoto.takenAt)}
-                </p>
-              </div>
-            ) : null}
-          </div>
         </div>
       </section>
 
-      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-card sm:p-6">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="font-display text-3xl text-paper">Fotos</h2>
+      <section className="space-y-5 rounded-[2.2rem] surface-panel p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="editorial-kicker text-xs">Imágenes</p>
+            <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">Galería</h2>
+          </div>
         </div>
 
         <TogglePanel buttonLabel="Añadir imagen">
-          <div className="w-full rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4">
+          <div className="w-full rounded-[1.8rem] bg-white/[0.035] p-4">
             <PhotoUploadForm bonsaiId={bonsai.id} />
           </div>
         </TogglePanel>
@@ -158,19 +174,20 @@ export default async function BonsaiDetailPage({
         {photoGalleryItems.length > 0 ? (
           <PhotoGallery photos={photoGalleryItems} />
         ) : (
-          <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
+          <p className="rounded-[1.8rem] bg-white/[0.035] px-5 py-6 text-sm text-paper/56">
             Aún no hay fotos registradas.
           </p>
         )}
       </section>
 
-      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-card sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="font-display text-3xl text-paper">Cuidados</h2>
+      <section className="space-y-5 rounded-[2.2rem] surface-panel p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="editorial-kicker text-xs">Evolución</p>
+            <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">Cuidados</h2>
+          </div>
           <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
-            <Button className="w-full bg-moss-500 text-paper hover:bg-moss-400 sm:w-auto">
-              Añadir cuidado
-            </Button>
+            <Button className="w-full sm:w-auto">Añadir cuidado</Button>
           </Link>
         </div>
 

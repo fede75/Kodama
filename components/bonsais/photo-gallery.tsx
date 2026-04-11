@@ -89,11 +89,11 @@ export function PhotoGallery({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
         {photos.map((photo, index) => (
           <div
             key={photo.id}
-            className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-2 shadow-sm"
+            className="rounded-[1.5rem] surface-soft p-2.5"
           >
             <button
               type="button"
@@ -101,24 +101,27 @@ export function PhotoGallery({
               className="group block w-full text-left"
               aria-label={`Abrir foto del ${formatDate(photo.takenAt)}`}
             >
-              <div className="overflow-hidden rounded-[1.25rem] border border-white/8 bg-black/20 transition group-hover:border-white/14 group-hover:shadow-card">
+              <div className="overflow-hidden rounded-[1.15rem] bg-black/20 transition duration-300 group-hover:shadow-[0_24px_60px_-36px_rgba(0,0,0,0.95)]">
                 <img
                   src={photo.imageUrl}
                   alt={photo.caption ?? `Foto del bonsái del ${formatDate(photo.takenAt)}`}
-                  className="aspect-square h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                  className="aspect-[4/5] h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
                   loading="lazy"
                 />
               </div>
             </button>
 
-            <div className="px-1 pb-1 pt-3">
-              <p className="text-center text-xs font-medium uppercase tracking-[0.14em] text-paper/38">
+            <div className="px-1 pb-1 pt-3.5">
+              <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-paper/36">
                 {formatDate(photo.takenAt)}
               </p>
+              <p className="mt-2 line-clamp-2 text-xs leading-5 text-paper/58">
+                {photo.caption ?? "Sin nota"}
+              </p>
               {!readOnly ? (
-                <div className="mt-3 flex justify-center">
+                <div className="mt-3">
                   {photo.isPrimary ? (
-                    <span className="rounded-full border border-moss-500/20 bg-moss-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-200">
+                    <span className="inline-flex rounded-full bg-moss-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-200">
                       Principal
                     </span>
                   ) : (
@@ -127,7 +130,7 @@ export function PhotoGallery({
                       <input type="hidden" name="bonsaiId" value={photo.bonsaiId} />
                       <button
                         type="submit"
-                        className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-paper/72 transition hover:border-white/20 hover:bg-white/[0.08]"
+                        className="rounded-full bg-white/[0.05] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-paper/72 transition hover:bg-white/[0.1]"
                       >
                         Poner principal
                       </button>
@@ -142,7 +145,7 @@ export function PhotoGallery({
 
       {activePhoto ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/90 p-4 sm:p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(6,8,8,0.92)] p-4 sm:p-6"
           role="dialog"
           aria-modal="true"
           aria-label="Visor de fotos"
@@ -168,7 +171,7 @@ export function PhotoGallery({
               </button>
             </div>
 
-            <div className="relative overflow-hidden rounded-[2rem] border border-paper/10 bg-black/30 shadow-2xl">
+            <div className="relative overflow-hidden rounded-[2.2rem] bg-black/30 shadow-[0_32px_100px_-38px_rgba(0,0,0,0.96)]">
               <img
                 src={activePhoto.imageUrl}
                 alt={activePhoto.caption ?? `Foto del bonsái del ${formatDate(activePhoto.takenAt)}`}

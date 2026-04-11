@@ -30,130 +30,95 @@ export function CareEventsList({
 }) {
   if (items.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
+      <p className="rounded-[1.8rem] bg-white/[0.035] px-5 py-6 text-sm text-paper/56">
         Aún no hay cuidados registrados.
       </p>
     );
   }
 
   return (
-    <>
-      <div className="space-y-3 md:hidden">
-        {items.map((item) => (
+    <div className="space-y-4">
+      {items.map((item, index) => {
+        const mainPhoto = item.photos[0] ?? null;
+        const extraPhotos = item.photos.slice(1, 4);
+
+        return (
           <article
             key={item.id}
-            className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4 shadow-card"
+            className="relative overflow-hidden rounded-[2rem] surface-soft p-5 shadow-[0_26px_70px_-46px_rgba(0,0,0,0.95)] sm:p-6"
           >
-            <div className="space-y-3">
-              <p className="text-xs uppercase tracking-[0.18em] text-paper/38">
-                {formatDateTime(item.performedAt)}
-              </p>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss-200">
-                {CARE_EVENT_LABELS[item.type]}
-              </p>
-              <p className="text-sm leading-7 text-paper/62">
-                {item.notes ?? "Sin notas"}
-              </p>
-              {item.photos[0] ? (
-                <div className="w-20 overflow-hidden rounded-[1rem] border border-white/8 bg-black/20">
-                  <img
-                    src={item.photos[0].imageUrl}
-                    alt={item.photos[0].caption ?? "Imagen principal del cuidado"}
-                    className="aspect-square w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              ) : null}
-              {!readOnly ? (
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <Link
-                    href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
-                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
-                  >
-                    Editar
-                  </Link>
-                  <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
-                </div>
-              ) : null}
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <div className="hidden overflow-hidden rounded-[2rem] border border-white/8 bg-white/[0.04] shadow-card md:block">
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse">
-          <thead>
-            <tr className="border-b border-white/8 text-left">
-              <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
-                Fecha
-              </th>
-              <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
-                Cuidado
-              </th>
-              <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
-                Notas
-              </th>
-              <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
-                Imagen
-              </th>
-              {!readOnly ? (
-                <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
-                  Acciones
-                </th>
-              ) : null}
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr
-                key={item.id}
-                className="border-b border-white/8 last:border-b-0"
-              >
-                <td className="px-5 py-4 align-top text-sm text-paper/62">
-                  {formatDateTime(item.performedAt)}
-                </td>
-                <td className="px-5 py-4 align-top">
-                  <span className="inline-flex rounded-full border border-moss-500/20 bg-moss-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-moss-200">
+            <div className="pointer-events-none absolute left-5 top-0 hidden h-full w-px bg-gradient-to-b from-moss-500/30 via-white/8 to-transparent sm:block" />
+            <div className="relative grid gap-5 sm:grid-cols-[10.5rem_1fr] sm:gap-6">
+              <div className="space-y-4 sm:pl-6">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-paper/34">
+                    {formatDateTime(item.performedAt)}
+                  </p>
+                  <p className="mt-3 font-display text-[2rem] leading-none text-paper">
                     {CARE_EVENT_LABELS[item.type]}
-                  </span>
-                </td>
-                <td className="px-5 py-4 align-top text-sm leading-7 text-paper/62">
-                  {item.notes ?? "Sin notas"}
-                </td>
-                <td className="px-5 py-4 align-top">
-                  {item.photos[0] ? (
-                    <div className="w-20 overflow-hidden rounded-[1rem] border border-white/8 bg-black/20">
+                  </p>
+                </div>
+                {!readOnly ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link
+                      href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
+                      className="rounded-full bg-white/[0.05] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-paper/72 transition hover:bg-white/[0.1] hover:text-paper"
+                    >
+                      Editar
+                    </Link>
+                    <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid gap-4 lg:grid-cols-[1fr_11rem]">
+                  <div className="space-y-3">
+                    <p className="text-sm leading-7 text-paper/62">
+                      {item.notes ?? "Sin notas"}
+                    </p>
+                    {extraPhotos.length > 0 ? (
+                      <div className="flex gap-2 overflow-x-auto pb-1">
+                        {extraPhotos.map((photo) => (
+                          <div
+                            key={photo.id}
+                            className="w-16 shrink-0 overflow-hidden rounded-[0.9rem] bg-black/20"
+                          >
+                            <img
+                              src={photo.imageUrl}
+                              alt={photo.caption ?? "Imagen del cuidado"}
+                              className="aspect-square w-full object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {mainPhoto ? (
+                    <div className="overflow-hidden rounded-[1.3rem] bg-black/20">
                       <img
-                        src={item.photos[0].imageUrl}
-                        alt={item.photos[0].caption ?? "Imagen principal del cuidado"}
-                        className="aspect-square w-full object-cover"
+                        src={mainPhoto.imageUrl}
+                        alt={mainPhoto.caption ?? "Imagen principal del cuidado"}
+                        className="aspect-[4/5] w-full object-cover"
                         loading="lazy"
                       />
                     </div>
                   ) : (
-                    <span className="text-sm text-paper/38">Sin imagen</span>
-                  )}
-                </td>
-                {!readOnly ? (
-                  <td className="px-5 py-4 align-top">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Link
-                        href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
-                        className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
-                      >
-                        Editar
-                      </Link>
-                      <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+                    <div className="flex items-end rounded-[1.3rem] bg-[linear-gradient(135deg,rgba(111,149,70,0.2),rgba(10,13,12,0.85))] p-4 text-[11px] uppercase tracking-[0.16em] text-paper/38">
+                      Sin imagen
                     </div>
-                  </td>
-                ) : null}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      </div>
-    </>
+                  )}
+                </div>
+              </div>
+            </div>
+            {index < items.length - 1 ? (
+              <div className="pointer-events-none absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/8 to-transparent" />
+            ) : null}
+          </article>
+        );
+      })}
+    </div>
   );
 }

@@ -10,112 +10,184 @@ import { auth } from "@clerk/nextjs/server";
 import heroImage from "@/img/bonsai-hero.jpg";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth-guards";
+import { listBonsais } from "@/lib/bonsais";
+import { CARE_EVENT_LABELS } from "@/lib/constants";
+import { formatDate } from "@/lib/utils";
 
 export default async function HomePage() {
   const { userId } = await auth();
   const currentUser = userId ? await getCurrentUser() : null;
+  const bonsais = currentUser ? await listBonsais(currentUser.id) : [];
+  const recentCare = bonsais
+    .flatMap((bonsai) =>
+      bonsai.careEvents.map((event) => ({
+        bonsaiId: bonsai.id,
+        bonsaiName: bonsai.name,
+        type: event.type,
+        performedAt: event.performedAt
+      }))
+    )
+    .sort((a, b) => b.performedAt.getTime() - a.performedAt.getTime())
+    .slice(0, 3);
 
   return (
-    <div className="space-y-10 pb-8 sm:space-y-14 sm:pb-10">
-      <section className="hero-reveal relative overflow-hidden rounded-[2rem] border border-white/8 bg-[#0b0f0e] shadow-[0_36px_90px_-40px_rgba(0,0,0,0.82)] sm:rounded-[3.2rem]">
-        <div className="absolute inset-y-0 left-0 w-full bg-[linear-gradient(135deg,rgba(255,255,255,0.04),transparent_42%)] lg:w-[43%]" />
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_left,rgba(111,149,70,0.18),transparent_44%),linear-gradient(180deg,rgba(16,22,20,0.96),rgba(10,14,13,0.94))] lg:w-[42%]" />
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-full bg-gradient-to-l from-black/58 via-black/18 to-transparent lg:w-[64%]" />
+    <div className="space-y-10 pb-8 sm:space-y-14 sm:pb-12">
+      <section className="hero-reveal relative overflow-hidden rounded-[2.2rem] surface-panel sm:rounded-[3rem]">
+        <div className="absolute inset-y-0 left-0 w-full bg-[linear-gradient(125deg,rgba(255,255,255,0.02),transparent_35%)] lg:w-[42%]" />
+        <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_left,rgba(111,149,70,0.15),transparent_36%),linear-gradient(180deg,rgba(12,16,15,0.95),rgba(8,10,10,0.9))] lg:w-[42%]" />
+        <div className="absolute right-0 top-0 h-full w-full bg-gradient-to-l from-black/60 via-black/20 to-transparent lg:w-[66%]" />
 
-        <div className="grid min-h-[640px] lg:min-h-[760px] lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="order-2 hero-reveal-delay relative z-10 flex flex-col justify-between px-5 py-6 sm:px-8 sm:py-8 lg:order-1 lg:px-10 lg:py-12">
-            <div className="space-y-7">
-              <h1 className="max-w-xl font-display text-[2.8rem] leading-[0.9] text-paper sm:text-[3.7rem] xl:text-[5.6rem]">
-                Cuidado, tiempo y memoria.
+        <div className="grid min-h-[620px] lg:min-h-[760px] lg:grid-cols-[0.78fr_1.22fr]">
+          <div className="order-2 hero-reveal-delay relative z-10 flex flex-col justify-between px-5 py-6 sm:px-8 sm:py-8 lg:order-1 lg:px-10 lg:py-12 xl:px-14">
+            <div className="max-w-xl space-y-7">
+              <p className="editorial-kicker text-xs">Cuaderno digital de bonsáis</p>
+              <h1 className="font-display text-[3rem] leading-[0.86] text-paper sm:text-[4.2rem] xl:text-[5.8rem]">
+                Una colección viva.
               </h1>
+              <p className="max-w-lg text-base leading-8 text-paper/56 sm:text-lg">
+                Inventario, memoria visual y evolución de cada árbol en una interfaz más cercana a una colección que a un panel.
+              </p>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <SignedIn>
-                  <Link href="/colecciones-publicas" className="block sm:inline-flex">
-                    <Button
-                      variant="secondary"
-                      className="w-full border-white/14 bg-white/[0.03] px-6 py-3 text-sm tracking-[0.08em] text-paper hover:border-white/28 hover:bg-white/[0.08] hover:text-paper sm:w-auto sm:px-7 sm:tracking-[0.12em]"
-                    >
-                      Colecciones públicas
-                    </Button>
-                  </Link>
                   <Link href="/bonsais" className="block sm:inline-flex">
-                    <Button className="w-full bg-moss-500 px-6 py-3 text-sm tracking-[0.08em] text-paper shadow-[0_18px_40px_-24px_rgba(0,0,0,0.75)] transition duration-300 hover:bg-moss-400 sm:w-auto sm:px-7 sm:tracking-[0.12em]">
-                      Entrar en mi colección
+                    <Button className="w-full px-6 py-3 sm:w-auto sm:px-7">
+                      Mi colección
                     </Button>
                   </Link>
-                  <Link href="/bonsais/new" className="block sm:inline-flex">
-                    <Button
-                      variant="secondary"
-                      className="w-full border-white/14 bg-white/[0.03] px-6 py-3 text-sm tracking-[0.08em] text-paper hover:border-white/28 hover:bg-white/[0.08] hover:text-paper sm:w-auto sm:px-7 sm:tracking-[0.12em]"
-                    >
-                      Registrar un bonsái
-                    </Button>
-                  </Link>
-                  {currentUser?.role === "ADMIN" ? (
-                    <Link href="/admin" className="block sm:inline-flex">
-                      <Button
-                        variant="secondary"
-                        className="w-full border-white/14 bg-white/[0.03] px-6 py-3 text-sm tracking-[0.08em] text-paper hover:border-white/28 hover:bg-white/[0.08] hover:text-paper sm:w-auto sm:px-7 sm:tracking-[0.12em]"
-                      >
-                        Administración
-                      </Button>
-                    </Link>
-                  ) : null}
-                </SignedIn>
-
-                <SignedOut>
                   <Link href="/colecciones-publicas" className="block sm:inline-flex">
-                    <Button
-                      variant="secondary"
-                      className="w-full border-white/14 bg-white/[0.03] px-6 py-3 text-sm tracking-[0.08em] text-paper hover:border-white/28 hover:bg-white/[0.08] hover:text-paper sm:w-auto sm:px-7 sm:tracking-[0.12em]"
-                    >
+                    <Button variant="secondary" className="w-full px-6 py-3 sm:w-auto sm:px-7">
                       Colecciones públicas
                     </Button>
                   </Link>
+                </SignedIn>
+                <SignedOut>
                   <SignInButton mode="modal">
                     <span>
-                      <Button className="w-full bg-moss-500 px-6 py-3 text-sm tracking-[0.08em] text-paper shadow-[0_18px_40px_-24px_rgba(0,0,0,0.75)] transition duration-300 hover:bg-moss-400 sm:w-auto sm:px-7 sm:tracking-[0.12em]">
-                        Acceder con Google
+                      <Button className="w-full px-6 py-3 sm:w-auto sm:px-7">
+                        Acceder
                       </Button>
                     </span>
                   </SignInButton>
+                  <Link href="/colecciones-publicas" className="block sm:inline-flex">
+                    <Button variant="secondary" className="w-full px-6 py-3 sm:w-auto sm:px-7">
+                      Colecciones públicas
+                    </Button>
+                  </Link>
+                </SignedOut>
+              </div>
+            </div>
+
+            <SignedIn>
+              <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                <Link
+                  href="/bonsais"
+                  className="group rounded-[1.7rem] surface-soft p-5 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
+                >
+                  <p className="editorial-kicker text-[10px]">Colección</p>
+                  <p className="mt-4 font-display text-3xl text-paper">{bonsais.length}</p>
+                  <p className="mt-2 text-sm text-paper/52">
+                    árboles registrados
+                  </p>
+                </Link>
+                <div className="rounded-[1.7rem] surface-soft p-5">
+                  <p className="editorial-kicker text-[10px]">Actividad reciente</p>
+                  {recentCare.length > 0 ? (
+                    <div className="mt-4 space-y-3">
+                      {recentCare.map((item) => (
+                        <div key={`${item.bonsaiId}-${item.performedAt.toISOString()}`} className="space-y-1">
+                          <p className="text-sm text-paper">{item.bonsaiName}</p>
+                          <p className="text-xs uppercase tracking-[0.16em] text-paper/38">
+                            {CARE_EVENT_LABELS[item.type]} · {formatDate(item.performedAt)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="mt-4 text-sm text-paper/46">
+                      Sin cuidados registrados todavía.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </SignedIn>
+            <SignedOut>
+              <div className="mt-10 max-w-sm rounded-[1.7rem] surface-soft p-5">
+                <p className="editorial-kicker text-[10px]">Acceso</p>
+                <p className="mt-4 text-sm leading-7 text-paper/52">
+                  Entra para registrar bonsáis, cuidados, fotos y el historial visual completo de tu colección.
+                </p>
+                <div className="mt-4">
                   <SignUpButton mode="modal">
                     <span>
-                      <Button
-                        variant="secondary"
-                        className="w-full border-white/14 bg-white/[0.03] px-6 py-3 text-sm tracking-[0.08em] text-paper hover:border-white/28 hover:bg-white/[0.08] hover:text-paper sm:w-auto sm:px-7 sm:tracking-[0.12em]"
-                      >
+                      <Button variant="secondary" className="w-full">
                         Crear cuenta
                       </Button>
                     </span>
                   </SignUpButton>
-                </SignedOut>
+                </div>
               </div>
-            </div>
+            </SignedOut>
           </div>
 
-          <div className="order-1 relative min-h-[300px] sm:min-h-[380px] lg:order-2 lg:min-h-full">
-            <div className="absolute inset-0 bg-gradient-to-l from-black/72 via-black/24 to-transparent lg:hidden" />
+          <div className="order-1 relative min-h-[320px] sm:min-h-[400px] lg:order-2 lg:min-h-full">
             <Image
               src={heroImage}
               alt="Bonsái protagonista de Kodama"
               priority
               fill
-              sizes="(max-width: 1024px) 100vw, 65vw"
+              sizes="(max-width: 1024px) 100vw, 68vw"
               className="object-cover object-[68%_center]"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.48))]" />
-            <div className="absolute inset-y-0 left-0 hidden w-40 bg-gradient-to-r from-[#0d1211] via-[#0d1211]/70 to-transparent lg:block" />
-
-            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:right-6 sm:left-auto sm:max-w-[22rem]">
-              <div className="rounded-[1.5rem] border border-white/10 bg-black/46 px-4 py-4 text-paper shadow-[0_24px_70px_-38px_rgba(0,0,0,0.85)] backdrop-blur-md sm:rounded-[2rem] sm:px-6 sm:py-5">
-                <p className="font-display text-3xl leading-none sm:text-4xl">Kodama</p>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12),rgba(0,0,0,0.46))]" />
+            <div className="absolute inset-y-0 left-0 hidden w-48 bg-gradient-to-r from-[#0a0d0c] via-[#0a0d0c]/72 to-transparent lg:block" />
           </div>
         </div>
       </section>
+
+      <SignedIn>
+        <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+          <Link
+            href="/bonsais/new"
+            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
+          >
+            <p className="editorial-kicker text-[10px]">Registrar</p>
+            <div className="mt-4 flex items-end justify-between gap-6">
+              <div>
+                <p className="font-display text-4xl text-paper sm:text-5xl">
+                  Nuevo bonsái
+                </p>
+                <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
+                  Añade un árbol nuevo y empieza su seguimiento desde la primera imagen.
+                </p>
+              </div>
+              <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
+                Abrir
+              </span>
+            </div>
+          </Link>
+
+          <Link
+            href="/colecciones-publicas"
+            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
+          >
+            <p className="editorial-kicker text-[10px]">Explorar</p>
+            <div className="mt-4 flex items-end justify-between gap-6">
+              <div>
+                <p className="font-display text-4xl text-paper sm:text-5xl">
+                  Otras colecciones
+                </p>
+                <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
+                  Descubre cómo otros usuarios documentan la evolución de sus árboles.
+                </p>
+              </div>
+              <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
+                Ver
+              </span>
+            </div>
+          </Link>
+        </section>
+      </SignedIn>
     </div>
   );
 }

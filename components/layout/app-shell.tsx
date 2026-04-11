@@ -21,50 +21,45 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       ];
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
-      <header className="mb-6 overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(18,22,21,0.94),rgba(11,14,13,0.9))] px-4 py-4 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.78)] backdrop-blur sm:mb-10 sm:rounded-[2.5rem] sm:px-6 sm:py-6 md:px-8">
-        <div className="relative flex flex-col gap-6">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-          <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-clay-700/20 blur-3xl" />
-          <div className="pointer-events-none absolute left-20 top-10 h-24 w-24 rounded-full bg-moss-500/15 blur-3xl" />
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <Link href="/" className="inline-flex items-center gap-3 self-start">
-              <div className="flex h-12 w-12 items-center justify-center rounded-[1.1rem] border border-white/10 bg-gradient-to-br from-clay-600 via-ink-800 to-black text-lg font-semibold text-paper shadow-[0_18px_40px_-24px_rgba(0,0,0,0.8)] sm:h-14 sm:w-14 sm:rounded-[1.4rem] sm:text-xl">
-                木
-              </div>
-              <div>
-                <p className="font-display text-[1.9rem] tracking-[0.04em] text-paper sm:text-3xl">
-                  Kodama
-                </p>
-              </div>
-            </Link>
+    <div className="mx-auto flex min-h-screen max-w-[92rem] flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+      <header className="sticky top-3 z-40 mb-8 rounded-[1.7rem] border border-white/6 bg-[linear-gradient(180deg,rgba(10,13,12,0.82),rgba(10,13,12,0.7))] px-4 py-4 shadow-[0_24px_90px_-48px_rgba(0,0,0,0.95)] backdrop-blur-2xl sm:mb-10 sm:px-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <Link href="/" className="inline-flex items-center gap-3 self-start">
+            <div className="flex h-11 w-11 items-center justify-center rounded-[1rem] bg-[linear-gradient(135deg,rgba(118,154,74,0.3),rgba(14,18,17,0.9))] text-base font-semibold text-paper shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:h-12 sm:w-12">
+              木
+            </div>
+            <div>
+              <p className="font-display text-[1.9rem] leading-none tracking-[0.03em] text-paper sm:text-[2.2rem]">
+                Kodama
+              </p>
+            </div>
+          </Link>
 
-            <div className="w-full md:w-auto">
-              <nav className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 text-sm font-medium text-paper/82 md:flex-wrap md:justify-end md:overflow-visible md:px-0 md:pb-0">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+            <nav className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-1 text-sm font-medium text-paper/62 lg:flex-wrap lg:justify-end lg:overflow-visible lg:px-0 lg:pb-0">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 transition hover:border-moss-500/40 hover:bg-white/[0.08] hover:text-paper"
+                  className="shrink-0 whitespace-nowrap rounded-full px-1 py-1 transition hover:text-paper"
                 >
                   {item.label}
                 </Link>
               ))}
-              {user ? (
-                <div className="shrink-0 rounded-full border border-white/10 bg-white/[0.05] p-1">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        userButtonAvatarBox: "h-9 w-9"
-                      }
-                    }}
-                  />
-                </div>
-              ) : null}
-              </nav>
-            </div>
+            </nav>
+            {user ? (
+              <div className="self-start lg:self-auto">
+                <UserButton
+                  appearance={{
+                    elements: {
+                      userButtonAvatarBox:
+                        "h-10 w-10 ring-1 ring-white/10 shadow-[0_12px_32px_-18px_rgba(0,0,0,0.9)]"
+                    }
+                  }}
+                />
+              </div>
+            ) : null}
           </div>
-
         </div>
       </header>
 
