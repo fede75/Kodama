@@ -117,11 +117,13 @@ model Photo {
   bonsaiId    String
   imageUrl    String
   caption     String?
+  isPrimary   Boolean  @default(false)
   takenAt     DateTime @default(now())
   createdAt   DateTime @default(now())
   bonsai      Bonsai   @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
 
   @@index([bonsaiId, takenAt])
+  @@index([bonsaiId, isPrimary])
 }
 
 model Reminder {

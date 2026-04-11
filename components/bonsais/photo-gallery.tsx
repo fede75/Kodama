@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { setPrimaryPhotoAction } from "@/app/actions";
 import { formatDate } from "@/lib/utils";
 
 type PhotoItem = {
   id: string;
+  bonsaiId: string;
   imageUrl: string;
   caption: string | null;
+  isPrimary: boolean;
   takenAt: Date | string;
 };
 
@@ -80,27 +83,52 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {photos.map((photo, index) => (
-          <button
+          <div
             key={photo.id}
-            type="button"
-            onClick={() => setActiveIndex(index)}
-            className="group text-left"
-            aria-label={`Abrir foto del ${formatDate(photo.takenAt)}`}
+            className="rounded-[1.6rem] border border-ink-200/70 bg-white/45 p-2 shadow-sm"
           >
-            <div className="overflow-hidden rounded-[1.5rem] border border-ink-200/70 bg-white/55 shadow-sm transition group-hover:border-clay-300 group-hover:shadow-card">
-              <img
-                src={photo.imageUrl}
-                alt={photo.caption ?? `Foto del bonsái del ${formatDate(photo.takenAt)}`}
-                className="aspect-square h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                loading="lazy"
-              />
+            <button
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              className="group block w-full text-left"
+              aria-label={`Abrir foto del ${formatDate(photo.takenAt)}`}
+            >
+              <div className="overflow-hidden rounded-[1.25rem] border border-ink-200/70 bg-white/55 transition group-hover:border-clay-300 group-hover:shadow-card">
+                <img
+                  src={photo.imageUrl}
+                  alt={photo.caption ?? `Foto del bonsái del ${formatDate(photo.takenAt)}`}
+                  className="aspect-square h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
+              </div>
+            </button>
+
+            <div className="px-1 pb-1 pt-3">
+              <p className="text-center text-xs font-medium uppercase tracking-[0.14em] text-ink-600">
+                {formatDate(photo.takenAt)}
+              </p>
+              <div className="mt-3 flex justify-center">
+                {photo.isPrimary ? (
+                  <span className="rounded-full border border-moss-200 bg-moss-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-800">
+                    Principal
+                  </span>
+                ) : (
+                  <form action={setPrimaryPhotoAction}>
+                    <input type="hidden" name="photoId" value={photo.id} />
+                    <input type="hidden" name="bonsaiId" value={photo.bonsaiId} />
+                    <button
+                      type="submit"
+                      className="rounded-full border border-ink-200 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-ink-700 transition hover:border-clay-300 hover:text-clay-700"
+                    >
+                      Poner principal
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
-            <p className="mt-2 text-center text-xs font-medium uppercase tracking-[0.14em] text-ink-600">
-              {formatDate(photo.takenAt)}
-            </p>
-          </button>
+          </div>
         ))}
       </div>
 

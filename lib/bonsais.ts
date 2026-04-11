@@ -7,7 +7,7 @@ const bonsaiListInclude = {
     take: 1
   },
   photos: {
-    orderBy: { takenAt: "desc" as const },
+    orderBy: [{ isPrimary: "desc" as const }, { takenAt: "desc" as const }],
     take: 1
   },
   _count: {
@@ -31,7 +31,7 @@ const bonsaiDetailInclude = {
     orderBy: { entryDate: "desc" as const }
   },
   photos: {
-    orderBy: { takenAt: "desc" as const }
+    orderBy: [{ isPrimary: "desc" as const }, { takenAt: "desc" as const }]
   }
 };
 
@@ -63,14 +63,14 @@ export async function updateBonsai(
   userId: string,
   input: Prisma.BonsaiUncheckedUpdateInput
 ) {
-  return prisma.bonsai.update({
+  return prisma.bonsai.updateMany({
     where: { id, userId },
     data: input
   });
 }
 
 export async function deleteBonsai(id: string, userId: string) {
-  return prisma.bonsai.delete({
+  return prisma.bonsai.deleteMany({
     where: { id, userId }
   });
 }
@@ -93,14 +93,56 @@ export async function createPhoto(input: {
   caption?: string;
   takenAt?: Date;
 }) {
-  return prisma.photo.create({
-    data: {
-      bonsaiId: input.bonsaiId,
-      imageUrl: input.imageUrl,
-      caption: input.caption,
-      takenAt: input.takenAt ?? new Date()
-    }
+  return prisma.$transaction(async (tx) => {
+    const existingPhoto = await tx.photo.findFirst({
+      where: { bonsaiId: input.bonsaiId },
+      select: { id: true }
+    });
+
+    return tx.photo.create({
+      data: {
+        bonsaiId: input.bonsaiId,
+        imageUrl: input.imageUrl,
+        caption: input.caption,
+        isPrimary: !existingPhoto,
+        takenAt: input.takenAt ?? new Date()
+      }
+    });
   });
+}
+
+export async function setPrimaryPhoto(input: {
+  photoId: string;
+  bonsaiId: string;
+  userId: string;
+}) {
+  const bonsai = await prisma.bonsai.findFirst({
+    where: {
+      id: input.bonsaiId,
+      userId,
+      photos: {
+        some: {
+          id: input.photoId
+        }
+      }
+    },
+    select: { id: true }
+  });
+
+  if (!bonsai) {
+    throw new Error("La foto indicada no existe o no pertenece al usuario actual.");
+  }
+
+  await prisma.$transaction([
+    prisma.photo.updateMany({
+      where: { bonsaiId: input.bonsaiId },
+      data: { isPrimary: false }
+    }),
+    prisma.photo.update({
+      where: { id: input.photoId },
+      data: { isPrimary: true }
+    })
+  ]);
 }
 
 export async function getLatestCareEvents(userId: string, limit = 6) {

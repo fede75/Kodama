@@ -14,6 +14,7 @@ type BonsaiCardProps = {
       id: string;
       imageUrl: string;
       caption: string | null;
+      isPrimary: boolean;
     }>;
     careEvents: Array<{
       type: keyof typeof CARE_EVENT_LABELS;

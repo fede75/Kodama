@@ -8,6 +8,7 @@ import {
   createCareEvent,
   deleteBonsai,
   getBonsaiDetail,
+  setPrimaryPhoto,
   updateBonsai
 } from "@/lib/bonsais";
 import { requireCurrentUser } from "@/lib/auth-guards";
@@ -132,4 +133,23 @@ export async function deleteBonsaiAction(formData: FormData) {
 
   revalidatePath("/bonsais");
   redirect("/bonsais");
+}
+
+export async function setPrimaryPhotoAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const photoId = parseOptionalString(formData.get("photoId"));
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+
+  if (!photoId || !bonsaiId) {
+    throw new Error("Faltan datos para marcar la foto principal.");
+  }
+
+  await setPrimaryPhoto({
+    photoId,
+    bonsaiId,
+    userId: user.id
+  });
+
+  revalidatePath("/bonsais");
+  revalidatePath(`/bonsais/${bonsaiId}`);
 }
