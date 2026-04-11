@@ -29,48 +29,52 @@ export function BonsaiCard({ bonsai }: BonsaiCardProps) {
   return (
     <Link
       href={`/bonsais/${bonsai.id}`}
-      className="group rounded-[2rem] border border-bark-100 bg-white/90 p-6 shadow-card transition hover:-translate-y-1 hover:border-moss-300"
+      className="group relative overflow-hidden rounded-[2.1rem] border border-ink-200/75 bg-paper/85 p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-clay-300 hover:shadow-paper"
     >
+      <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-clay-200/40 blur-3xl transition duration-300 group-hover:bg-clay-300/50" />
+      <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-clay-300/70 to-transparent" />
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="font-display text-2xl text-bark-900">
+          <p className="font-display text-3xl leading-none text-ink-900">
             {bonsai.name}
           </p>
-          <p className="mt-1 text-sm text-bark-600">{bonsai.species}</p>
+          <p className="mt-2 text-sm uppercase tracking-[0.16em] text-ink-500">
+            {bonsai.species}
+          </p>
         </div>
-        <span className="rounded-full bg-moss-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-800">
+        <span className="rounded-full border border-moss-200 bg-moss-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-800">
           {bonsai.status}
         </span>
       </div>
 
-      <div className="mt-6 grid gap-3 text-sm text-bark-700">
+      <div className="mt-6 grid gap-3 text-sm leading-7 text-ink-700">
         <p>
-          <span className="font-semibold text-bark-900">Estilo:</span>{" "}
+          <span className="font-semibold text-ink-900">Estilo:</span>{" "}
           {bonsai.style ?? "Sin definir"}
         </p>
         <p>
-          <span className="font-semibold text-bark-900">Ubicación:</span>{" "}
+          <span className="font-semibold text-ink-900">Ubicación:</span>{" "}
           {bonsai.location ?? "No indicada"}
         </p>
         <p>
-          <span className="font-semibold text-bark-900">Último cuidado:</span>{" "}
+          <span className="font-semibold text-ink-900">Último cuidado:</span>{" "}
           {latestCare
             ? `${CARE_EVENT_LABELS[latestCare.type]} · ${formatDate(latestCare.performedAt)}`
             : "Todavía no registrado"}
         </p>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2 text-xs text-bark-600">
-        <span className="rounded-full bg-bark-50 px-3 py-1">
+      <div className="mt-6 flex flex-wrap gap-2 text-xs text-ink-600">
+        <span className="rounded-full border border-ink-200 bg-white/50 px-3 py-1">
           {bonsai._count.careEvents} cuidados
         </span>
-        <span className="rounded-full bg-bark-50 px-3 py-1">
+        <span className="rounded-full border border-ink-200 bg-white/50 px-3 py-1">
           {bonsai._count.healthIssues} incidencias
         </span>
-        <span className="rounded-full bg-bark-50 px-3 py-1">
+        <span className="rounded-full border border-ink-200 bg-white/50 px-3 py-1">
           {bonsai._count.journal} notas
         </span>
-        <span className="rounded-full bg-bark-50 px-3 py-1">
+        <span className="rounded-full border border-ink-200 bg-white/50 px-3 py-1">
           {bonsai._count.photos} fotos
         </span>
       </div>

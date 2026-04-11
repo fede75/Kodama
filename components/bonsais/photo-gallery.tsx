@@ -89,7 +89,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
             className="group text-left"
             aria-label={`Abrir foto del ${formatDate(photo.takenAt)}`}
           >
-            <div className="overflow-hidden rounded-[1.5rem] border border-bark-100 bg-bark-50 shadow-sm transition group-hover:border-moss-300 group-hover:shadow-card">
+            <div className="overflow-hidden rounded-[1.5rem] border border-ink-200/70 bg-white/55 shadow-sm transition group-hover:border-clay-300 group-hover:shadow-card">
               <img
                 src={photo.imageUrl}
                 alt={photo.caption ?? `Foto del bonsái del ${formatDate(photo.takenAt)}`}
@@ -97,7 +97,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
                 loading="lazy"
               />
             </div>
-            <p className="mt-2 text-center text-xs font-medium text-bark-600">
+            <p className="mt-2 text-center text-xs font-medium uppercase tracking-[0.14em] text-ink-600">
               {formatDate(photo.takenAt)}
             </p>
           </button>
@@ -106,7 +106,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
 
       {activePhoto ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-bark-950/88 p-4 sm:p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/90 p-4 sm:p-6"
           role="dialog"
           aria-modal="true"
           aria-label="Visor de fotos"
@@ -116,9 +116,9 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
             className="relative flex w-full max-w-5xl flex-col gap-4"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="flex items-center justify-between text-sm text-white/80">
+            <div className="flex items-center justify-between text-sm text-paper/80">
               <div>
-                <p className="font-semibold text-white">
+                <p className="font-semibold text-paper">
                   {activePhoto.caption ?? "Foto de evolución"}
                 </p>
                 <p className="mt-1">{formatDate(activePhoto.takenAt)}</p>
@@ -126,13 +126,13 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
               <button
                 type="button"
                 onClick={() => setActiveIndex(null)}
-                className="rounded-full border border-white/20 px-4 py-2 font-medium text-white transition hover:border-white/50 hover:bg-white/10"
+                className="rounded-full border border-paper/20 px-4 py-2 font-medium text-paper transition hover:border-paper/50 hover:bg-white/10"
               >
                 Cerrar
               </button>
             </div>
 
-            <div className="relative overflow-hidden rounded-[2rem] bg-black/30 shadow-2xl">
+            <div className="relative overflow-hidden rounded-[2rem] border border-paper/10 bg-black/30 shadow-2xl">
               <img
                 src={activePhoto.imageUrl}
                 alt={activePhoto.caption ?? `Foto del bonsái del ${formatDate(activePhoto.takenAt)}`}
@@ -144,7 +144,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
                   <button
                     type="button"
                     onClick={showPreviousPhoto}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/14 px-4 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/24"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/14 px-4 py-3 text-sm font-semibold text-paper backdrop-blur transition hover:bg-white/24"
                     aria-label="Ver foto anterior"
                   >
                     Anterior
@@ -152,7 +152,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
                   <button
                     type="button"
                     onClick={showNextPhoto}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/14 px-4 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/24"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/14 px-4 py-3 text-sm font-semibold text-paper backdrop-blur transition hover:bg-white/24"
                     aria-label="Ver foto siguiente"
                   >
                     Siguiente
@@ -162,7 +162,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
             </div>
 
             {photos.length > 1 && activePhotoNumber !== null ? (
-              <p className="text-center text-sm text-white/75">
+              <p className="text-center text-sm text-paper/75">
                 {activePhotoNumber} / {photos.length}. Usa las flechas del teclado
                 para navegar.
               </p>

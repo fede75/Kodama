@@ -18,7 +18,7 @@ export function LatestCareList({
 }) {
   if (items.length === 0) {
     return (
-      <div className="rounded-[2rem] border border-dashed border-bark-200 bg-white/70 p-6 text-sm text-bark-600">
+      <div className="rounded-[2rem] border border-dashed border-ink-200 bg-white/55 p-6 text-sm text-ink-600 shadow-card">
         Aún no hay cuidados registrados.
       </div>
     );
@@ -30,15 +30,17 @@ export function LatestCareList({
         <Link
           key={item.id}
           href={`/bonsais/${item.bonsai.id}`}
-          className="flex items-center justify-between gap-4 rounded-[1.5rem] border border-bark-100 bg-white/90 px-4 py-4 shadow-card transition hover:border-moss-300"
+          className="group flex items-center justify-between gap-4 rounded-[1.7rem] border border-ink-200/80 bg-paper/80 px-4 py-4 shadow-card transition hover:-translate-y-0.5 hover:border-clay-300"
         >
           <div>
-            <p className="text-sm font-semibold text-bark-900">
+            <p className="text-sm font-semibold text-ink-900">
               {item.title ?? CARE_EVENT_LABELS[item.type]}
             </p>
-            <p className="text-sm text-bark-600">{item.bonsai.name}</p>
+            <p className="text-sm text-ink-600">{item.bonsai.name}</p>
           </div>
-          <p className="text-xs text-bark-500">{formatDateTime(item.performedAt)}</p>
+          <p className="text-xs uppercase tracking-[0.18em] text-ink-500 group-hover:text-clay-700">
+            {formatDateTime(item.performedAt)}
+          </p>
         </Link>
       ))}
     </div>
