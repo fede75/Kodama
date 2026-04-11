@@ -49,6 +49,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         return {
           allowedContentTypes: ["image/jpeg", "image/png", "image/webp"],
           addRandomSuffix: true,
+          callbackUrl: request.url,
           tokenPayload: JSON.stringify(payload)
         };
       },
