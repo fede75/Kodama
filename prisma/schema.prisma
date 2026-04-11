@@ -17,8 +17,11 @@ enum CareEventType {
   WATERING
   FERTILIZING
   PRUNING
+  PINCHING
   REPOTTING
   WIRING
+  DEFOLIATION
+  PEST_TREATMENT
 }
 
 enum ReminderType {
@@ -82,8 +85,21 @@ model CareEvent {
   notes       String?
   createdAt   DateTime      @default(now())
   bonsai      Bonsai        @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+  photos      CareEventPhoto[]
 
   @@index([bonsaiId, performedAt])
+}
+
+model CareEventPhoto {
+  id          String    @id @default(cuid())
+  careEventId String
+  imageUrl    String
+  caption     String?
+  takenAt     DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  careEvent   CareEvent @relation(fields: [careEventId], references: [id], onDelete: Cascade)
+
+  @@index([careEventId, takenAt])
 }
 
 model HealthIssue {

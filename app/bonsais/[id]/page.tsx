@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CareEventsList } from "@/components/bonsais/care-events-list";
 import { DeleteBonsaiForm } from "@/components/bonsais/delete-bonsai-form";
 import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
-import { BonsaiTimeline } from "@/components/bonsais/timeline";
+import { TogglePanel } from "@/components/bonsais/toggle-panel";
 import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth-guards";
-import { getBonsaiTimeline } from "@/lib/timeline";
+import { getBonsaiDetail } from "@/lib/bonsais";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -18,13 +19,11 @@ export default async function BonsaiDetailPage({
 }) {
   const { id } = await params;
   const user = await requireCurrentUser();
-  const result = await getBonsaiTimeline(id, user.id);
+  const bonsai = await getBonsaiDetail(id, user.id);
 
-  if (!result) {
+  if (!bonsai) {
     notFound();
   }
-
-  const { bonsai, items } = result;
   const mainPhoto = bonsai.photos[0] ?? null;
   const photoGalleryItems = bonsai.photos.map((photo) => ({
     id: photo.id,
@@ -61,7 +60,7 @@ export default async function BonsaiDetailPage({
               </Link>
               <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`}>
                 <Button className="bg-moss-500 text-paper hover:bg-moss-400">
-                  Añadir evento
+                  Añadir cuidado
                 </Button>
               </Link>
               <DeleteBonsaiForm bonsaiId={bonsai.id} />
@@ -138,63 +137,48 @@ export default async function BonsaiDetailPage({
         </div>
       </section>
 
-      <section className="grid gap-8 xl:grid-cols-[1.35fr_0.8fr]">
-        <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display text-3xl text-paper">
-              Bitácora
-            </h2>
-            <p className="text-sm uppercase tracking-[0.24em] text-paper/38">
-              {items.length} entradas
-            </p>
+      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="font-display text-3xl text-paper">Fotos</h2>
+        </div>
+
+        <TogglePanel buttonLabel="Añadir imagen">
+          <div className="w-full rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4">
+            <PhotoUploadForm bonsaiId={bonsai.id} />
           </div>
-          <BonsaiTimeline items={items} />
+        </TogglePanel>
+
+        {photoGalleryItems.length > 0 ? (
+          <PhotoGallery photos={photoGalleryItems} />
+        ) : (
+          <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
+            Aún no hay fotos registradas.
+          </p>
+        )}
+      </section>
+
+      <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="font-display text-3xl text-paper">Cuidados</h2>
+          <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`}>
+            <Button className="bg-moss-500 text-paper hover:bg-moss-400">
+              Añadir cuidado
+            </Button>
+          </Link>
         </div>
 
-        <div className="space-y-5">
-          <section className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
-            <h2 className="font-display text-3xl text-paper">
-              Fotos
-            </h2>
-            <div className="mt-5 rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4">
-              <PhotoUploadForm bonsaiId={bonsai.id} />
-            </div>
-            <div className="mt-4 space-y-3">
-              {photoGalleryItems.length > 0 ? (
-                <PhotoGallery photos={photoGalleryItems} />
-              ) : (
-                <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
-                  Aún no hay fotos registradas.
-                </p>
-              )}
-            </div>
-          </section>
-
-          <section className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
-            <h2 className="font-display text-3xl text-paper">
-              Incidencias
-            </h2>
-            <div className="mt-4 space-y-3">
-              {bonsai.healthIssues.length > 0 ? (
-                bonsai.healthIssues.map((issue) => (
-                  <div
-                    key={issue.id}
-                    className="rounded-2xl border border-red-500/20 bg-red-500/12 px-4 py-3 text-sm text-red-100"
-                  >
-                    <p className="font-semibold">{issue.title}</p>
-                    {issue.description ? (
-                      <p className="mt-1 text-red-100/82">{issue.description}</p>
-                    ) : null}
-                  </div>
-                ))
-              ) : (
-                <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
-                  Sin incidencias registradas.
-                </p>
-              )}
-            </div>
-          </section>
-        </div>
+        <CareEventsList
+          bonsaiId={bonsai.id}
+          items={bonsai.careEvents.map((event) => ({
+            id: event.id,
+            bonsaiId: bonsai.id,
+            type: event.type,
+            title: event.title,
+            notes: event.notes,
+            performedAt: event.performedAt,
+            photos: event.photos
+          }))}
+        />
       </section>
     </div>
   );

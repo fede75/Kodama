@@ -22,7 +22,12 @@ const bonsaiListInclude = {
 
 const bonsaiDetailInclude = {
   careEvents: {
-    orderBy: { performedAt: "desc" as const }
+    orderBy: { performedAt: "desc" as const },
+    include: {
+      photos: {
+        orderBy: { takenAt: "desc" as const }
+      }
+    }
   },
   healthIssues: {
     orderBy: { detectedAt: "desc" as const }
@@ -84,6 +89,91 @@ export async function createCareEvent(input: {
 }) {
   return prisma.careEvent.create({
     data: input
+  });
+}
+
+export async function getCareEventDetail(
+  careEventId: string,
+  bonsaiId: string | null,
+  userId: string
+) {
+  return prisma.careEvent.findFirst({
+    where: {
+      id: careEventId,
+      ...(bonsaiId ? { bonsaiId } : {}),
+      bonsai: {
+        userId
+      }
+    },
+    include: {
+      bonsai: {
+        select: {
+          id: true,
+          name: true
+        }
+      },
+      photos: {
+        orderBy: { takenAt: "desc" }
+      }
+    }
+  });
+}
+
+export async function updateCareEvent(input: {
+  careEventId: string;
+  bonsaiId: string;
+  userId: string;
+  type: CareEventType;
+  performedAt: Date;
+  title?: string;
+  notes?: string;
+}) {
+  return prisma.careEvent.updateMany({
+    where: {
+      id: input.careEventId,
+      bonsaiId: input.bonsaiId,
+      bonsai: {
+        userId: input.userId
+      }
+    },
+    data: {
+      type: input.type,
+      performedAt: input.performedAt,
+      title: input.title,
+      notes: input.notes
+    }
+  });
+}
+
+export async function deleteCareEvent(
+  careEventId: string,
+  bonsaiId: string,
+  userId: string
+) {
+  return prisma.careEvent.deleteMany({
+    where: {
+      id: careEventId,
+      bonsaiId,
+      bonsai: {
+        userId
+      }
+    }
+  });
+}
+
+export async function createCareEventPhoto(input: {
+  careEventId: string;
+  imageUrl: string;
+  caption?: string;
+  takenAt?: Date;
+}) {
+  return prisma.careEventPhoto.create({
+    data: {
+      careEventId: input.careEventId,
+      imageUrl: input.imageUrl,
+      caption: input.caption,
+      takenAt: input.takenAt ?? new Date()
+    }
   });
 }
 

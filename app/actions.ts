@@ -6,9 +6,12 @@ import { redirect } from "next/navigation";
 import {
   createBonsai,
   createCareEvent,
+  deleteCareEvent,
   deleteBonsai,
+  getCareEventDetail,
   getBonsaiDetail,
   setPrimaryPhoto,
+  updateCareEvent,
   updateBonsai
 } from "@/lib/bonsais";
 import { requireCurrentUser } from "@/lib/auth-guards";
@@ -82,6 +85,63 @@ export async function createCareEventAction(formData: FormData) {
   revalidatePath(`/bonsais/${bonsaiId}`);
   revalidatePath(`/bonsais/${bonsaiId}/eventos/nuevo`);
   redirect(`/bonsais/${bonsaiId}`);
+}
+
+export async function updateCareEventAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+  const careEventId = parseOptionalString(formData.get("careEventId"));
+  const type = parseOptionalString(formData.get("type"));
+  const validTypes = Object.values(CareEventType);
+
+  if (
+    !bonsaiId ||
+    !careEventId ||
+    !type ||
+    !validTypes.includes(type as CareEventType)
+  ) {
+    throw new Error("Debes seleccionar un cuidado válido.");
+  }
+
+  const careEvent = await getCareEventDetail(careEventId, bonsaiId, user.id);
+
+  if (!careEvent) {
+    throw new Error("El cuidado indicado no existe o no pertenece al usuario actual.");
+  }
+
+  await updateCareEvent({
+    careEventId,
+    bonsaiId,
+    userId: user.id,
+    type: type as CareEventType,
+    title: parseOptionalString(formData.get("title")),
+    notes: parseOptionalString(formData.get("notes")),
+    performedAt: parseDate(formData.get("performedAt")) ?? new Date()
+  });
+
+  revalidatePath(`/bonsais/${bonsaiId}`);
+  revalidatePath(`/bonsais/${bonsaiId}/eventos/${careEventId}/editar`);
+  redirect(`/bonsais/${bonsaiId}`);
+}
+
+export async function deleteCareEventAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+  const careEventId = parseOptionalString(formData.get("careEventId"));
+
+  if (!bonsaiId || !careEventId) {
+    throw new Error("Faltan datos para eliminar el cuidado.");
+  }
+
+  const careEvent = await getCareEventDetail(careEventId, bonsaiId, user.id);
+
+  if (!careEvent) {
+    throw new Error("El cuidado indicado no existe o no pertenece al usuario actual.");
+  }
+
+  await deleteCareEvent(careEventId, bonsaiId, user.id);
+
+  revalidatePath(`/bonsais/${bonsaiId}`);
 }
 
 export async function updateBonsaiAction(formData: FormData) {
