@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
 import { BonsaiTimeline } from "@/components/bonsais/timeline";
 import { Button } from "@/components/ui/button";
@@ -105,19 +106,7 @@ export default async function BonsaiDetailPage({
             </div>
             <div className="mt-4 space-y-3">
               {bonsai.photos.length > 0 ? (
-                bonsai.photos.map((photo) => (
-                  <div
-                    key={photo.id}
-                    className="rounded-2xl bg-bark-50 px-4 py-3 text-sm text-bark-700"
-                  >
-                    <p className="font-semibold text-bark-900">
-                      {photo.caption ?? "Foto de evolución"}
-                    </p>
-                    <p className="mt-1 break-all text-xs text-bark-500">
-                      {photo.imageUrl}
-                    </p>
-                  </div>
-                ))
+                <PhotoGallery photos={bonsai.photos} />
               ) : (
                 <p className="rounded-2xl border border-dashed border-bark-200 px-4 py-5 text-sm text-bark-600">
                   Aún no hay fotos registradas.
