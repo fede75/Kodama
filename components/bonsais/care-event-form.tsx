@@ -4,6 +4,8 @@ import { upload } from "@vercel/blob/client";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { saveCareEventAction } from "@/app/actions";
+import { CareEventPhotoGallery } from "@/components/bonsais/care-event-photo-gallery";
+import { CareEventPhotoUploadForm } from "@/components/bonsais/care-event-photo-upload-form";
 import { CARE_EVENT_OPTIONS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
@@ -26,6 +28,13 @@ export function CareEventForm({
     performedAt: Date;
     title: string | null;
     notes: string | null;
+    photos?: Array<{
+      id: string;
+      imageUrl: string;
+      caption: string | null;
+      isPrimary: boolean;
+      takenAt: Date;
+    }>;
   };
 }) {
   const router = useRouter();
@@ -141,6 +150,30 @@ export function CareEventForm({
       </FormField>
 
       {error ? <p className="text-sm text-red-200">{error}</p> : null}
+
+      {mode === "edit" && careEvent?.id ? (
+        <div className="space-y-4 rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4">
+          <p className="text-sm font-semibold text-paper/78">Imágenes actuales</p>
+
+          {careEvent.photos && careEvent.photos.length > 0 ? (
+            <CareEventPhotoGallery
+              photos={careEvent.photos.map((photo) => ({
+                id: photo.id,
+                bonsaiId: bonsai.id,
+                careEventId: careEvent.id,
+                imageUrl: photo.imageUrl,
+                caption: photo.caption,
+                isPrimary: photo.isPrimary,
+                takenAt: photo.takenAt
+              }))}
+            />
+          ) : (
+            <p className="text-sm text-paper/52">Sin imágenes registradas.</p>
+          )}
+
+          <CareEventPhotoUploadForm careEventId={careEvent.id} />
+        </div>
+      ) : null}
 
       <div className="flex justify-end">
         <Button

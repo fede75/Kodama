@@ -46,7 +46,8 @@ export default async function EditCareEventPage({
             type: careEvent.type,
             performedAt: careEvent.performedAt,
             title: careEvent.title,
-            notes: careEvent.notes
+            notes: careEvent.notes,
+            photos: careEvent.photos
           }}
         />
       </div>
