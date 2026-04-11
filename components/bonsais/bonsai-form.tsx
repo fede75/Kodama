@@ -2,6 +2,8 @@ import { createBonsaiAction, updateBonsaiAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input, Textarea } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { COLLECTION_STATUS_OPTIONS } from "@/lib/constants";
 
 type BonsaiFormProps = {
   mode?: "create" | "edit";
@@ -13,6 +15,7 @@ type BonsaiFormProps = {
     location: string | null;
     acquiredAt: Date | null;
     notes: string | null;
+    collectionStatus: string;
     isPublic: boolean;
   };
 };
@@ -78,6 +81,19 @@ export function BonsaiForm({
             type="date"
             defaultValue={formatDateInput(bonsai?.acquiredAt ?? null)}
           />
+        </FormField>
+
+        <FormField label="Estado en colección">
+          <Select
+            name="collectionStatus"
+            defaultValue={bonsai?.collectionStatus ?? "ACTIVE"}
+          >
+            {COLLECTION_STATUS_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
         </FormField>
       </div>
 

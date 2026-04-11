@@ -13,6 +13,14 @@ enum BonsaiStatus {
   DORMANT
 }
 
+enum CollectionStatus {
+  ACTIVE
+  DECEASED
+  SOLD
+  GIFTED
+  OTHER
+}
+
 enum CareEventType {
   WATERING
   FERTILIZING
@@ -67,6 +75,7 @@ model Bonsai {
   location     String?
   notes        String?
   status       BonsaiStatus   @default(ACTIVE)
+  collectionStatus CollectionStatus @default(ACTIVE)
   isPublic     Boolean        @default(true)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt

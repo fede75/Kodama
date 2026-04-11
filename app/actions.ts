@@ -1,6 +1,6 @@
 "use server";
 
-import { CareEventType } from "@prisma/client";
+import { CareEventType, CollectionStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -44,8 +44,14 @@ export async function createBonsaiAction(formData: FormData) {
   const user = await requireCurrentUser();
   const name = parseOptionalString(formData.get("name"));
   const species = parseOptionalString(formData.get("species"));
+  const collectionStatus = parseOptionalString(formData.get("collectionStatus"));
 
-  if (!name || !species) {
+  if (
+    !name ||
+    !species ||
+    !collectionStatus ||
+    !Object.values(CollectionStatus).includes(collectionStatus as CollectionStatus)
+  ) {
     throw new Error("Nombre y especie son obligatorios.");
   }
 
@@ -57,6 +63,7 @@ export async function createBonsaiAction(formData: FormData) {
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),
     acquiredAt: parseDate(formData.get("acquiredAt")),
+    collectionStatus: collectionStatus as CollectionStatus,
     isPublic: parseCheckbox(formData.get("isPublic"))
   });
 
@@ -216,8 +223,15 @@ export async function updateBonsaiAction(formData: FormData) {
   const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
   const name = parseOptionalString(formData.get("name"));
   const species = parseOptionalString(formData.get("species"));
+  const collectionStatus = parseOptionalString(formData.get("collectionStatus"));
 
-  if (!bonsaiId || !name || !species) {
+  if (
+    !bonsaiId ||
+    !name ||
+    !species ||
+    !collectionStatus ||
+    !Object.values(CollectionStatus).includes(collectionStatus as CollectionStatus)
+  ) {
     throw new Error("Nombre, especie y bonsái son obligatorios.");
   }
 
@@ -234,6 +248,7 @@ export async function updateBonsaiAction(formData: FormData) {
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),
     acquiredAt: parseDate(formData.get("acquiredAt")),
+    collectionStatus: collectionStatus as CollectionStatus,
     isPublic: parseCheckbox(formData.get("isPublic"))
   });
 

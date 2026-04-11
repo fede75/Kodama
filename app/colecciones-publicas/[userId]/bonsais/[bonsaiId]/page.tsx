@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { CareEventsList } from "@/components/bonsais/care-events-list";
 import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { Button } from "@/components/ui/button";
+import { COLLECTION_STATUS_LABELS } from "@/lib/constants";
 import { getPublicBonsaiDetail } from "@/lib/bonsais";
 import { formatDate } from "@/lib/utils";
 
@@ -64,6 +65,12 @@ export default async function PublicBonsaiDetailPage({
               <div>
                 <p className="text-sm text-paper/42">Estado</p>
                 <p className="mt-1 text-lg font-semibold">{bonsai.status}</p>
+              </div>
+              <div>
+                <p className="text-sm text-paper/42">Colección</p>
+                <p className="mt-1 text-lg font-semibold">
+                  {COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}
+                </p>
               </div>
               <div>
                 <p className="text-sm text-paper/42">Ubicación</p>

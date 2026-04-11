@@ -31,6 +31,14 @@ export default async function HomePage() {
 
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <SignedIn>
+                  <Link href="/colecciones-publicas" className="block sm:inline-flex">
+                    <Button
+                      variant="secondary"
+                      className="w-full border-white/14 bg-white/[0.03] px-6 py-3 text-sm tracking-[0.08em] text-paper hover:border-white/28 hover:bg-white/[0.08] hover:text-paper sm:w-auto sm:px-7 sm:tracking-[0.12em]"
+                    >
+                      Colecciones públicas
+                    </Button>
+                  </Link>
                   <Link href="/bonsais" className="block sm:inline-flex">
                     <Button className="w-full bg-moss-500 px-6 py-3 text-sm tracking-[0.08em] text-paper shadow-[0_18px_40px_-24px_rgba(0,0,0,0.75)] transition duration-300 hover:bg-moss-400 sm:w-auto sm:px-7 sm:tracking-[0.12em]">
                       Entrar en mi colección
@@ -57,6 +65,14 @@ export default async function HomePage() {
                 </SignedIn>
 
                 <SignedOut>
+                  <Link href="/colecciones-publicas" className="block sm:inline-flex">
+                    <Button
+                      variant="secondary"
+                      className="w-full border-white/14 bg-white/[0.03] px-6 py-3 text-sm tracking-[0.08em] text-paper hover:border-white/28 hover:bg-white/[0.08] hover:text-paper sm:w-auto sm:px-7 sm:tracking-[0.12em]"
+                    >
+                      Colecciones públicas
+                    </Button>
+                  </Link>
                   <SignInButton mode="modal">
                     <span>
                       <Button className="w-full bg-moss-500 px-6 py-3 text-sm tracking-[0.08em] text-paper shadow-[0_18px_40px_-24px_rgba(0,0,0,0.75)] transition duration-300 hover:bg-moss-400 sm:w-auto sm:px-7 sm:tracking-[0.12em]">
