@@ -102,20 +102,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-10 xl:grid-cols-[1.2fr_0.8fr]">
-        <article className="border-t border-white/10 pt-8">
-          <h2 className="max-w-2xl font-display text-4xl leading-[0.96] text-paper sm:text-5xl">
-            Menos interfaz. Más bonsái.
-          </h2>
-        </article>
-
-        <article className="relative overflow-hidden rounded-[2.4rem] border border-white/8 bg-[linear-gradient(180deg,rgba(14,18,17,0.98),rgba(8,10,10,0.98))] p-8 text-paper shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)]">
+      <section className="flex justify-end border-t border-white/10 pt-8">
+        <article className="relative w-full max-w-[32rem] overflow-hidden rounded-[2.4rem] border border-white/8 bg-[linear-gradient(180deg,rgba(14,18,17,0.98),rgba(8,10,10,0.98))] p-8 text-paper shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_34%)]" />
           <div className="relative">
-            <h2 className="font-display text-4xl leading-tight">
-              Acceso inmediato.
-            </h2>
-
             <div className="mt-8 flex flex-wrap gap-3">
               {!isAuthenticated ? (
                 <>
