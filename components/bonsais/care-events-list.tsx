@@ -72,7 +72,7 @@ export function CareEventsList({
               </div>
 
               <div className="space-y-4">
-                <div className="grid gap-4 lg:grid-cols-[1fr_11rem]">
+                <div className="grid gap-4 lg:grid-cols-[1fr_5.5rem]">
                   <div className="space-y-3">
                     <p className="text-sm leading-7 text-paper/62">
                       {item.notes ?? "Sin notas"}
@@ -97,7 +97,7 @@ export function CareEventsList({
                   </div>
 
                   {mainPhoto ? (
-                    <div className="overflow-hidden rounded-[1.3rem] bg-black/20">
+                    <div className="overflow-hidden rounded-[1rem] bg-black/20">
                       <img
                         src={mainPhoto.imageUrl}
                         alt={mainPhoto.caption ?? "Imagen principal del cuidado"}
