@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth-guards";
 
 type UploadTokenPayload = {
   bonsaiId: string;
+  userId: string;
   caption?: string;
 };
 
@@ -26,19 +27,16 @@ export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 
   try {
-    const user = await getCurrentUser();
-
-    if (!user) {
-      return NextResponse.json(
-        { error: "Debes iniciar sesión para subir fotos." },
-        { status: 401 }
-      );
-    }
-
     const jsonResponse = await handleUpload({
       body,
       request,
       onBeforeGenerateToken: async (_pathname, clientPayload) => {
+        const user = await getCurrentUser();
+
+        if (!user) {
+          throw new Error("Debes iniciar sesión para subir fotos.");
+        }
+
         const payload = parseTokenPayload(clientPayload);
         const bonsai = await getBonsaiDetail(payload.bonsaiId, user.id);
 
@@ -50,11 +48,19 @@ export async function POST(request: Request): Promise<NextResponse> {
           allowedContentTypes: ["image/jpeg", "image/png", "image/webp"],
           addRandomSuffix: true,
           callbackUrl: request.url,
-          tokenPayload: JSON.stringify(payload)
+          tokenPayload: JSON.stringify({
+            ...payload,
+            userId: user.id
+          })
         };
       },
       onUploadCompleted: async ({ blob, tokenPayload }) => {
         const payload = parseTokenPayload(tokenPayload);
+        const bonsai = await getBonsaiDetail(payload.bonsaiId, payload.userId);
+
+        if (!bonsai) {
+          throw new Error("No se puede asociar la foto al bonsái indicado.");
+        }
 
         await createPhoto({
           bonsaiId: payload.bonsaiId,
