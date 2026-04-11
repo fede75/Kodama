@@ -119,7 +119,7 @@ export async function setPrimaryPhoto(input: {
   const bonsai = await prisma.bonsai.findFirst({
     where: {
       id: input.bonsaiId,
-      userId,
+      userId: input.userId,
       photos: {
         some: {
           id: input.photoId
