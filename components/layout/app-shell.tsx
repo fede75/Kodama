@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 const navItems = [
+  { href: "/", label: "Inicio" },
   { href: "/bonsais", label: "Bonsáis" },
   { href: "/bonsais/new", label: "Crear bonsái" }
 ];
@@ -14,7 +15,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-clay-200/40 blur-3xl" />
           <div className="pointer-events-none absolute left-20 top-10 h-24 w-24 rounded-full bg-moss-200/35 blur-3xl" />
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <Link href="/bonsais" className="inline-flex items-center gap-3">
+            <Link href="/" className="inline-flex items-center gap-3">
               <div className="flex h-14 w-14 items-center justify-center rounded-[1.4rem] border border-clay-200 bg-gradient-to-br from-clay-500 via-clay-600 to-ink-700 text-xl font-semibold text-paper shadow-card">
                 木
               </div>
