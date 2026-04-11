@@ -10,6 +10,7 @@ import {
   deleteBonsai,
   getCareEventDetail,
   getBonsaiDetail,
+  setPrimaryCareEventPhoto,
   setPrimaryPhoto,
   updateCareEvent,
   updateBonsai
@@ -85,6 +86,66 @@ export async function createCareEventAction(formData: FormData) {
   revalidatePath(`/bonsais/${bonsaiId}`);
   revalidatePath(`/bonsais/${bonsaiId}/eventos/nuevo`);
   redirect(`/bonsais/${bonsaiId}`);
+}
+
+export async function saveCareEventAction(input: {
+  bonsaiId: string;
+  careEventId?: string;
+  type: string;
+  performedAt?: string;
+  title?: string;
+  notes?: string;
+}) {
+  const user = await requireCurrentUser();
+  const validTypes = Object.values(CareEventType);
+
+  if (!input.bonsaiId || !validTypes.includes(input.type as CareEventType)) {
+    throw new Error("Debes seleccionar un cuidado válido.");
+  }
+
+  const bonsai = await getBonsaiDetail(input.bonsaiId, user.id);
+
+  if (!bonsai) {
+    throw new Error("El bonsái indicado no existe o no pertenece al usuario actual.");
+  }
+
+  const parsedDate = input.performedAt ? parseDate(input.performedAt) : undefined;
+
+  if (input.careEventId) {
+    const careEvent = await getCareEventDetail(input.careEventId, input.bonsaiId, user.id);
+
+    if (!careEvent) {
+      throw new Error("El cuidado indicado no existe o no pertenece al usuario actual.");
+    }
+
+    await updateCareEvent({
+      careEventId: input.careEventId,
+      bonsaiId: input.bonsaiId,
+      userId: user.id,
+      type: input.type as CareEventType,
+      title: input.title?.trim() || undefined,
+      notes: input.notes?.trim() || undefined,
+      performedAt: parsedDate ?? new Date()
+    });
+
+    revalidatePath(`/bonsais/${input.bonsaiId}`);
+    revalidatePath(`/bonsais/${input.bonsaiId}/eventos/${input.careEventId}/editar`);
+
+    return { careEventId: input.careEventId };
+  }
+
+  const careEvent = await createCareEvent({
+    bonsaiId: input.bonsaiId,
+    type: input.type as CareEventType,
+    title: input.title?.trim() || undefined,
+    notes: input.notes?.trim() || undefined,
+    performedAt: parsedDate ?? new Date()
+  });
+
+  revalidatePath(`/bonsais/${input.bonsaiId}`);
+  revalidatePath(`/bonsais/${input.bonsaiId}/eventos/nuevo`);
+
+  return { careEventId: careEvent.id };
 }
 
 export async function updateCareEventAction(formData: FormData) {
@@ -211,5 +272,24 @@ export async function setPrimaryPhotoAction(formData: FormData) {
   });
 
   revalidatePath("/bonsais");
+  revalidatePath(`/bonsais/${bonsaiId}`);
+}
+
+export async function setPrimaryCareEventPhotoAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const photoId = parseOptionalString(formData.get("photoId"));
+  const careEventId = parseOptionalString(formData.get("careEventId"));
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+
+  if (!photoId || !careEventId || !bonsaiId) {
+    throw new Error("Faltan datos para marcar la imagen principal.");
+  }
+
+  await setPrimaryCareEventPhoto({
+    photoId,
+    careEventId,
+    userId: user.id
+  });
+
   revalidatePath(`/bonsais/${bonsaiId}`);
 }

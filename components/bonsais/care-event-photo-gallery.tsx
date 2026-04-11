@@ -1,19 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { setPrimaryPhotoAction } from "@/app/actions";
+import { setPrimaryCareEventPhotoAction } from "@/app/actions";
 import { formatDate } from "@/lib/utils";
 
-type PhotoItem = {
+type CareEventPhotoItem = {
   id: string;
   bonsaiId: string;
+  careEventId: string;
   imageUrl: string;
   caption: string | null;
   isPrimary: boolean;
   takenAt: Date | string;
 };
 
-export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
+export function CareEventPhotoGallery({
+  photos
+}: {
+  photos: CareEventPhotoItem[];
+}) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
@@ -30,23 +35,15 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
       }
 
       if (event.key === "ArrowLeft") {
-        setActiveIndex((current) => {
-          if (current === null) {
-            return current;
-          }
-
-          return current === 0 ? photos.length - 1 : current - 1;
-        });
+        setActiveIndex((current) =>
+          current === null ? current : current === 0 ? photos.length - 1 : current - 1
+        );
       }
 
       if (event.key === "ArrowRight") {
-        setActiveIndex((current) => {
-          if (current === null) {
-            return current;
-          }
-
-          return current === photos.length - 1 ? 0 : current + 1;
-        });
+        setActiveIndex((current) =>
+          current === null ? current : current === photos.length - 1 ? 0 : current + 1
+        );
       }
     }
 
@@ -83,44 +80,45 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {photos.map((photo, index) => (
           <div
             key={photo.id}
-            className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-2 shadow-sm"
+            className="rounded-[1.35rem] border border-white/8 bg-white/[0.04] p-2"
           >
             <button
               type="button"
               onClick={() => setActiveIndex(index)}
               className="group block w-full text-left"
-              aria-label={`Abrir foto del ${formatDate(photo.takenAt)}`}
+              aria-label={`Abrir imagen del ${formatDate(photo.takenAt)}`}
             >
-              <div className="overflow-hidden rounded-[1.25rem] border border-white/8 bg-black/20 transition group-hover:border-white/14 group-hover:shadow-card">
+              <div className="overflow-hidden rounded-[1rem] border border-white/8 bg-black/20 transition group-hover:border-white/14">
                 <img
                   src={photo.imageUrl}
-                  alt={photo.caption ?? `Foto del bonsái del ${formatDate(photo.takenAt)}`}
-                  className="aspect-square h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                  alt={photo.caption ?? `Imagen del cuidado del ${formatDate(photo.takenAt)}`}
+                  className="aspect-square w-full object-cover transition duration-300 group-hover:scale-[1.03]"
                   loading="lazy"
                 />
               </div>
             </button>
 
             <div className="px-1 pb-1 pt-3">
-              <p className="text-center text-xs font-medium uppercase tracking-[0.14em] text-paper/38">
+              <p className="text-center text-[11px] uppercase tracking-[0.14em] text-paper/38">
                 {formatDate(photo.takenAt)}
               </p>
               <div className="mt-3 flex justify-center">
                 {photo.isPrimary ? (
-                  <span className="rounded-full border border-moss-500/20 bg-moss-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-200">
+                  <span className="rounded-full border border-moss-500/20 bg-moss-500/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-moss-200">
                     Principal
                   </span>
                 ) : (
-                  <form action={setPrimaryPhotoAction}>
+                  <form action={setPrimaryCareEventPhotoAction}>
                     <input type="hidden" name="photoId" value={photo.id} />
+                    <input type="hidden" name="careEventId" value={photo.careEventId} />
                     <input type="hidden" name="bonsaiId" value={photo.bonsaiId} />
                     <button
                       type="submit"
-                      className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-paper/72 transition hover:border-white/20 hover:bg-white/[0.08]"
+                      className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-paper/72 transition hover:border-white/20 hover:bg-white/[0.08]"
                     >
                       Poner principal
                     </button>
@@ -137,7 +135,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/90 p-4 sm:p-6"
           role="dialog"
           aria-modal="true"
-          aria-label="Visor de fotos"
+          aria-label="Visor de imágenes del cuidado"
           onClick={() => setActiveIndex(null)}
         >
           <div
@@ -147,7 +145,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
             <div className="flex items-center justify-between text-sm text-paper/80">
               <div>
                 <p className="font-semibold text-paper">
-                  {activePhoto.caption ?? "Foto"}
+                  {activePhoto.caption ?? "Imagen"}
                 </p>
                 <p className="mt-1">{formatDate(activePhoto.takenAt)}</p>
               </div>
@@ -163,7 +161,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
             <div className="relative overflow-hidden rounded-[2rem] border border-paper/10 bg-black/30 shadow-2xl">
               <img
                 src={activePhoto.imageUrl}
-                alt={activePhoto.caption ?? `Foto del bonsái del ${formatDate(activePhoto.takenAt)}`}
+                alt={activePhoto.caption ?? `Imagen del cuidado del ${formatDate(activePhoto.takenAt)}`}
                 className="max-h-[75vh] w-full object-contain"
               />
 
@@ -173,7 +171,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
                     type="button"
                     onClick={showPreviousPhoto}
                     className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/14 px-4 py-3 text-sm font-semibold text-paper backdrop-blur transition hover:bg-white/24"
-                    aria-label="Ver foto anterior"
+                    aria-label="Ver imagen anterior"
                   >
                     Anterior
                   </button>
@@ -181,7 +179,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
                     type="button"
                     onClick={showNextPhoto}
                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/14 px-4 py-3 text-sm font-semibold text-paper backdrop-blur transition hover:bg-white/24"
-                    aria-label="Ver foto siguiente"
+                    aria-label="Ver imagen siguiente"
                   >
                     Siguiente
                   </button>
@@ -191,8 +189,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
 
             {photos.length > 1 && activePhotoNumber !== null ? (
               <p className="text-center text-sm text-paper/75">
-                {activePhotoNumber} / {photos.length}. Usa las flechas del teclado
-                para navegar.
+                {activePhotoNumber} / {photos.length}
               </p>
             ) : null}
           </div>

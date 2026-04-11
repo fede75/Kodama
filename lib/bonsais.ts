@@ -25,7 +25,7 @@ const bonsaiDetailInclude = {
     orderBy: { performedAt: "desc" as const },
     include: {
       photos: {
-        orderBy: { takenAt: "desc" as const }
+        orderBy: [{ isPrimary: "desc" as const }, { takenAt: "desc" as const }]
       }
     }
   },
@@ -167,14 +167,58 @@ export async function createCareEventPhoto(input: {
   caption?: string;
   takenAt?: Date;
 }) {
-  return prisma.careEventPhoto.create({
-    data: {
-      careEventId: input.careEventId,
-      imageUrl: input.imageUrl,
-      caption: input.caption,
-      takenAt: input.takenAt ?? new Date()
-    }
+  return prisma.$transaction(async (tx) => {
+    const existingPhoto = await tx.careEventPhoto.findFirst({
+      where: { careEventId: input.careEventId },
+      select: { id: true }
+    });
+
+    return tx.careEventPhoto.create({
+      data: {
+        careEventId: input.careEventId,
+        imageUrl: input.imageUrl,
+        caption: input.caption,
+        isPrimary: !existingPhoto,
+        takenAt: input.takenAt ?? new Date()
+      }
+    });
   });
+}
+
+export async function setPrimaryCareEventPhoto(input: {
+  photoId: string;
+  careEventId: string;
+  userId: string;
+}) {
+  const careEvent = await prisma.careEvent.findFirst({
+    where: {
+      id: input.careEventId,
+      bonsai: {
+        userId: input.userId
+      },
+      photos: {
+        some: {
+          id: input.photoId
+        }
+      }
+    },
+    select: { id: true }
+  });
+
+  if (!careEvent) {
+    throw new Error("La imagen indicada no existe o no pertenece al usuario actual.");
+  }
+
+  await prisma.$transaction([
+    prisma.careEventPhoto.updateMany({
+      where: { careEventId: input.careEventId },
+      data: { isPrimary: false }
+    }),
+    prisma.careEventPhoto.update({
+      where: { id: input.photoId },
+      data: { isPrimary: true }
+    })
+  ]);
 }
 
 export async function createPhoto(input: {

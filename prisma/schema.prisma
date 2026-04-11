@@ -95,11 +95,13 @@ model CareEventPhoto {
   careEventId String
   imageUrl    String
   caption     String?
+  isPrimary   Boolean   @default(false)
   takenAt     DateTime  @default(now())
   createdAt   DateTime  @default(now())
   careEvent   CareEvent @relation(fields: [careEventId], references: [id], onDelete: Cascade)
 
   @@index([careEventId, takenAt])
+  @@index([careEventId, isPrimary])
 }
 
 model HealthIssue {

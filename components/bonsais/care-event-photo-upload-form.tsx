@@ -22,26 +22,28 @@ export function CareEventPhotoUploadForm({
     event.preventDefault();
     setError(null);
 
-    const file = fileInputRef.current?.files?.[0];
+    const files = Array.from(fileInputRef.current?.files ?? []);
 
-    if (!file) {
-      setError("Selecciona una imagen.");
+    if (files.length === 0) {
+      setError("Selecciona al menos una imagen.");
       return;
     }
 
     setIsUploading(true);
 
     try {
-      const pathname = `care-events/${careEventId}/${Date.now()}-${file.name}`;
-
-      await upload(pathname, file, {
-        access: "public",
-        handleUploadUrl: "/api/care-photos/upload",
-        clientPayload: JSON.stringify({
-          careEventId,
-          caption: caption.trim()
-        })
-      });
+      await Promise.all(
+        files.map((file, index) =>
+          upload(`care-events/${careEventId}/${Date.now()}-${index}-${file.name}`, file, {
+            access: "public",
+            handleUploadUrl: "/api/care-photos/upload",
+            clientPayload: JSON.stringify({
+              careEventId,
+              caption: caption.trim()
+            })
+          })
+        )
+      );
 
       setCaption("");
 
@@ -72,6 +74,7 @@ export function CareEventPhotoUploadForm({
             ref={fileInputRef}
             type="file"
             accept="image/jpeg,image/png,image/webp"
+            multiple
             disabled={isUploading}
             required
           />

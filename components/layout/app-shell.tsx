@@ -7,8 +7,8 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   const navItems = user
     ? [
         { href: "/", label: "Inicio" },
-        { href: "/bonsais", label: "Bonsáis" },
-        { href: "/bonsais/new", label: "Crear bonsái" },
+        { href: "/bonsais", label: "Colección" },
+        { href: "/bonsais/new", label: "Registra bonsái" },
         ...(user.role === "ADMIN"
           ? [{ href: "/admin", label: "Administración" }]
           : [])

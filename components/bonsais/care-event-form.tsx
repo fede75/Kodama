@@ -1,4 +1,9 @@
-import { createCareEventAction, updateCareEventAction } from "@/app/actions";
+"use client";
+
+import { upload } from "@vercel/blob/client";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { saveCareEventAction } from "@/app/actions";
 import { CARE_EVENT_OPTIONS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
@@ -23,20 +28,70 @@ export function CareEventForm({
     notes: string | null;
   };
 }) {
-  const action = mode === "edit" ? updateCareEventAction : createCareEventAction;
+  const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [type, setType] = useState(careEvent?.type ?? "WATERING");
+  const [performedAt, setPerformedAt] = useState(
+    (careEvent?.performedAt ?? new Date()).toISOString().slice(0, 16)
+  );
+  const [title, setTitle] = useState(careEvent?.title ?? "");
+  const [notes, setNotes] = useState(careEvent?.notes ?? "");
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setIsSaving(true);
+
+    try {
+      const result = await saveCareEventAction({
+        bonsaiId: bonsai.id,
+        careEventId: careEvent?.id,
+        type,
+        performedAt,
+        title,
+        notes
+      });
+
+      const files = Array.from(fileInputRef.current?.files ?? []);
+
+      if (files.length > 0) {
+        await Promise.all(
+          files.map((file, index) =>
+            upload(`care-events/${result.careEventId}/${Date.now()}-${index}-${file.name}`, file, {
+              access: "public",
+              handleUploadUrl: "/api/care-photos/upload",
+              clientPayload: JSON.stringify({
+                careEventId: result.careEventId,
+                caption: title.trim() || undefined
+              })
+            })
+          )
+        );
+      }
+
+      router.push(`/bonsais/${bonsai.id}`);
+      router.refresh();
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "No se pudo guardar el cuidado."
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }
 
   return (
-    <form action={action} className="grid gap-5">
-      <input type="hidden" name="bonsaiId" value={bonsai.id} />
-      {mode === "edit" && careEvent ? (
-        <input type="hidden" name="careEventId" value={careEvent.id} />
-      ) : null}
-
+    <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid gap-5 md:grid-cols-2">
         <FormField label="Tipo de cuidado">
           <Select
             name="type"
-            defaultValue={careEvent?.type ?? "WATERING"}
+            value={type}
+            onChange={(event) => setType(event.target.value)}
             required
           >
             {CARE_EVENT_OPTIONS.map((option) => (
@@ -51,9 +106,8 @@ export function CareEventForm({
           <Input
             name="performedAt"
             type="datetime-local"
-            defaultValue={(careEvent?.performedAt ?? new Date())
-              .toISOString()
-              .slice(0, 16)}
+            value={performedAt}
+            onChange={(event) => setPerformedAt(event.target.value)}
           />
         </FormField>
 
@@ -61,7 +115,8 @@ export function CareEventForm({
           <Input
             name="title"
             placeholder={`Ej. Riego de ${bonsai.name.toLowerCase()}`}
-            defaultValue={careEvent?.title ?? ""}
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
           />
         </FormField>
       </div>
@@ -70,13 +125,34 @@ export function CareEventForm({
         <Textarea
           name="notes"
           placeholder="Cantidad de agua, respuesta del árbol, tareas pendientes..."
-          defaultValue={careEvent?.notes ?? ""}
+          value={notes}
+          onChange={(event) => setNotes(event.target.value)}
         />
       </FormField>
 
+      <FormField label="Imágenes">
+        <Input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          disabled={isSaving}
+        />
+      </FormField>
+
+      {error ? <p className="text-sm text-red-200">{error}</p> : null}
+
       <div className="flex justify-end">
-        <Button type="submit" className="bg-moss-500 text-paper hover:bg-moss-400">
-          {mode === "edit" ? "Guardar cambios" : "Guardar cuidado"}
+        <Button
+          type="submit"
+          disabled={isSaving}
+          className="bg-moss-500 text-paper hover:bg-moss-400"
+        >
+          {isSaving
+            ? "Guardando..."
+            : mode === "edit"
+              ? "Guardar cambios"
+              : "Guardar cuidado"}
         </Button>
       </div>
     </form>

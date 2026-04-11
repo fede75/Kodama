@@ -14,7 +14,6 @@ import { getCurrentUser } from "@/lib/auth-guards";
 export default async function HomePage() {
   const { userId } = await auth();
   const currentUser = userId ? await getCurrentUser() : null;
-  const isAuthenticated = Boolean(userId);
 
   return (
     <div className="space-y-14 pb-10">
@@ -100,43 +99,6 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="flex justify-end border-t border-white/10 pt-8">
-        <article className="relative w-full max-w-[32rem] overflow-hidden rounded-[2.4rem] border border-white/8 bg-[linear-gradient(180deg,rgba(14,18,17,0.98),rgba(8,10,10,0.98))] p-8 text-paper shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_34%)]" />
-          <div className="relative">
-            <div className="mt-8 flex flex-wrap gap-3">
-              {!isAuthenticated ? (
-                <>
-                  <SignInButton mode="modal">
-                    <span>
-                      <Button className="bg-moss-500 px-6 py-3 text-paper hover:bg-moss-400">
-                        Acceder
-                      </Button>
-                    </span>
-                  </SignInButton>
-                  <SignUpButton mode="modal">
-                    <span>
-                      <Button
-                        variant="secondary"
-                        className="border-white/14 bg-white/[0.03] px-6 py-3 text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
-                      >
-                        Darme de alta
-                      </Button>
-                    </span>
-                  </SignUpButton>
-                </>
-              ) : (
-                <Link href="/bonsais" className="inline-flex">
-                  <Button className="bg-moss-500 px-6 py-3 text-paper hover:bg-moss-400">
-                    Ir a la aplicación
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        </article>
       </section>
     </div>
   );
