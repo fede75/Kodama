@@ -89,11 +89,11 @@ export function PhotoGallery({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-6">
         {photos.map((photo, index) => (
           <div
             key={photo.id}
-            className="rounded-[1.5rem] surface-soft p-2.5"
+            className="rounded-[1.2rem] surface-soft p-2"
           >
             <button
               type="button"
@@ -101,7 +101,7 @@ export function PhotoGallery({
               className="group block w-full text-left"
               aria-label={`Abrir foto del ${formatDate(photo.takenAt)}`}
             >
-              <div className="overflow-hidden rounded-[1.15rem] bg-black/20 transition duration-300 group-hover:shadow-[0_24px_60px_-36px_rgba(0,0,0,0.95)]">
+              <div className="overflow-hidden rounded-[0.95rem] bg-black/20 transition duration-300 group-hover:shadow-[0_24px_60px_-36px_rgba(0,0,0,0.95)]">
                 <img
                   src={photo.imageUrl}
                   alt={photo.caption ?? `Foto del bonsái del ${formatDate(photo.takenAt)}`}
@@ -111,7 +111,7 @@ export function PhotoGallery({
               </div>
             </button>
 
-            <div className="px-1 pb-1 pt-3.5">
+            <div className="px-1 pb-1 pt-2.5">
               <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-paper/36">
                 {formatDate(photo.takenAt)}
               </p>
