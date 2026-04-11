@@ -44,8 +44,25 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
       <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-clay-700/18 blur-3xl transition duration-300 group-hover:bg-clay-600/22" />
       <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent sm:inset-x-6" />
 
-      <div className="grid gap-5 sm:grid-cols-[1fr_9rem] sm:items-start">
-        <div>
+      <div className="grid gap-5 sm:grid-cols-[11.7rem_1fr] sm:items-start">
+        {coverPhoto ? (
+          <div className="order-1 overflow-hidden rounded-[1.5rem] border border-white/8 bg-black/20 sm:h-full">
+            <img
+              src={coverPhoto.imageUrl}
+              alt={coverPhoto.caption ?? `Foto de ${bonsai.name}`}
+              className="aspect-[5/6] h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className="order-1 flex items-end overflow-hidden rounded-[1.5rem] border border-white/8 bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4 sm:h-full">
+            <div className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-paper/72">
+              Sin foto
+            </div>
+          </div>
+        )}
+
+        <div className="order-2">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="font-display text-3xl leading-none text-paper">
@@ -98,23 +115,6 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
             </span>
           </div>
         </div>
-
-        {coverPhoto ? (
-          <div className="overflow-hidden rounded-[1.5rem] border border-white/8 bg-black/20 sm:h-full">
-            <img
-              src={coverPhoto.imageUrl}
-              alt={coverPhoto.caption ?? `Foto de ${bonsai.name}`}
-              className="aspect-[4/5] h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-              loading="lazy"
-            />
-          </div>
-        ) : (
-          <div className="flex items-end overflow-hidden rounded-[1.5rem] border border-white/8 bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4 sm:h-full">
-            <div className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-paper/72">
-              Sin foto
-            </div>
-          </div>
-        )}
       </div>
     </Link>
   );
