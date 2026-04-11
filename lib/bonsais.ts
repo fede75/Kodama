@@ -58,6 +58,23 @@ export async function createBonsai(
   });
 }
 
+export async function updateBonsai(
+  id: string,
+  userId: string,
+  input: Prisma.BonsaiUncheckedUpdateInput
+) {
+  return prisma.bonsai.update({
+    where: { id, userId },
+    data: input
+  });
+}
+
+export async function deleteBonsai(id: string, userId: string) {
+  return prisma.bonsai.delete({
+    where: { id, userId }
+  });
+}
+
 export async function createCareEvent(input: {
   bonsaiId: string;
   type: CareEventType;

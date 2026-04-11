@@ -1,15 +1,15 @@
 import Link from "next/link";
-import { auth } from "@/auth";
-import { signOutAction } from "@/app/auth-actions";
+import { UserButton } from "@clerk/nextjs";
+import { getCurrentUser } from "@/lib/auth-guards";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
-  const session = await auth();
-  const navItems = session?.user
+  const user = await getCurrentUser();
+  const navItems = user
     ? [
         { href: "/", label: "Inicio" },
         { href: "/bonsais", label: "Bonsáis" },
         { href: "/bonsais/new", label: "Crear bonsái" },
-        ...(session.user.role === "ADMIN"
+        ...(user.role === "ADMIN"
           ? [{ href: "/admin", label: "Administración" }]
           : [])
       ]
@@ -47,23 +47,24 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                   {item.label}
                 </Link>
               ))}
-              {session?.user ? (
-                <form action={signOutAction}>
-                  <button
-                    type="submit"
-                    className="rounded-full border border-ink-200 bg-white/50 px-4 py-2 transition hover:border-clay-300 hover:bg-white/80 hover:text-clay-700"
-                  >
-                    Salir
-                  </button>
-                </form>
+              {user ? (
+                <div className="rounded-full border border-ink-200 bg-white/60 p-1">
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        userButtonAvatarBox: "h-9 w-9"
+                      }
+                    }}
+                  />
+                </div>
               ) : null}
             </nav>
           </div>
 
           <div className="flex items-center justify-between gap-4 border-t border-ink-200/70 pt-4 text-sm text-ink-600">
             <p>
-              {session?.user
-                ? `Sesión iniciada como ${session.user.name ?? session.user.email}`
+              {user
+                ? `Sesión iniciada como ${user.name ?? user.email}`
                 : "Acceso seguro con Google para colección, evolución y cuidados."}
             </p>
             <p className="hidden uppercase tracking-[0.3em] text-clay-600 md:block">

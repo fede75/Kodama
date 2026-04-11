@@ -1,23 +1,16 @@
-import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default auth((request) => {
-  if (!request.auth?.user) {
-    return NextResponse.redirect(new URL("/", request.url));
+const isProtectedRoute = createRouteMatcher(["/bonsais(.*)", "/admin(.*)"]);
+
+export default clerkMiddleware(async (auth, request) => {
+  if (isProtectedRoute(request)) {
+    await auth.protect();
   }
-
-  const role = request.auth.user.role;
-
-  if (
-    request.nextUrl.pathname.startsWith("/admin") &&
-    role !== "ADMIN"
-  ) {
-    return NextResponse.redirect(new URL("/bonsais", request.url));
-  }
-
-  return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/bonsais/:path*", "/admin/:path*"]
+  matcher: [
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)"
+  ]
 };

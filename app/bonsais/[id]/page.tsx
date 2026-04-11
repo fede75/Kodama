@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DeleteBonsaiForm } from "@/components/bonsais/delete-bonsai-form";
 import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
 import { BonsaiTimeline } from "@/components/bonsais/timeline";
@@ -42,9 +43,13 @@ export default async function BonsaiDetailPage({
             <Link href="/bonsais">
               <Button variant="secondary">Volver al listado</Button>
             </Link>
+            <Link href={`/bonsais/${bonsai.id}/editar`}>
+              <Button variant="secondary">Editar bonsái</Button>
+            </Link>
             <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`}>
               <Button>Añadir evento</Button>
             </Link>
+            <DeleteBonsaiForm bonsaiId={bonsai.id} />
           </div>
 
           <div>

@@ -3,7 +3,13 @@
 import { CareEventType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createBonsai, createCareEvent, getBonsaiDetail } from "@/lib/bonsais";
+import {
+  createBonsai,
+  createCareEvent,
+  deleteBonsai,
+  getBonsaiDetail,
+  updateBonsai
+} from "@/lib/bonsais";
 import { requireCurrentUser } from "@/lib/auth-guards";
 
 function parseOptionalString(value: FormDataEntryValue | null) {
@@ -75,4 +81,55 @@ export async function createCareEventAction(formData: FormData) {
   revalidatePath(`/bonsais/${bonsaiId}`);
   revalidatePath(`/bonsais/${bonsaiId}/eventos/nuevo`);
   redirect(`/bonsais/${bonsaiId}`);
+}
+
+export async function updateBonsaiAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+  const name = parseOptionalString(formData.get("name"));
+  const species = parseOptionalString(formData.get("species"));
+
+  if (!bonsaiId || !name || !species) {
+    throw new Error("Nombre, especie y bonsái son obligatorios.");
+  }
+
+  const bonsai = await getBonsaiDetail(bonsaiId, user.id);
+
+  if (!bonsai) {
+    throw new Error("El bonsái indicado no existe o no pertenece al usuario actual.");
+  }
+
+  await updateBonsai(bonsaiId, user.id, {
+    name,
+    species,
+    style: parseOptionalString(formData.get("style")),
+    location: parseOptionalString(formData.get("location")),
+    notes: parseOptionalString(formData.get("notes")),
+    acquiredAt: parseDate(formData.get("acquiredAt"))
+  });
+
+  revalidatePath("/bonsais");
+  revalidatePath(`/bonsais/${bonsaiId}`);
+  revalidatePath(`/bonsais/${bonsaiId}/editar`);
+  redirect(`/bonsais/${bonsaiId}`);
+}
+
+export async function deleteBonsaiAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+
+  if (!bonsaiId) {
+    throw new Error("Falta el bonsái a eliminar.");
+  }
+
+  const bonsai = await getBonsaiDetail(bonsaiId, user.id);
+
+  if (!bonsai) {
+    throw new Error("El bonsái indicado no existe o no pertenece al usuario actual.");
+  }
+
+  await deleteBonsai(bonsaiId, user.id);
+
+  revalidatePath("/bonsais");
+  redirect("/bonsais");
 }

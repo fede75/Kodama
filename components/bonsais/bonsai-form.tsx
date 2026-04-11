@@ -1,14 +1,49 @@
-import { createBonsaiAction } from "@/app/actions";
+import { createBonsaiAction, updateBonsaiAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input, Textarea } from "@/components/ui/input";
 
-export function BonsaiForm() {
+type BonsaiFormProps = {
+  mode?: "create" | "edit";
+  bonsai?: {
+    id: string;
+    name: string;
+    species: string;
+    style: string | null;
+    location: string | null;
+    acquiredAt: Date | null;
+    notes: string | null;
+  };
+};
+
+function formatDateInput(value: Date | null) {
+  if (!value) {
+    return "";
+  }
+
+  return new Date(value).toISOString().slice(0, 10);
+}
+
+export function BonsaiForm({
+  mode = "create",
+  bonsai
+}: BonsaiFormProps) {
+  const action = mode === "edit" ? updateBonsaiAction : createBonsaiAction;
+
   return (
-    <form action={createBonsaiAction} className="grid gap-5">
+    <form action={action} className="grid gap-5">
+      {mode === "edit" && bonsai ? (
+        <input type="hidden" name="bonsaiId" value={bonsai.id} />
+      ) : null}
+
       <div className="grid gap-5 md:grid-cols-2">
         <FormField label="Nombre" hint="Ej. Pino negro del balcón">
-          <Input name="name" required placeholder="Nombre del bonsái" />
+          <Input
+            name="name"
+            required
+            placeholder="Nombre del bonsái"
+            defaultValue={bonsai?.name ?? ""}
+          />
         </FormField>
 
         <FormField label="Especie" hint="Nombre común o científico">
@@ -16,19 +51,32 @@ export function BonsaiForm() {
             name="species"
             required
             placeholder="Juniperus procumbens nana"
+            defaultValue={bonsai?.species ?? ""}
           />
         </FormField>
 
         <FormField label="Estilo">
-          <Input name="style" placeholder="Moyogi, Chokkan, Kengai..." />
+          <Input
+            name="style"
+            placeholder="Moyogi, Chokkan, Kengai..."
+            defaultValue={bonsai?.style ?? ""}
+          />
         </FormField>
 
         <FormField label="Ubicación">
-          <Input name="location" placeholder="Terraza norte, interior..." />
+          <Input
+            name="location"
+            placeholder="Terraza norte, interior..."
+            defaultValue={bonsai?.location ?? ""}
+          />
         </FormField>
 
         <FormField label="Fecha de adquisición">
-          <Input name="acquiredAt" type="date" />
+          <Input
+            name="acquiredAt"
+            type="date"
+            defaultValue={formatDateInput(bonsai?.acquiredAt ?? null)}
+          />
         </FormField>
       </div>
 
@@ -36,11 +84,14 @@ export function BonsaiForm() {
         <Textarea
           name="notes"
           placeholder="Observaciones iniciales, sustrato, procedencia..."
+          defaultValue={bonsai?.notes ?? ""}
         />
       </FormField>
 
       <div className="flex justify-end">
-        <Button type="submit">Guardar bonsái</Button>
+        <Button type="submit">
+          {mode === "edit" ? "Guardar cambios" : "Guardar bonsái"}
+        </Button>
       </div>
     </form>
   );

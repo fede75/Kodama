@@ -1,11 +1,18 @@
 import Link from "next/link";
-import { auth } from "@/auth";
-import { signInWithGoogle, signUpWithGoogle } from "@/app/auth-actions";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut
+} from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/lib/auth-guards";
 
 export default async function HomePage() {
-  const session = await auth();
-  const isAuthenticated = Boolean(session?.user);
+  const { userId } = await auth();
+  const currentUser = userId ? await getCurrentUser() : null;
+  const isAuthenticated = Boolean(userId);
 
   return (
     <div className="space-y-12 pb-10">
@@ -32,53 +39,52 @@ export default async function HomePage() {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                {isAuthenticated ? (
-                  <>
-                    <Link href="/bonsais">
-                      <Button className="bg-ink-950 px-6 py-3 text-sm tracking-[0.08em] hover:bg-clay-700">
-                        Entrar en mi colección
-                      </Button>
-                    </Link>
-                    <Link href="/bonsais/new">
+                <SignedIn>
+                  <Link href="/bonsais">
+                    <Button className="bg-ink-950 px-6 py-3 text-sm tracking-[0.08em] hover:bg-clay-700">
+                      Entrar en mi colección
+                    </Button>
+                  </Link>
+                  <Link href="/bonsais/new">
+                    <Button
+                      variant="secondary"
+                      className="border-ink-300 bg-white/70 px-6 py-3 text-sm tracking-[0.08em] hover:border-clay-300 hover:bg-white"
+                    >
+                      Registrar un bonsái
+                    </Button>
+                  </Link>
+                  {currentUser?.role === "ADMIN" ? (
+                    <Link href="/admin">
                       <Button
                         variant="secondary"
                         className="border-ink-300 bg-white/70 px-6 py-3 text-sm tracking-[0.08em] hover:border-clay-300 hover:bg-white"
                       >
-                        Registrar un bonsái
+                        Administración
                       </Button>
                     </Link>
-                    {session?.user.role === "ADMIN" ? (
-                      <Link href="/admin">
-                        <Button
-                          variant="secondary"
-                          className="border-ink-300 bg-white/70 px-6 py-3 text-sm tracking-[0.08em] hover:border-clay-300 hover:bg-white"
-                        >
-                          Ir a administración
-                        </Button>
-                      </Link>
-                    ) : null}
-                  </>
-                ) : (
-                  <>
-                    <form action={signInWithGoogle}>
+                  ) : null}
+                </SignedIn>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <span>
                       <Button
-                        type="submit"
                         className="bg-ink-950 px-6 py-3 text-sm tracking-[0.08em] hover:bg-clay-700"
                       >
                         Acceder con Google
                       </Button>
-                    </form>
-                    <form action={signUpWithGoogle}>
+                    </span>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <span>
                       <Button
-                        type="submit"
                         variant="secondary"
                         className="border-ink-300 bg-white/70 px-6 py-3 text-sm tracking-[0.08em] hover:border-clay-300 hover:bg-white"
                       >
                         Crear cuenta con Google
                       </Button>
-                    </form>
-                  </>
-                )}
+                    </span>
+                  </SignUpButton>
+                </SignedOut>
               </div>
             </div>
 
@@ -216,23 +222,23 @@ export default async function HomePage() {
             </p>
             {!isAuthenticated ? (
               <div className="mt-8 flex flex-wrap gap-3">
-                <form action={signInWithGoogle}>
-                  <Button
-                    type="submit"
-                    className="bg-paper text-ink-950 hover:bg-clay-100"
-                  >
-                    Acceder
-                  </Button>
-                </form>
-                <form action={signUpWithGoogle}>
-                  <Button
-                    type="submit"
-                    variant="secondary"
-                    className="border-paper/25 bg-white/10 text-paper hover:border-paper/50 hover:bg-white/15 hover:text-paper"
-                  >
-                    Darme de alta
-                  </Button>
-                </form>
+                <SignInButton mode="modal">
+                  <span>
+                    <Button className="bg-paper text-ink-950 hover:bg-clay-100">
+                      Acceder
+                    </Button>
+                  </span>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <span>
+                    <Button
+                      variant="secondary"
+                      className="border-paper/25 bg-white/10 text-paper hover:border-paper/50 hover:bg-white/15 hover:text-paper"
+                    >
+                      Darme de alta
+                    </Button>
+                  </span>
+                </SignUpButton>
               </div>
             ) : (
               <Link href="/bonsais" className="mt-8 inline-flex">

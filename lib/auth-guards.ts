@@ -1,17 +1,75 @@
 import { UserRole } from "@prisma/client";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-export async function getCurrentUser() {
-  const session = await auth();
+function parseAdminEmails() {
+  return (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+}
 
-  if (!session?.user?.id) {
+function getPrimaryEmail(user: Awaited<ReturnType<typeof currentUser>>) {
+  if (!user) {
     return null;
   }
 
-  return prisma.user.findUnique({
-    where: { id: session.user.id }
+  const primaryEmail =
+    user.emailAddresses.find(
+      (email) => email.id === user.primaryEmailAddressId
+    ) ?? user.emailAddresses[0];
+
+  return primaryEmail?.emailAddress.toLowerCase() ?? null;
+}
+
+export async function getCurrentUser() {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const clerkUser = await currentUser();
+  const email = getPrimaryEmail(clerkUser);
+
+  if (!clerkUser || !email) {
+    return null;
+  }
+
+  const adminEmails = parseAdminEmails();
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      OR: [{ clerkId: userId }, { email }]
+    }
+  });
+
+  const desiredRole =
+    existingUser?.role === UserRole.ADMIN || adminEmails.includes(email)
+      ? UserRole.ADMIN
+      : UserRole.USER;
+
+  if (existingUser) {
+    return prisma.user.update({
+      where: { id: existingUser.id },
+      data: {
+        clerkId: userId,
+        email,
+        name: clerkUser.fullName ?? clerkUser.firstName ?? existingUser.name,
+        image: clerkUser.imageUrl,
+        role: desiredRole
+      }
+    });
+  }
+
+  return prisma.user.create({
+    data: {
+      clerkId: userId,
+      email,
+      name: clerkUser.fullName ?? clerkUser.firstName ?? email.split("@")[0],
+      image: clerkUser.imageUrl,
+      role: desiredRole
+    }
   });
 }
 
