@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { readdir } from "node:fs/promises";
+import path from "node:path";
 import {
   SignInButton,
   SignUpButton,
@@ -7,7 +9,6 @@ import {
   SignedOut
 } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import heroImage from "@/img/bonsai-hero.jpg";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { listBonsais } from "@/lib/bonsais";
@@ -17,6 +18,14 @@ import { formatDate } from "@/lib/utils";
 export default async function HomePage() {
   const { userId } = await auth();
   const currentUser = userId ? await getCurrentUser() : null;
+  const imageDir = path.join(process.cwd(), "public", "images");
+  const heroFiles = (await readdir(imageDir)).filter((file) =>
+    /^bonsai-hero.*\.(jpg|jpeg|png|webp)$/i.test(file)
+  );
+  const heroImage =
+    heroFiles.length > 0
+      ? `/images/${heroFiles[Math.floor(Math.random() * heroFiles.length)]}`
+      : "/images/kodama-hero-fallback.svg";
   const bonsais = currentUser ? await listBonsais(currentUser.id) : [];
   const recentCare = bonsais
     .flatMap((bonsai) =>
