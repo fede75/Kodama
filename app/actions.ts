@@ -4,7 +4,7 @@ import { CareEventType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createBonsai, createCareEvent, getBonsaiDetail } from "@/lib/bonsais";
-import { getDefaultUser } from "@/lib/default-user";
+import { requireCurrentUser } from "@/lib/auth-guards";
 
 function parseOptionalString(value: FormDataEntryValue | null) {
   if (typeof value !== "string") {
@@ -25,7 +25,7 @@ function parseDate(value: FormDataEntryValue | null) {
 }
 
 export async function createBonsaiAction(formData: FormData) {
-  const user = await getDefaultUser();
+  const user = await requireCurrentUser();
   const name = parseOptionalString(formData.get("name"));
   const species = parseOptionalString(formData.get("species"));
 
@@ -48,7 +48,7 @@ export async function createBonsaiAction(formData: FormData) {
 }
 
 export async function createCareEventAction(formData: FormData) {
-  const user = await getDefaultUser();
+  const user = await requireCurrentUser();
   const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
   const type = parseOptionalString(formData.get("type"));
   const validTypes = Object.values(CareEventType);

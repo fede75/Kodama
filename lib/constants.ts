@@ -1,5 +1,3 @@
-export const DEFAULT_USER_EMAIL = "dev@kodama.local";
-
 export const CARE_EVENT_LABELS = {
   WATERING: "Riego",
   FERTILIZING: "Abonado",

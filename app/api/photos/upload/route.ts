@@ -1,7 +1,7 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { createPhoto, getBonsaiDetail } from "@/lib/bonsais";
-import { getDefaultUser } from "@/lib/default-user";
+import { getCurrentUser } from "@/lib/auth-guards";
 
 type UploadTokenPayload = {
   bonsaiId: string;
@@ -26,7 +26,14 @@ export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 
   try {
-    const user = await getDefaultUser();
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Debes iniciar sesión para subir fotos." },
+        { status: 401 }
+      );
+    }
 
     const jsonResponse = await handleUpload({
       body,

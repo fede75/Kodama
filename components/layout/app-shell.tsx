@@ -1,12 +1,20 @@
 import Link from "next/link";
+import { auth } from "@/auth";
+import { signOutAction } from "@/app/auth-actions";
 
-const navItems = [
-  { href: "/", label: "Inicio" },
-  { href: "/bonsais", label: "Bonsáis" },
-  { href: "/bonsais/new", label: "Crear bonsái" }
-];
+export async function AppShell({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  const navItems = session?.user
+    ? [
+        { href: "/", label: "Inicio" },
+        { href: "/bonsais", label: "Bonsáis" },
+        { href: "/bonsais/new", label: "Crear bonsái" },
+        ...(session.user.role === "ADMIN"
+          ? [{ href: "/admin", label: "Administración" }]
+          : [])
+      ]
+    : [{ href: "/", label: "Acceso" }];
 
-export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8">
       <header className="mb-10 overflow-hidden rounded-[2.5rem] border border-ink-200/70 bg-paper/85 px-6 py-6 shadow-paper backdrop-blur md:px-8">
@@ -39,11 +47,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   {item.label}
                 </Link>
               ))}
+              {session?.user ? (
+                <form action={signOutAction}>
+                  <button
+                    type="submit"
+                    className="rounded-full border border-ink-200 bg-white/50 px-4 py-2 transition hover:border-clay-300 hover:bg-white/80 hover:text-clay-700"
+                  >
+                    Salir
+                  </button>
+                </form>
+              ) : null}
             </nav>
           </div>
 
           <div className="flex items-center justify-between gap-4 border-t border-ink-200/70 pt-4 text-sm text-ink-600">
-            <p>Registro sereno para colección, evolución y cuidados.</p>
+            <p>
+              {session?.user
+                ? `Sesión iniciada como ${session.user.name ?? session.user.email}`
+                : "Acceso seguro con Google para colección, evolución y cuidados."}
+            </p>
             <p className="hidden uppercase tracking-[0.3em] text-clay-600 md:block">
               Madrid Atelier
             </p>

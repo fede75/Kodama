@@ -3,12 +3,12 @@ import { BonsaiCard } from "@/components/bonsais/bonsai-card";
 import { LatestCareList } from "@/components/bonsais/latest-care-list";
 import { Button } from "@/components/ui/button";
 import { getLatestCareEvents, listBonsais } from "@/lib/bonsais";
-import { getDefaultUser } from "@/lib/default-user";
+import { requireCurrentUser } from "@/lib/auth-guards";
 
 export const dynamic = "force-dynamic";
 
 export default async function BonsaisPage() {
-  const user = await getDefaultUser();
+  const user = await requireCurrentUser();
   const [bonsais, latestCare] = await Promise.all([
     listBonsais(user.id),
     getLatestCareEvents(user.id)

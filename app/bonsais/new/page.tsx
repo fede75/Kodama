@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { requireCurrentUser } from "@/lib/auth-guards";
 import { BonsaiForm } from "@/components/bonsais/bonsai-form";
 import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
-export default function NewBonsaiPage() {
+export default async function NewBonsaiPage() {
+  await requireCurrentUser();
+
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       <div className="flex items-center justify-between gap-4">

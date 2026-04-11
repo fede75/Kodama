@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { requireCurrentUser } from "@/lib/auth-guards";
 import { CareEventForm } from "@/components/bonsais/care-event-form";
 import { Button } from "@/components/ui/button";
 import { getBonsaiDetail } from "@/lib/bonsais";
-import { getDefaultUser } from "@/lib/default-user";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,7 @@ export default async function NewCareEventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const user = await getDefaultUser();
+  const user = await requireCurrentUser();
   const bonsai = await getBonsaiDetail(id, user.id);
 
   if (!bonsai) {

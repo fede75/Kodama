@@ -4,7 +4,7 @@ import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
 import { BonsaiTimeline } from "@/components/bonsais/timeline";
 import { Button } from "@/components/ui/button";
-import { getDefaultUser } from "@/lib/default-user";
+import { requireCurrentUser } from "@/lib/auth-guards";
 import { getBonsaiTimeline } from "@/lib/timeline";
 import { formatDate } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export default async function BonsaiDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const user = await getDefaultUser();
+  const user = await requireCurrentUser();
   const result = await getBonsaiTimeline(id, user.id);
 
   if (!result) {

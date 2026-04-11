@@ -1,14 +1,17 @@
-import { PrismaClient, CareEventType } from "@prisma/client";
+import { PrismaClient, CareEventType, UserRole } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
   const user = await prisma.user.upsert({
     where: { email: "dev@kodama.local" },
-    update: {},
+    update: {
+      role: UserRole.ADMIN
+    },
     create: {
       email: "dev@kodama.local",
-      name: "Usuario Kodama"
+      name: "Usuario Kodama",
+      role: UserRole.ADMIN
     }
   });
 
