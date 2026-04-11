@@ -33,9 +33,9 @@ export default async function PublicBonsaiDetailPage({
   }));
 
   return (
-    <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)] sm:rounded-[2.5rem] sm:p-8 lg:p-10">
-        <div className="grid gap-6 xl:grid-cols-[1.05fr_1fr]">
+    <div className="space-y-7">
+      <section className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-4 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)] sm:rounded-[2.5rem] sm:p-6 lg:p-8">
+        <div className="grid gap-6 2xl:grid-cols-[1.05fr_1fr]">
           <div className="space-y-6">
             <Link href={`/colecciones-publicas/${userId}`} className="block sm:inline-flex">
               <Button
@@ -47,7 +47,7 @@ export default async function PublicBonsaiDetailPage({
             </Link>
 
             <div>
-              <h1 className="font-display text-4xl leading-none text-paper sm:text-5xl">
+              <h1 className="font-display text-[clamp(2.2rem,6vw,3rem)] leading-none text-paper">
                 {bonsai.name}
               </h1>
               <p className="mt-3 text-sm uppercase tracking-[0.22em] text-paper/42">
@@ -61,7 +61,7 @@ export default async function PublicBonsaiDetailPage({
               </p>
             ) : null}
 
-            <div className="grid gap-4 rounded-[2rem] border border-white/8 bg-black/30 p-6 text-paper shadow-card sm:grid-cols-2">
+            <div className="grid gap-4 rounded-[2rem] border border-white/8 bg-black/30 p-5 text-paper shadow-card md:grid-cols-2 sm:p-6">
               <div>
                 <p className="text-sm text-paper/42">Estado</p>
                 <p className="mt-1 text-lg font-semibold">{bonsai.status}</p>
@@ -99,10 +99,10 @@ export default async function PublicBonsaiDetailPage({
                 <img
                   src={mainPhoto.imageUrl}
                   alt={mainPhoto.caption ?? `Foto principal de ${bonsai.name}`}
-                  className="h-[280px] w-full object-cover sm:h-[360px] lg:h-[420px]"
+                  className="h-[clamp(16rem,42vw,26rem)] w-full object-cover"
                 />
               ) : (
-                <div className="flex h-[280px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6 sm:h-[360px] lg:h-[420px]">
+                <div className="flex h-[clamp(16rem,42vw,26rem)] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6">
                   <div className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
                     Sin foto
                   </div>

@@ -51,10 +51,10 @@ export default async function BonsaiDetailPage({
       : null;
 
   return (
-    <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[2.4rem] surface-panel p-4 sm:p-6 xl:p-7">
+    <div className="space-y-7">
+      <section className="relative overflow-hidden rounded-[2rem] surface-panel p-4 sm:p-5 xl:p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
-        <div className="grid gap-5 xl:grid-cols-[1.35fr_0.9fr]">
+        <div className="grid gap-5 2xl:grid-cols-[1.35fr_0.9fr]">
           <div className="overflow-hidden rounded-[2rem] bg-black/20">
             <MainPhotoViewer
               imageUrl={photoGalleryItems[0]?.imageUrl ?? null}
@@ -86,7 +86,7 @@ export default async function BonsaiDetailPage({
 
             <div>
               <p className="editorial-kicker text-[10px]">Ficha</p>
-              <h1 className="mt-3 font-display text-4xl leading-none text-paper sm:text-5xl xl:text-[4.6rem]">
+              <h1 className="mt-3 font-display text-[clamp(2.2rem,6vw,4.6rem)] leading-none text-paper">
                 {bonsai.name}
               </h1>
               <p className="mt-3 text-sm uppercase tracking-[0.18em] text-paper/46">
@@ -99,7 +99,7 @@ export default async function BonsaiDetailPage({
               ) : null}
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 md:grid-cols-2">
               <div className="rounded-[1.6rem] surface-soft p-4">
                 <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Estado</p>
                 <p className="mt-3 text-lg text-paper">{bonsai.status}</p>
@@ -127,7 +127,7 @@ export default async function BonsaiDetailPage({
         </div>
 
         {(previousBonsai || nextBonsai) ? (
-          <div className="mt-5 grid gap-3 border-t border-white/8 pt-5 sm:grid-cols-2">
+          <div className="mt-5 grid gap-3 border-t border-white/8 pt-5 xl:grid-cols-2">
             {previousBonsai ? (
               <Link
                 href={`/bonsais/${previousBonsai.id}`}

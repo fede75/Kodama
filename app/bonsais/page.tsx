@@ -12,11 +12,11 @@ export default async function BonsaisPage() {
   const activeCount = bonsais.filter((bonsai) => bonsai.collectionStatus === "ACTIVE").length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-7">
       <section className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-3">
           <p className="editorial-kicker text-xs">Mi colección</p>
-          <h1 className="font-display text-4xl leading-none text-paper sm:text-5xl">
+          <h1 className="font-display text-[clamp(2.2rem,6vw,3rem)] leading-none text-paper">
             {bonsais.length} árboles
           </h1>
           <p className="max-w-xl text-sm leading-7 text-paper/50 sm:text-base">
@@ -35,7 +35,7 @@ export default async function BonsaisPage() {
       </section>
 
       {bonsais.length === 0 ? (
-        <div className="rounded-[2.4rem] surface-soft p-10 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)]">
+        <div className="rounded-[2rem] surface-soft p-6 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-8">
           Empieza registrando tu primer bonsái.
         </div>
       ) : (

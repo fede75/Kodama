@@ -25,11 +25,11 @@ export default async function PublicCollectionsPage() {
       </section>
 
       {collections.length === 0 ? (
-        <div className="rounded-[2.4rem] surface-soft p-10 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)]">
+        <div className="rounded-[2rem] surface-soft p-6 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-8">
           Todavía no hay colecciones públicas.
         </div>
       ) : (
-        <section className="grid gap-6 xl:grid-cols-2">
+        <section className="grid gap-6 2xl:grid-cols-2">
           {collections.map((collection) => {
             const sampleBonsai = collection.bonsais[0];
             const samplePhoto = sampleBonsai?.photos[0];
@@ -42,7 +42,7 @@ export default async function PublicCollectionsPage() {
                 <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-clay-700/15 blur-3xl transition duration-500 group-hover:bg-clay-600/24" />
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.02),transparent_45%)]" />
 
-                <div className="grid gap-5 sm:grid-cols-[15rem_1fr] sm:items-stretch">
+                <div className="grid gap-4 md:grid-cols-[12.5rem_1fr] xl:grid-cols-[14rem_1fr] md:items-stretch">
                   {samplePhoto ? (
                     <div className="overflow-hidden rounded-[1.7rem] bg-black/20">
                       <img
@@ -63,7 +63,7 @@ export default async function PublicCollectionsPage() {
                   <div className="flex min-h-full flex-col justify-between">
                     <div>
                       <p className="editorial-kicker text-[10px]">Colección pública</p>
-                      <h2 className="mt-3 font-display text-[2.5rem] leading-none text-paper">
+                      <h2 className="mt-3 font-display text-[clamp(2rem,4vw,2.5rem)] leading-none text-paper">
                         {collection.name ?? "Usuario"}
                       </h2>
                       <p className="mt-3 text-sm uppercase tracking-[0.16em] text-paper/38">

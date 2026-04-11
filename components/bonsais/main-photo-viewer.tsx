@@ -40,7 +40,7 @@ export function MainPhotoViewer({
 
   if (!imageUrl) {
     return (
-      <div className="flex h-[360px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6 sm:h-[460px] xl:h-[620px]">
+      <div className="flex h-[clamp(16rem,48vw,38rem)] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-5 sm:p-6">
         <div className="rounded-full bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
           Sin foto
         </div>
@@ -59,7 +59,7 @@ export function MainPhotoViewer({
         <img
           src={imageUrl}
           alt={alt}
-          className="h-[360px] w-full object-cover transition duration-500 group-hover:scale-[1.015] sm:h-[460px] xl:h-[620px]"
+          className="h-[clamp(16rem,48vw,38rem)] w-full object-cover transition duration-500 group-hover:scale-[1.015]"
         />
       </button>
 
@@ -94,7 +94,7 @@ export function MainPhotoViewer({
               <img
                 src={imageUrl}
                 alt={alt}
-                className="max-h-[82vh] w-full object-contain"
+                className="max-h-[78vh] w-full object-contain sm:max-h-[82vh]"
               />
             </div>
           </div>

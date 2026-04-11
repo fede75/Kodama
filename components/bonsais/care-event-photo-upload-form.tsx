@@ -68,7 +68,7 @@ export function CareEventPhotoUploadForm({
       onSubmit={handleSubmit}
       className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4"
     >
-      <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+      <div className="grid gap-4 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
         <FormField label="Imagen">
           <Input
             ref={fileInputRef}
@@ -92,7 +92,7 @@ export function CareEventPhotoUploadForm({
         <Button
           type="submit"
           disabled={isUploading}
-          className="w-full bg-moss-500 text-paper hover:bg-moss-400 md:w-auto"
+          className="w-full bg-moss-500 text-paper hover:bg-moss-400 lg:w-auto"
         >
           {isUploading ? "Subiendo..." : "Subir"}
         </Button>

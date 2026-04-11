@@ -44,7 +44,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
       <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-clay-700/15 blur-3xl transition duration-500 group-hover:bg-clay-600/24" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.02),transparent_45%)]" />
 
-      <div className="grid gap-5 sm:grid-cols-[15.25rem_1fr] sm:items-stretch">
+      <div className="grid gap-4 md:grid-cols-[12.5rem_1fr] xl:grid-cols-[14rem_1fr] md:items-stretch">
         {coverPhoto ? (
           <div className="order-1 overflow-hidden rounded-[1.7rem] bg-black/20 sm:h-full">
             <img
@@ -65,7 +65,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
         <div className="order-2 flex min-h-full flex-col justify-between">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="font-display text-[2.6rem] leading-none text-paper">
+              <p className="font-display text-[clamp(2rem,4vw,2.6rem)] leading-none text-paper">
                 {bonsai.name}
               </p>
               <p className="mt-3 text-sm uppercase tracking-[0.16em] text-paper/38">

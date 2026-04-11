@@ -89,11 +89,11 @@ export function PhotoGallery({
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {photos.map((photo, index) => (
           <div
             key={photo.id}
-            className="rounded-[1.2rem] surface-soft p-2"
+            className="rounded-[1.1rem] surface-soft p-2"
           >
             <button
               type="button"
@@ -111,11 +111,11 @@ export function PhotoGallery({
               </div>
             </button>
 
-            <div className="px-1 pb-1 pt-2.5">
+            <div className="px-1 pb-1 pt-2">
               <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-paper/36">
                 {formatDate(photo.takenAt)}
               </p>
-              <p className="mt-2 line-clamp-2 text-xs leading-5 text-paper/58">
+              <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-paper/58 sm:text-xs sm:leading-5">
                 {photo.caption ?? "Sin nota"}
               </p>
               {!readOnly ? (
