@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { getCurrentUser } from "@/lib/auth-guards";
+import { TopNav } from "@/components/layout/top-nav";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
@@ -36,17 +37,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-            <nav className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-1 text-sm font-medium text-paper/62 lg:flex-wrap lg:justify-end lg:overflow-visible lg:px-0 lg:pb-0">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="shrink-0 whitespace-nowrap rounded-full px-1 py-1 transition hover:text-paper"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+            <TopNav items={navItems} />
             {user ? (
               <div className="self-start lg:self-auto">
                 <UserButton

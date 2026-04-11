@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CareEventsList } from "@/components/bonsais/care-events-list";
 import { DeleteBonsaiForm } from "@/components/bonsais/delete-bonsai-form";
+import { MainPhotoViewer } from "@/components/bonsais/main-photo-viewer";
 import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
 import { TogglePanel } from "@/components/bonsais/toggle-panel";
@@ -56,36 +57,13 @@ export default async function BonsaiDetailPage({
         <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
         <div className="grid gap-5 xl:grid-cols-[1.35fr_0.9fr]">
           <div className="relative overflow-hidden rounded-[2rem] bg-black/20">
-            {mainPhoto ? (
-              <img
-                src={mainPhoto.imageUrl}
-                alt={mainPhoto.caption ?? `Foto principal de ${bonsai.name}`}
-                className="h-[360px] w-full object-cover sm:h-[460px] xl:h-[620px]"
-              />
-            ) : (
-              <div className="flex h-[360px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6 sm:h-[460px] xl:h-[620px]">
-                <div className="rounded-full bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
-                  Sin foto
-                </div>
-              </div>
-            )}
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.5))]" />
-            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
-              <div className="max-w-xl rounded-[1.7rem] bg-black/36 p-5 backdrop-blur-md">
-                <p className="editorial-kicker text-[10px]">Ficha</p>
-                <h1 className="mt-3 font-display text-4xl leading-none text-paper sm:text-5xl xl:text-[4.6rem]">
-                  {bonsai.name}
-                </h1>
-                <p className="mt-3 text-sm uppercase tracking-[0.18em] text-paper/46">
-                  {bonsai.species}
-                </p>
-                {bonsai.notes ? (
-                  <p className="mt-4 max-w-2xl text-sm leading-7 text-paper/62 sm:text-base">
-                    {bonsai.notes}
-                  </p>
-                ) : null}
-              </div>
-            </div>
+            <MainPhotoViewer
+              imageUrl={mainPhoto?.imageUrl ?? null}
+              alt={mainPhoto?.caption ?? `Foto principal de ${bonsai.name}`}
+              caption={mainPhoto?.caption}
+              takenAt={mainPhoto?.takenAt}
+            />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.5))]" />
           </div>
 
           <div className="flex flex-col gap-4">
@@ -108,26 +86,20 @@ export default async function BonsaiDetailPage({
               </div>
             </div>
 
-            {(previousBonsai || nextBonsai) ? (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {previousBonsai ? (
-                  <Link href={`/bonsais/${previousBonsai.id}`} className="rounded-[1.6rem] surface-soft p-4 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]">
-                    <p className="editorial-kicker text-[10px]">Anterior</p>
-                    <p className="mt-3 font-display text-3xl text-paper">
-                      {previousBonsai.name}
-                    </p>
-                  </Link>
-                ) : <div />}
-                {nextBonsai ? (
-                  <Link href={`/bonsais/${nextBonsai.id}`} className="rounded-[1.6rem] surface-soft p-4 text-right transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]">
-                    <p className="editorial-kicker text-[10px]">Siguiente</p>
-                    <p className="mt-3 font-display text-3xl text-paper">
-                      {nextBonsai.name}
-                    </p>
-                  </Link>
-                ) : null}
-              </div>
-            ) : null}
+            <div>
+              <p className="editorial-kicker text-[10px]">Ficha</p>
+              <h1 className="mt-3 font-display text-4xl leading-none text-paper sm:text-5xl xl:text-[4.6rem]">
+                {bonsai.name}
+              </h1>
+              <p className="mt-3 text-sm uppercase tracking-[0.18em] text-paper/46">
+                {bonsai.species}
+              </p>
+              {bonsai.notes ? (
+                <p className="mt-5 max-w-2xl text-sm leading-7 text-paper/62 sm:text-base">
+                  {bonsai.notes}
+                </p>
+              ) : null}
+            </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-[1.6rem] surface-soft p-4">
@@ -155,6 +127,43 @@ export default async function BonsaiDetailPage({
             </div>
           </div>
         </div>
+
+        {(previousBonsai || nextBonsai) ? (
+          <div className="mt-5 grid gap-3 border-t border-white/8 pt-5 sm:grid-cols-2">
+            {previousBonsai ? (
+              <Link
+                href={`/bonsais/${previousBonsai.id}`}
+                className="group flex items-center gap-4 rounded-[1.6rem] surface-soft p-4 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
+              >
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.06] text-xl text-paper/82 transition group-hover:bg-white/[0.1]">
+                  &lt;
+                </span>
+                <div>
+                  <p className="editorial-kicker text-[10px]">Anterior</p>
+                  <p className="mt-2 font-display text-3xl text-paper">
+                    {previousBonsai.name}
+                  </p>
+                </div>
+              </Link>
+            ) : <div />}
+            {nextBonsai ? (
+              <Link
+                href={`/bonsais/${nextBonsai.id}`}
+                className="group flex items-center justify-end gap-4 rounded-[1.6rem] surface-soft p-4 text-right transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
+              >
+                <div>
+                  <p className="editorial-kicker text-[10px]">Siguiente</p>
+                  <p className="mt-2 font-display text-3xl text-paper">
+                    {nextBonsai.name}
+                  </p>
+                </div>
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.06] text-xl text-paper/82 transition group-hover:bg-white/[0.1]">
+                  &gt;
+                </span>
+              </Link>
+            ) : null}
+          </div>
+        ) : null}
       </section>
 
       <section className="space-y-5 rounded-[2.2rem] surface-panel p-5 sm:p-6">
