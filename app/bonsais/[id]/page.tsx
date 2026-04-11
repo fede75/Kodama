@@ -29,7 +29,6 @@ export default async function BonsaiDetailPage({
   if (!bonsai) {
     notFound();
   }
-  const mainPhoto = bonsai.photos[0] ?? null;
   const photoGalleryItems = [...bonsai.photos]
     .sort(
       (a, b) =>
@@ -56,14 +55,13 @@ export default async function BonsaiDetailPage({
       <section className="relative overflow-hidden rounded-[2.4rem] surface-panel p-4 sm:p-6 xl:p-7">
         <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
         <div className="grid gap-5 xl:grid-cols-[1.35fr_0.9fr]">
-          <div className="relative overflow-hidden rounded-[2rem] bg-black/20">
+          <div className="overflow-hidden rounded-[2rem] bg-black/20">
             <MainPhotoViewer
-              imageUrl={mainPhoto?.imageUrl ?? null}
-              alt={mainPhoto?.caption ?? `Foto principal de ${bonsai.name}`}
-              caption={mainPhoto?.caption}
-              takenAt={mainPhoto?.takenAt}
+              imageUrl={photoGalleryItems[0]?.imageUrl ?? null}
+              alt={photoGalleryItems[0]?.caption ?? `Foto principal de ${bonsai.name}`}
+              caption={photoGalleryItems[0]?.caption}
+              takenAt={photoGalleryItems[0]?.takenAt}
             />
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.5))]" />
           </div>
 
           <div className="flex flex-col gap-4">
