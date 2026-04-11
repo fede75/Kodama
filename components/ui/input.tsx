@@ -11,7 +11,7 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
       <input
         ref={ref}
         className={cn(
-          "w-full rounded-2xl border border-bark-200 bg-white px-4 py-3 text-sm text-bark-900 placeholder:text-bark-400 focus:border-moss-500 focus:ring-2 focus:ring-moss-200",
+          "w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-paper placeholder:text-paper/28 focus:border-moss-500/60 focus:ring-2 focus:ring-moss-500/20",
           className
         )}
         {...props}
@@ -27,7 +27,7 @@ export function Textarea({
   return (
     <textarea
       className={cn(
-        "min-h-32 w-full rounded-2xl border border-bark-200 bg-white px-4 py-3 text-sm text-bark-900 placeholder:text-bark-400 focus:border-moss-500 focus:ring-2 focus:ring-moss-200",
+        "min-h-32 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-paper placeholder:text-paper/28 focus:border-moss-500/60 focus:ring-2 focus:ring-moss-500/20",
         className
       )}
       {...props}

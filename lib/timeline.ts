@@ -41,7 +41,7 @@ export async function getBonsaiTimeline(id: string, userId: string) {
       id: photo.id,
       kind: "photo" as const,
       date: photo.takenAt,
-      title: photo.caption ?? "Foto de evolución",
+      title: photo.caption ?? "Foto",
       description: photo.imageUrl
     }))
   ].sort((a, b) => b.date.getTime() - a.date.getTime());

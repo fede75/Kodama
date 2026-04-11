@@ -147,7 +147,7 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
             <div className="flex items-center justify-between text-sm text-paper/80">
               <div>
                 <p className="font-semibold text-paper">
-                  {activePhoto.caption ?? "Foto de evolución"}
+                  {activePhoto.caption ?? "Foto"}
                 </p>
                 <p className="mt-1">{formatDate(activePhoto.takenAt)}</p>
               </div>

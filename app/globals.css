@@ -3,22 +3,23 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html {
   background:
-    radial-gradient(circle at top, rgba(185, 84, 50, 0.08), transparent 28%),
-    linear-gradient(180deg, #f6efe5 0%, #efe4d6 48%, #eadfce 100%);
+    radial-gradient(circle at top, rgba(111, 149, 70, 0.12), transparent 24%),
+    radial-gradient(circle at 80% 10%, rgba(185, 84, 50, 0.14), transparent 18%),
+    linear-gradient(180deg, #080b0b 0%, #0d1110 46%, #131816 100%);
 }
 
 body {
-  @apply min-h-screen text-ink-900 antialiased;
+  @apply min-h-screen text-paper antialiased;
   background-image:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 55%),
-    radial-gradient(circle at left top, rgba(111, 149, 70, 0.1), transparent 24%),
-    radial-gradient(circle at right 15%, rgba(185, 84, 50, 0.11), transparent 22%),
-    linear-gradient(180deg, rgba(248, 241, 231, 0.92) 0%, rgba(239, 228, 214, 0.88) 100%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent 55%),
+    radial-gradient(circle at left top, rgba(111, 149, 70, 0.12), transparent 24%),
+    radial-gradient(circle at right 15%, rgba(185, 84, 50, 0.14), transparent 20%),
+    linear-gradient(180deg, rgba(10, 13, 12, 0.98) 0%, rgba(16, 21, 19, 0.96) 100%);
   font-feature-settings: "palt" 1, "liga" 1;
 }
 
@@ -27,10 +28,10 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.34;
+  opacity: 0.22;
   background-image:
-    linear-gradient(rgba(116, 87, 69, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(116, 87, 69, 0.018) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
   background-size: 100% 34px, 34px 100%;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.2));
 }
@@ -57,8 +58,8 @@ body::before {
 }
 
 ::selection {
-  background: rgba(185, 84, 50, 0.18);
-  color: #1a1310;
+  background: rgba(111, 149, 70, 0.28);
+  color: #f8f1e7;
 }
 
 a {

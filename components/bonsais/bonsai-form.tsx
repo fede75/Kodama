@@ -37,7 +37,7 @@ export function BonsaiForm({
       ) : null}
 
       <div className="grid gap-5 md:grid-cols-2">
-        <FormField label="Nombre" hint="Ej. Pino negro del balcón">
+        <FormField label="Nombre">
           <Input
             name="name"
             required
@@ -46,7 +46,7 @@ export function BonsaiForm({
           />
         </FormField>
 
-        <FormField label="Especie" hint="Nombre común o científico">
+        <FormField label="Especie">
           <Input
             name="species"
             required
@@ -89,7 +89,7 @@ export function BonsaiForm({
       </FormField>
 
       <div className="flex justify-end">
-        <Button type="submit">
+        <Button type="submit" className="bg-moss-500 text-paper hover:bg-moss-400">
           {mode === "edit" ? "Guardar cambios" : "Guardar bonsái"}
         </Button>
       </div>

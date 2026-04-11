@@ -3,10 +3,10 @@ import { TimelineItem } from "@/lib/timeline";
 import { formatDateTime } from "@/lib/utils";
 
 const toneByKind = {
-  care: "border border-moss-200 bg-moss-50 text-moss-800",
-  health: "border border-red-200 bg-red-50 text-red-800",
-  journal: "border border-clay-200 bg-clay-50 text-clay-800",
-  photo: "border border-ink-200 bg-white/70 text-ink-700"
+  care: "border border-moss-500/25 bg-moss-500/12 text-moss-200",
+  health: "border border-red-500/20 bg-red-500/12 text-red-200",
+  journal: "border border-clay-500/20 bg-clay-500/12 text-clay-200",
+  photo: "border border-white/10 bg-white/[0.05] text-paper/72"
 } as const;
 
 const labelByKind = {
@@ -27,7 +27,7 @@ function mapTitle(item: TimelineItem) {
 export function BonsaiTimeline({ items }: { items: TimelineItem[] }) {
   if (items.length === 0) {
     return (
-      <div className="rounded-[2rem] border border-dashed border-ink-200 bg-white/55 p-8 text-sm text-ink-600 shadow-card">
+      <div className="rounded-[2rem] border border-dashed border-white/10 bg-white/[0.04] p-8 text-sm text-paper/62 shadow-card">
         Todavía no hay actividad registrada para este bonsái.
       </div>
     );
@@ -38,7 +38,7 @@ export function BonsaiTimeline({ items }: { items: TimelineItem[] }) {
       {items.map((item) => (
         <article
           key={`${item.kind}-${item.id}`}
-          className="rounded-[2rem] border border-ink-200/75 bg-paper/80 p-5 shadow-card"
+          className="rounded-[2rem] border border-white/8 bg-white/[0.04] p-5 shadow-card"
         >
           <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
             <div>
@@ -47,17 +47,17 @@ export function BonsaiTimeline({ items }: { items: TimelineItem[] }) {
               >
                 {labelByKind[item.kind]}
               </span>
-              <h3 className="mt-3 text-lg font-semibold text-ink-900">
+              <h3 className="mt-3 text-lg font-semibold text-paper">
                 {mapTitle(item)}
               </h3>
               {item.description ? (
-                <p className="mt-2 text-sm leading-7 text-ink-700">
+                <p className="mt-2 text-sm leading-7 text-paper/62">
                   {item.description}
                 </p>
               ) : null}
             </div>
 
-            <p className="text-sm uppercase tracking-[0.18em] text-ink-500">
+            <p className="text-sm uppercase tracking-[0.18em] text-paper/38">
               {formatDateTime(item.date)}
             </p>
           </div>

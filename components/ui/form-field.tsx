@@ -9,9 +9,9 @@ export function FormField({
 }) {
   return (
     <label className="block space-y-2">
-      <span className="block text-sm font-semibold text-bark-800">{label}</span>
+      <span className="block text-sm font-semibold text-paper/78">{label}</span>
       {children}
-      {hint ? <span className="block text-xs text-bark-500">{hint}</span> : null}
+      {hint ? <span className="block text-xs text-paper/38">{hint}</span> : null}
     </label>
   );
 }

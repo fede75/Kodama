@@ -37,61 +37,70 @@ export default async function BonsaiDetailPage({
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[2.5rem] border border-ink-200/75 bg-paper/85 p-8 shadow-paper lg:p-10">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-clay-300 to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 rounded-full bg-clay-200/35 blur-3xl" />
+      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-8 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)] lg:p-10">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 rounded-full bg-clay-700/18 blur-3xl" />
         <div className="grid gap-6 xl:grid-cols-[1.05fr_1fr]">
           <div className="space-y-6">
             <div className="flex flex-wrap gap-3">
               <Link href="/bonsais">
-                <Button variant="secondary">Volver al listado</Button>
+                <Button
+                  variant="secondary"
+                  className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+                >
+                  Volver
+                </Button>
               </Link>
               <Link href={`/bonsais/${bonsai.id}/editar`}>
-                <Button variant="secondary">Editar bonsái</Button>
+                <Button
+                  variant="secondary"
+                  className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+                >
+                  Editar
+                </Button>
               </Link>
               <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`}>
-                <Button>Añadir evento</Button>
+                <Button className="bg-moss-500 text-paper hover:bg-moss-400">
+                  Añadir evento
+                </Button>
               </Link>
               <DeleteBonsaiForm bonsaiId={bonsai.id} />
             </div>
 
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-clay-700">
-                Ficha del bonsái
-              </p>
-              <h1 className="mt-3 font-display text-5xl leading-none text-ink-900">
+              <h1 className="font-display text-5xl leading-none text-paper">
                 {bonsai.name}
               </h1>
-              <p className="mt-3 text-sm uppercase tracking-[0.22em] text-ink-500">
+              <p className="mt-3 text-sm uppercase tracking-[0.22em] text-paper/42">
                 {bonsai.species}
               </p>
             </div>
 
             {bonsai.notes ? (
-              <p className="max-w-2xl text-base leading-8 text-ink-700">
+              <p className="max-w-2xl text-base leading-8 text-paper/62">
                 {bonsai.notes}
               </p>
             ) : null}
 
-            <div className="grid gap-4 rounded-[2rem] border border-ink-200/70 bg-gradient-to-br from-ink-900 via-ink-800 to-clay-900 p-6 text-paper shadow-card sm:grid-cols-2">
+            <div className="grid gap-4 rounded-[2rem] border border-white/8 bg-black/30 p-6 text-paper shadow-card sm:grid-cols-2">
               <div>
-                <p className="text-sm text-paper/60">Estado</p>
+                <p className="text-sm text-paper/42">Estado</p>
                 <p className="mt-1 text-lg font-semibold">{bonsai.status}</p>
               </div>
               <div>
-                <p className="text-sm text-paper/60">Ubicación</p>
+                <p className="text-sm text-paper/42">Ubicación</p>
                 <p className="mt-1 text-lg font-semibold">
                   {bonsai.location ?? "No indicada"}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-paper/60">Estilo</p>
+                <p className="text-sm text-paper/42">Estilo</p>
                 <p className="mt-1 text-lg font-semibold">
                   {bonsai.style ?? "Sin definir"}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-paper/60">Adquirido</p>
+                <p className="text-sm text-paper/42">Adquirido</p>
                 <p className="mt-1 text-lg font-semibold">
                   {bonsai.acquiredAt ? formatDate(bonsai.acquiredAt) : "Sin fecha"}
                 </p>
@@ -100,18 +109,7 @@ export default async function BonsaiDetailPage({
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-clay-700">
-                  Foto principal
-                </p>
-                <p className="mt-2 text-sm leading-7 text-ink-700">
-                  Esta imagen se usa como portada del bonsái en el listado y como
-                  referencia visual principal de la ficha.
-                </p>
-              </div>
-            </div>
-            <div className="overflow-hidden rounded-[2.2rem] border border-ink-200/75 bg-white/60 shadow-paper">
+            <div className="overflow-hidden rounded-[2.2rem] border border-white/8 bg-white/[0.04] shadow-paper">
               {mainPhoto ? (
                 <img
                   src={mainPhoto.imageUrl}
@@ -119,19 +117,19 @@ export default async function BonsaiDetailPage({
                   className="h-[420px] w-full object-cover"
                 />
               ) : (
-                <div className="flex h-[420px] items-end bg-gradient-to-br from-moss-100 via-paper to-clay-100 p-6">
-                  <div className="rounded-full border border-clay-200 bg-white/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay-700">
-                    Sin foto principal
+                <div className="flex h-[420px] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6">
+                  <div className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
+                    Sin foto
                   </div>
                 </div>
               )}
             </div>
             {mainPhoto ? (
-              <div className="rounded-[1.6rem] border border-ink-200/70 bg-white/55 px-5 py-4 text-sm text-ink-700 shadow-card">
-                <p className="font-semibold text-ink-950">
-                  {mainPhoto.caption ?? "Foto principal del bonsái"}
+              <div className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] px-5 py-4 text-sm text-paper/62 shadow-card">
+                <p className="font-semibold text-paper">
+                  {mainPhoto.caption ?? "Foto"}
                 </p>
-                <p className="mt-1 uppercase tracking-[0.18em] text-ink-500">
+                <p className="mt-1 uppercase tracking-[0.18em] text-paper/38">
                   {formatDate(mainPhoto.takenAt)}
                 </p>
               </div>
@@ -143,10 +141,10 @@ export default async function BonsaiDetailPage({
       <section className="grid gap-8 xl:grid-cols-[1.35fr_0.8fr]">
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="font-display text-3xl text-ink-900">
-              Bitácora cronológica
+            <h2 className="font-display text-3xl text-paper">
+              Bitácora
             </h2>
-            <p className="text-sm uppercase tracking-[0.24em] text-ink-500">
+            <p className="text-sm uppercase tracking-[0.24em] text-paper/38">
               {items.length} entradas
             </p>
           </div>
@@ -154,30 +152,26 @@ export default async function BonsaiDetailPage({
         </div>
 
         <div className="space-y-5">
-          <section className="rounded-[2rem] border border-ink-200/75 bg-paper/85 p-6 shadow-card">
-            <h2 className="font-display text-3xl text-ink-900">
+          <section className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
+            <h2 className="font-display text-3xl text-paper">
               Fotos
             </h2>
-            <p className="mt-2 text-sm leading-7 text-ink-700">
-              Sube imágenes de evolución para mantener un historial visual del
-              árbol directamente en Vercel Blob.
-            </p>
-            <div className="mt-5 rounded-[1.6rem] border border-ink-200/70 bg-white/55 p-4">
+            <div className="mt-5 rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4">
               <PhotoUploadForm bonsaiId={bonsai.id} />
             </div>
             <div className="mt-4 space-y-3">
               {photoGalleryItems.length > 0 ? (
                 <PhotoGallery photos={photoGalleryItems} />
               ) : (
-                <p className="rounded-2xl border border-dashed border-ink-200 px-4 py-5 text-sm text-ink-600">
+                <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
                   Aún no hay fotos registradas.
                 </p>
               )}
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-ink-200/75 bg-paper/85 p-6 shadow-card">
-            <h2 className="font-display text-3xl text-ink-900">
+          <section className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
+            <h2 className="font-display text-3xl text-paper">
               Incidencias
             </h2>
             <div className="mt-4 space-y-3">
@@ -185,16 +179,16 @@ export default async function BonsaiDetailPage({
                 bonsai.healthIssues.map((issue) => (
                   <div
                     key={issue.id}
-                    className="rounded-2xl border border-red-200 bg-red-50/90 px-4 py-3 text-sm text-red-900"
+                    className="rounded-2xl border border-red-500/20 bg-red-500/12 px-4 py-3 text-sm text-red-100"
                   >
                     <p className="font-semibold">{issue.title}</p>
                     {issue.description ? (
-                      <p className="mt-1 text-red-800">{issue.description}</p>
+                      <p className="mt-1 text-red-100/82">{issue.description}</p>
                     ) : null}
                   </div>
                 ))
               ) : (
-                <p className="rounded-2xl border border-dashed border-ink-200 px-4 py-5 text-sm text-ink-600">
+                <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
                   Sin incidencias registradas.
                 </p>
               )}

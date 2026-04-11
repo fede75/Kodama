@@ -24,24 +24,20 @@ export default async function EditBonsaiPage({
     <div className="mx-auto max-w-3xl space-y-8">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-clay-700">
-            Mantenimiento del inventario
-          </p>
-          <h1 className="mt-2 font-display text-4xl text-ink-950">
-            Editar {bonsai.name}
-          </h1>
-          <p className="mt-3 text-ink-700">
-            Actualiza los datos generales y comentarios del bonsái para mantener
-            la ficha siempre al día.
-          </p>
+          <h1 className="font-display text-4xl text-paper">Editar {bonsai.name}</h1>
         </div>
 
         <Link href={`/bonsais/${bonsai.id}`}>
-          <Button variant="secondary">Volver al detalle</Button>
+          <Button
+            variant="secondary"
+            className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+          >
+            Volver
+          </Button>
         </Link>
       </div>
 
-      <div className="rounded-[2rem] border border-ink-200/75 bg-paper/85 p-8 shadow-card">
+      <div className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-8 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)]">
         <BonsaiForm
           mode="edit"
           bonsai={{
