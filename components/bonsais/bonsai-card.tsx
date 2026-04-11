@@ -27,15 +27,16 @@ type BonsaiCardProps = {
       photos: number;
     };
   };
+  href?: string;
 };
 
-export function BonsaiCard({ bonsai }: BonsaiCardProps) {
+export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCardProps) {
   const latestCare = bonsai.careEvents[0];
   const coverPhoto = bonsai.photos[0];
 
   return (
     <Link
-      href={`/bonsais/${bonsai.id}`}
+      href={href}
       className="group relative overflow-hidden rounded-[2.1rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-moss-500/30"
     >
       {coverPhoto ? (

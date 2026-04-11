@@ -20,6 +20,25 @@ const bonsaiListInclude = {
   }
 };
 
+const publicBonsaiListInclude = {
+  careEvents: {
+    orderBy: { performedAt: "desc" as const },
+    take: 1
+  },
+  photos: {
+    orderBy: [{ isPrimary: "desc" as const }, { takenAt: "desc" as const }],
+    take: 1
+  },
+  _count: {
+    select: {
+      careEvents: true,
+      healthIssues: true,
+      journal: true,
+      photos: true
+    }
+  }
+};
+
 const bonsaiDetailInclude = {
   careEvents: {
     orderBy: { performedAt: "desc" as const },
@@ -55,6 +74,91 @@ export async function getBonsaiDetail(id: string, userId: string) {
   });
 }
 
+export async function listPublicCollections() {
+  return prisma.user.findMany({
+    where: {
+      isCollectionPublic: true,
+      bonsais: {
+        some: {
+          isPublic: true
+        }
+      }
+    },
+    select: {
+      id: true,
+      name: true,
+      collectionLocation: true,
+      bonsais: {
+        where: {
+          isPublic: true
+        },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        select: {
+          id: true,
+          name: true,
+          photos: {
+            orderBy: [{ isPrimary: "desc" }, { takenAt: "desc" }],
+            take: 1,
+            select: {
+              id: true,
+              imageUrl: true,
+              caption: true
+            }
+          }
+        }
+      }
+    },
+    orderBy: {
+      name: "asc"
+    }
+  });
+}
+
+export async function getPublicCollection(userId: string) {
+  return prisma.user.findFirst({
+    where: {
+      id: userId,
+      isCollectionPublic: true
+    },
+    select: {
+      id: true,
+      name: true,
+      collectionLocation: true,
+      showCareInPublic: true,
+      bonsais: {
+        where: {
+          isPublic: true
+        },
+        include: publicBonsaiListInclude,
+        orderBy: { createdAt: "desc" }
+      }
+    }
+  });
+}
+
+export async function getPublicBonsaiDetail(userId: string, bonsaiId: string) {
+  return prisma.user.findFirst({
+    where: {
+      id: userId,
+      isCollectionPublic: true
+    },
+    select: {
+      id: true,
+      name: true,
+      showCareInPublic: true,
+      bonsais: {
+        where: {
+          id: bonsaiId,
+          isPublic: true
+        },
+        include: bonsaiDetailInclude,
+        take: 1
+      }
+    }
+  });
+}
+
 export async function createBonsai(
   input: Prisma.BonsaiUncheckedCreateInput
 ) {
@@ -77,6 +181,22 @@ export async function updateBonsai(
 export async function deleteBonsai(id: string, userId: string) {
   return prisma.bonsai.deleteMany({
     where: { id, userId }
+  });
+}
+
+export async function updateCollectionSettings(input: {
+  userId: string;
+  collectionLocation?: string;
+  isCollectionPublic: boolean;
+  showCareInPublic: boolean;
+}) {
+  return prisma.user.update({
+    where: { id: input.userId },
+    data: {
+      collectionLocation: input.collectionLocation,
+      isCollectionPublic: input.isCollectionPublic,
+      showCareInPublic: input.showCareInPublic
+    }
   });
 }
 

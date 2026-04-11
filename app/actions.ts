@@ -12,6 +12,7 @@ import {
   getBonsaiDetail,
   setPrimaryCareEventPhoto,
   setPrimaryPhoto,
+  updateCollectionSettings,
   updateCareEvent,
   updateBonsai
 } from "@/lib/bonsais";
@@ -35,6 +36,10 @@ function parseDate(value: FormDataEntryValue | null) {
   return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
+function parseCheckbox(value: FormDataEntryValue | null) {
+  return value === "on";
+}
+
 export async function createBonsaiAction(formData: FormData) {
   const user = await requireCurrentUser();
   const name = parseOptionalString(formData.get("name"));
@@ -51,7 +56,8 @@ export async function createBonsaiAction(formData: FormData) {
     style: parseOptionalString(formData.get("style")),
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),
-    acquiredAt: parseDate(formData.get("acquiredAt"))
+    acquiredAt: parseDate(formData.get("acquiredAt")),
+    isPublic: parseCheckbox(formData.get("isPublic"))
   });
 
   revalidatePath("/bonsais");
@@ -227,7 +233,8 @@ export async function updateBonsaiAction(formData: FormData) {
     style: parseOptionalString(formData.get("style")),
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),
-    acquiredAt: parseDate(formData.get("acquiredAt"))
+    acquiredAt: parseDate(formData.get("acquiredAt")),
+    isPublic: parseCheckbox(formData.get("isPublic"))
   });
 
   revalidatePath("/bonsais");
@@ -273,6 +280,21 @@ export async function setPrimaryPhotoAction(formData: FormData) {
 
   revalidatePath("/bonsais");
   revalidatePath(`/bonsais/${bonsaiId}`);
+}
+
+export async function updateCollectionSettingsAction(formData: FormData) {
+  const user = await requireCurrentUser();
+
+  await updateCollectionSettings({
+    userId: user.id,
+    collectionLocation: parseOptionalString(formData.get("collectionLocation")),
+    isCollectionPublic: parseCheckbox(formData.get("isCollectionPublic")),
+    showCareInPublic: parseCheckbox(formData.get("showCareInPublic"))
+  });
+
+  revalidatePath("/ajustes");
+  revalidatePath("/colecciones-publicas");
+  revalidatePath(`/colecciones-publicas/${user.id}`);
 }
 
 export async function setPrimaryCareEventPhotoAction(formData: FormData) {

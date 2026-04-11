@@ -13,7 +13,13 @@ type PhotoItem = {
   takenAt: Date | string;
 };
 
-export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
+export function PhotoGallery({
+  photos,
+  readOnly = false
+}: {
+  photos: PhotoItem[];
+  readOnly?: boolean;
+}) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
@@ -109,24 +115,26 @@ export function PhotoGallery({ photos }: { photos: PhotoItem[] }) {
               <p className="text-center text-xs font-medium uppercase tracking-[0.14em] text-paper/38">
                 {formatDate(photo.takenAt)}
               </p>
-              <div className="mt-3 flex justify-center">
-                {photo.isPrimary ? (
-                  <span className="rounded-full border border-moss-500/20 bg-moss-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-200">
-                    Principal
-                  </span>
-                ) : (
-                  <form action={setPrimaryPhotoAction}>
-                    <input type="hidden" name="photoId" value={photo.id} />
-                    <input type="hidden" name="bonsaiId" value={photo.bonsaiId} />
-                    <button
-                      type="submit"
-                      className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-paper/72 transition hover:border-white/20 hover:bg-white/[0.08]"
-                    >
-                      Poner principal
-                    </button>
-                  </form>
-                )}
-              </div>
+              {!readOnly ? (
+                <div className="mt-3 flex justify-center">
+                  {photo.isPrimary ? (
+                    <span className="rounded-full border border-moss-500/20 bg-moss-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-200">
+                      Principal
+                    </span>
+                  ) : (
+                    <form action={setPrimaryPhotoAction}>
+                      <input type="hidden" name="photoId" value={photo.id} />
+                      <input type="hidden" name="bonsaiId" value={photo.bonsaiId} />
+                      <button
+                        type="submit"
+                        className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-paper/72 transition hover:border-white/20 hover:bg-white/[0.08]"
+                      >
+                        Poner principal
+                      </button>
+                    </form>
+                  )}
+                </div>
+              ) : null}
             </div>
           </div>
         ))}

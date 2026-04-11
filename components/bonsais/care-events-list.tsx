@@ -21,10 +21,12 @@ type CareEventListItem = {
 
 export function CareEventsList({
   bonsaiId,
-  items
+  items,
+  readOnly = false
 }: {
   bonsaiId: string;
   items: CareEventListItem[];
+  readOnly?: boolean;
 }) {
   if (items.length === 0) {
     return (
@@ -62,15 +64,17 @@ export function CareEventsList({
                   />
                 </div>
               ) : null}
-              <div className="flex flex-wrap items-center gap-2 pt-1">
-                <Link
-                  href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
-                  className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
-                >
-                  Editar
-                </Link>
-                <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
-              </div>
+              {!readOnly ? (
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <Link
+                    href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
+                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
+                  >
+                    Editar
+                  </Link>
+                  <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+                </div>
+              ) : null}
             </div>
           </article>
         ))}
@@ -93,9 +97,11 @@ export function CareEventsList({
               <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
                 Imagen
               </th>
-              <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
-                Acciones
-              </th>
+              {!readOnly ? (
+                <th className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-paper/38">
+                  Acciones
+                </th>
+              ) : null}
             </tr>
           </thead>
           <tbody>
@@ -129,17 +135,19 @@ export function CareEventsList({
                     <span className="text-sm text-paper/38">Sin imagen</span>
                   )}
                 </td>
-                <td className="px-5 py-4 align-top">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Link
-                      href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
-                      className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
-                    >
-                      Editar
-                    </Link>
-                    <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
-                  </div>
-                </td>
+                {!readOnly ? (
+                  <td className="px-5 py-4 align-top">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Link
+                        href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
+                        className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
+                      >
+                        Editar
+                      </Link>
+                      <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+                    </div>
+                  </td>
+                ) : null}
               </tr>
             ))}
           </tbody>

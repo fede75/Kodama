@@ -13,6 +13,7 @@ type BonsaiFormProps = {
     location: string | null;
     acquiredAt: Date | null;
     notes: string | null;
+    isPublic: boolean;
   };
 };
 
@@ -87,6 +88,16 @@ export function BonsaiForm({
           defaultValue={bonsai?.notes ?? ""}
         />
       </FormField>
+
+      <label className="flex items-center gap-3 rounded-[1.4rem] border border-white/8 bg-white/[0.04] px-4 py-4 text-sm text-paper/78">
+        <input
+          type="checkbox"
+          name="isPublic"
+          defaultChecked={bonsai?.isPublic ?? true}
+          className="h-4 w-4 rounded border-white/20 bg-transparent"
+        />
+        <span>Mostrar este bonsái en la colección pública</span>
+      </label>
 
       <div className="flex justify-end">
         <Button type="submit" className="bg-moss-500 text-paper hover:bg-moss-400">

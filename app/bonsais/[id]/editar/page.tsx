@@ -47,7 +47,8 @@ export default async function EditBonsaiPage({
             style: bonsai.style,
             location: bonsai.location,
             acquiredAt: bonsai.acquiredAt,
-            notes: bonsai.notes
+            notes: bonsai.notes,
+            isPublic: bonsai.isPublic
           }}
         />
       </div>

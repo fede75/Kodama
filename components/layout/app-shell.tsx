@@ -8,12 +8,17 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
     ? [
         { href: "/", label: "Inicio" },
         { href: "/bonsais", label: "Colección" },
+        { href: "/colecciones-publicas", label: "Colecciones públicas" },
         { href: "/bonsais/new", label: "Registra bonsái" },
+        { href: "/ajustes", label: "Ajustes" },
         ...(user.role === "ADMIN"
           ? [{ href: "/admin", label: "Administración" }]
           : [])
       ]
-    : [{ href: "/", label: "Acceso" }];
+    : [
+        { href: "/", label: "Acceso" },
+        { href: "/colecciones-publicas", label: "Colecciones públicas" }
+      ];
 
   return (
     <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
