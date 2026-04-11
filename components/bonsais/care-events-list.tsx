@@ -49,7 +49,7 @@ export function CareEventsList({
           >
             <div className="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
               <div className="min-w-[11rem]">
-                <p className="font-display text-[2.2rem] leading-none text-paper">
+                <p className="font-display text-[2.2rem] leading-none text-moss-200">
                   {formatDateTime(item.performedAt)}
                 </p>
               </div>
