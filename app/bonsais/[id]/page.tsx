@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
 import { BonsaiTimeline } from "@/components/bonsais/timeline";
 import { Button } from "@/components/ui/button";
 import { getDefaultUser } from "@/lib/default-user";
@@ -96,11 +97,12 @@ export default async function BonsaiDetailPage({
               Fotos
             </h2>
             <p className="mt-2 text-sm leading-6 text-bark-700">
-              El modelo de datos ya está preparado para guardar fotos de
-              evolución. En este MVP se muestran las registradas en base de
-              datos y se deja lista la ampliación para subir imágenes locales o
-              a almacenamiento externo más adelante.
+              Sube imágenes de evolución para mantener un historial visual del
+              árbol directamente en Vercel Blob.
             </p>
+            <div className="mt-5 rounded-[1.5rem] bg-bark-50 p-4">
+              <PhotoUploadForm bonsaiId={bonsai.id} />
+            </div>
             <div className="mt-4 space-y-3">
               {bonsai.photos.length > 0 ? (
                 bonsai.photos.map((photo) => (

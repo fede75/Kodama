@@ -66,6 +66,22 @@ export async function createCareEvent(input: {
   });
 }
 
+export async function createPhoto(input: {
+  bonsaiId: string;
+  imageUrl: string;
+  caption?: string;
+  takenAt?: Date;
+}) {
+  return prisma.photo.create({
+    data: {
+      bonsaiId: input.bonsaiId,
+      imageUrl: input.imageUrl,
+      caption: input.caption,
+      takenAt: input.takenAt ?? new Date()
+    }
+  });
+}
+
 export async function getLatestCareEvents(userId: string, limit = 6) {
   return prisma.careEvent.findMany({
     where: {
