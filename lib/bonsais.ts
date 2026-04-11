@@ -6,6 +6,10 @@ const bonsaiListInclude = {
     orderBy: { performedAt: "desc" as const },
     take: 1
   },
+  photos: {
+    orderBy: { takenAt: "desc" as const },
+    take: 1
+  },
   _count: {
     select: {
       careEvents: true,
