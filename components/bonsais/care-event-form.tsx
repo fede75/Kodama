@@ -6,7 +6,11 @@ import { useRef, useState } from "react";
 import { saveCareEventAction } from "@/app/actions";
 import { CareEventPhotoGallery } from "@/components/bonsais/care-event-photo-gallery";
 import { CareEventPhotoUploadForm } from "@/components/bonsais/care-event-photo-upload-form";
-import { CARE_EVENT_OPTIONS } from "@/lib/constants";
+import {
+  getCareEventLabel,
+  getDictionary,
+  type Locale
+} from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input, Textarea } from "@/components/ui/input";
@@ -15,13 +19,15 @@ import { Select } from "@/components/ui/select";
 export function CareEventForm({
   bonsai,
   mode = "create",
-  careEvent
+  careEvent,
+  locale = "es"
 }: {
   bonsai: {
     id: string;
     name: string;
   };
   mode?: "create" | "edit";
+  locale?: Locale;
   careEvent?: {
     id: string;
     type: string;
@@ -47,6 +53,20 @@ export function CareEventForm({
   const [notes, setNotes] = useState(careEvent?.notes ?? "");
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const dict = getDictionary(locale);
+  const careEventOptions = ([
+    "WATERING",
+    "FERTILIZING",
+    "PRUNING",
+    "PINCHING",
+    "REPOTTING",
+    "WIRING",
+    "DEFOLIATION",
+    "PEST_TREATMENT"
+  ] as const).map((value) => ({
+    value,
+    label: getCareEventLabel(locale, value)
+  }));
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -86,7 +106,11 @@ export function CareEventForm({
       setError(
         submitError instanceof Error
           ? submitError.message
-          : "No se pudo guardar el cuidado."
+          : locale === "es"
+            ? "No se pudo guardar el cuidado."
+            : locale === "en"
+              ? "The care entry could not be saved."
+              : "手入れを保存できませんでした。"
       );
     } finally {
       setIsSaving(false);
@@ -96,14 +120,14 @@ export function CareEventForm({
   return (
     <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid gap-5 md:grid-cols-2">
-        <FormField label="Tipo de cuidado">
+        <FormField label={locale === "es" ? "Tipo de cuidado" : locale === "en" ? "Care type" : "手入れの種類"}>
           <Select
             name="type"
             value={type}
             onChange={(event) => setType(event.target.value)}
             required
           >
-            {CARE_EVENT_OPTIONS.map((option) => (
+            {careEventOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -111,7 +135,7 @@ export function CareEventForm({
           </Select>
         </FormField>
 
-        <FormField label="Fecha y hora">
+        <FormField label={locale === "es" ? "Fecha y hora" : locale === "en" ? "Date and time" : "日時"}>
           <Input
             name="performedAt"
             type="datetime-local"
@@ -120,26 +144,38 @@ export function CareEventForm({
           />
         </FormField>
 
-        <FormField label="Título">
+        <FormField label={locale === "es" ? "Título" : locale === "en" ? "Title" : "タイトル"}>
           <Input
             name="title"
-            placeholder={`Ej. Riego de ${bonsai.name.toLowerCase()}`}
+            placeholder={
+              locale === "es"
+                ? `Ej. Riego de ${bonsai.name.toLowerCase()}`
+                : locale === "en"
+                  ? `e.g. Watering ${bonsai.name}`
+                  : `${bonsai.name} の手入れ`
+            }
             value={title}
             onChange={(event) => setTitle(event.target.value)}
           />
         </FormField>
       </div>
 
-      <FormField label="Notas">
+      <FormField label={locale === "es" ? "Notas" : locale === "en" ? "Notes" : "メモ"}>
         <Textarea
           name="notes"
-          placeholder="Cantidad de agua, respuesta del árbol, tareas pendientes..."
+          placeholder={
+            locale === "es"
+              ? "Cantidad de agua, respuesta del árbol, tareas pendientes..."
+              : locale === "en"
+                ? "Amount of water, tree response, pending tasks..."
+                : "水量、樹の反応、残作業..."
+          }
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
         />
       </FormField>
 
-      <FormField label="Imágenes">
+      <FormField label={locale === "es" ? "Imágenes" : locale === "en" ? "Images" : "画像"}>
         <Input
           ref={fileInputRef}
           type="file"
@@ -153,7 +189,9 @@ export function CareEventForm({
 
       {mode === "edit" && careEvent?.id ? (
         <div className="space-y-4 rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-4">
-          <p className="text-sm font-semibold text-paper/78">Imágenes actuales</p>
+          <p className="text-sm font-semibold text-paper/78">
+            {locale === "es" ? "Imágenes actuales" : locale === "en" ? "Current images" : "現在の画像"}
+          </p>
 
           {careEvent.photos && careEvent.photos.length > 0 ? (
             <CareEventPhotoGallery
@@ -168,7 +206,9 @@ export function CareEventForm({
               }))}
             />
           ) : (
-            <p className="text-sm text-paper/52">Sin imágenes registradas.</p>
+            <p className="text-sm text-paper/52">
+              {locale === "es" ? "Sin imágenes registradas." : locale === "en" ? "No images recorded." : "画像はまだ登録されていません。"}
+            </p>
           )}
 
           <CareEventPhotoUploadForm careEventId={careEvent.id} />
@@ -182,10 +222,18 @@ export function CareEventForm({
           className="bg-moss-500 text-paper hover:bg-moss-400"
         >
           {isSaving
-            ? "Guardando..."
+            ? locale === "es"
+              ? "Guardando..."
+              : locale === "en"
+                ? "Saving..."
+                : "保存中..."
             : mode === "edit"
-              ? "Guardar cambios"
-              : "Guardar cuidado"}
+              ? dict.common.saveChanges
+              : locale === "es"
+                ? "Guardar cuidado"
+                : locale === "en"
+                  ? "Save care entry"
+                  : "手入れを保存"}
         </Button>
       </div>
     </form>

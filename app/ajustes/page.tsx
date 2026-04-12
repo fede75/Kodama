@@ -1,19 +1,23 @@
 import { CollectionSettingsForm } from "@/components/settings/collection-settings-form";
 import { requireCurrentUser } from "@/lib/auth-guards";
+import { getDictionary, getLocale } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
   const user = await requireCurrentUser();
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       <div>
-        <h1 className="font-display text-4xl text-paper">Ajustes</h1>
+        <h1 className="font-display text-4xl text-paper">{dict.settingsPage.title}</h1>
       </div>
 
       <section className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-6 shadow-card">
         <CollectionSettingsForm
+          locale={locale}
           user={{
             collectionLocation: user.collectionLocation ?? null,
             isCollectionPublic: user.isCollectionPublic,

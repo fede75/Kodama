@@ -1,32 +1,35 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { listPublicCollections } from "@/lib/bonsais";
+import { getDictionary, getLocale } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 export default async function PublicCollectionsPage() {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
   const collections = await listPublicCollections();
 
   return (
     <div className="space-y-8">
       <section className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-3">
-          <p className="editorial-kicker text-xs">Explorar</p>
+          <p className="editorial-kicker text-xs">{dict.publicCollectionsPage.kicker}</p>
           <h1 className="font-display text-4xl leading-none text-paper sm:text-5xl">
-            Colecciones públicas
+            {dict.publicCollectionsPage.title}
           </h1>
           <p className="max-w-2xl text-sm leading-7 text-paper/50 sm:text-base">
-            Un inventario abierto de colecciones vivas, con foco en imagen, procedencia y acceso directo a cada cuaderno.
+            {dict.publicCollectionsPage.description}
           </p>
         </div>
         <div className="rounded-full bg-white/[0.035] px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42">
-          {collections.length} colecciones visibles
+          {collections.length} {dict.publicCollectionsPage.visibleCollections}
         </div>
       </section>
 
       {collections.length === 0 ? (
         <div className="rounded-[2rem] surface-soft p-6 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-8">
-          Todavía no hay colecciones públicas.
+          {dict.publicCollectionsPage.empty}
         </div>
       ) : (
         <section className="grid gap-6 2xl:grid-cols-2">
@@ -47,7 +50,10 @@ export default async function PublicCollectionsPage() {
                     <div className="overflow-hidden rounded-[1.7rem] bg-black/20">
                       <img
                         src={samplePhoto.imageUrl}
-                        alt={samplePhoto.caption ?? `Foto de ${sampleBonsai?.name ?? "bonsái"}`}
+                        alt={
+                          samplePhoto.caption ??
+                          `${dict.common.photos} · ${sampleBonsai?.name ?? dict.publicCollectionsPage.featuredBonsai}`
+                        }
                         className="aspect-[4/5] h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
                         loading="lazy"
                       />
@@ -55,37 +61,37 @@ export default async function PublicCollectionsPage() {
                   ) : (
                     <div className="flex items-end overflow-hidden rounded-[1.7rem] bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4">
                       <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-paper/72">
-                        Sin foto
+                        {dict.common.noPhoto}
                       </div>
                     </div>
                   )}
 
                   <div className="flex min-h-full flex-col justify-between">
                     <div>
-                      <p className="editorial-kicker text-[10px]">Colección pública</p>
+                      <p className="editorial-kicker text-[10px]">{dict.publicCollectionsPage.publicCollection}</p>
                       <h2 className="mt-3 font-display text-[clamp(2rem,4vw,2.5rem)] leading-none text-paper">
-                        {collection.name ?? "Usuario"}
+                        {collection.name ?? dict.publicCollectionsPage.unnamedUser}
                       </h2>
                       <p className="mt-3 text-sm uppercase tracking-[0.16em] text-paper/38">
-                        {collection.collectionLocation ?? "Ubicación no indicada"}
+                        {collection.collectionLocation ?? dict.publicCollectionsPage.noLocation}
                       </p>
                     </div>
 
                     <div className="mt-7 grid gap-4 sm:grid-cols-2">
                       <div className="space-y-1">
                         <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
-                          Bonsái destacado
+                          {dict.publicCollectionsPage.featuredBonsai}
                         </p>
                         <p className="text-sm text-paper/76">
-                          {sampleBonsai?.name ?? "Sin destacar"}
+                          {sampleBonsai?.name ?? dict.publicCollectionsPage.noneFeatured}
                         </p>
                       </div>
                       <div className="space-y-1">
                         <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
-                          Visibles
+                          {dict.publicCollectionsPage.visibleTrees}
                         </p>
                         <p className="text-sm text-paper/76">
-                          {collection.bonsais.length} árboles
+                          {collection.bonsais.length} {dict.publicCollectionsPage.trees}
                         </p>
                       </div>
                     </div>
@@ -95,7 +101,7 @@ export default async function PublicCollectionsPage() {
                         href={`/colecciones-publicas/${collection.id}`}
                         className="inline-flex"
                       >
-                        <Button>Ver colección</Button>
+                        <Button>{dict.common.viewCollection}</Button>
                       </Link>
                     </div>
                   </div>

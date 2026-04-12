@@ -4,6 +4,7 @@ import { BonsaiForm } from "@/components/bonsais/bonsai-form";
 import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { getBonsaiDetail } from "@/lib/bonsais";
+import { getLocale } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ export default async function EditBonsaiPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const locale = await getLocale();
   const user = await requireCurrentUser();
   const bonsai = await getBonsaiDetail(id, user.id);
 
@@ -24,7 +26,9 @@ export default async function EditBonsaiPage({
     <div className="mx-auto max-w-3xl space-y-8">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl text-paper">Editar {bonsai.name}</h1>
+          <h1 className="font-display text-4xl text-paper">
+            {locale === "es" ? "Editar" : locale === "en" ? "Edit" : "編集"} {bonsai.name}
+          </h1>
         </div>
 
         <Link href={`/bonsais/${bonsai.id}`}>
@@ -32,7 +36,7 @@ export default async function EditBonsaiPage({
             variant="secondary"
             className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
           >
-            Volver
+            {locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
           </Button>
         </Link>
       </div>
@@ -52,6 +56,7 @@ export default async function EditBonsaiPage({
             collectionStatus: bonsai.collectionStatus,
             isPublic: bonsai.isPublic
           }}
+          locale={locale}
         />
       </div>
     </div>

@@ -8,8 +8,13 @@ import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
 import { TogglePanel } from "@/components/bonsais/toggle-panel";
 import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth-guards";
-import { COLLECTION_STATUS_LABELS } from "@/lib/constants";
 import { getBonsaiDetail, listBonsais } from "@/lib/bonsais";
+import {
+  getCollectionStatusLabel,
+  getDictionary,
+  getIntlLocale,
+  getLocale
+} from "@/lib/i18n";
 import { calculateEstimatedAge, formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +25,9 @@ export default async function BonsaiDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const intlLocale = getIntlLocale(locale);
   const user = await requireCurrentUser();
   const [bonsai, bonsais] = await Promise.all([
     getBonsaiDetail(id, user.id),
@@ -62,7 +70,7 @@ export default async function BonsaiDetailPage({
           <div className="overflow-hidden rounded-[2rem] bg-black/20">
             <MainPhotoViewer
               imageUrl={photoGalleryItems[0]?.imageUrl ?? null}
-              alt={photoGalleryItems[0]?.caption ?? `Foto principal de ${bonsai.name}`}
+              alt={photoGalleryItems[0]?.caption ?? `${dict.common.photos} · ${bonsai.name}`}
               caption={photoGalleryItems[0]?.caption}
               takenAt={photoGalleryItems[0]?.takenAt}
             />
@@ -73,23 +81,23 @@ export default async function BonsaiDetailPage({
               <div className="flex flex-wrap gap-3">
                 <Link href="/bonsais" className="block sm:inline-flex">
                   <Button variant="secondary" className="w-full sm:w-auto">
-                    Volver
+                    {dict.common.back}
                   </Button>
                 </Link>
                 <Link href={`/bonsais/${bonsai.id}/editar`} className="block sm:inline-flex">
                   <Button variant="secondary" className="w-full sm:w-auto">
-                    Editar
+                    {dict.common.edit}
                   </Button>
                 </Link>
                 <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
-                  <Button className="w-full sm:w-auto">Añadir cuidado</Button>
+                  <Button className="w-full sm:w-auto">{dict.common.addCare}</Button>
                 </Link>
                 <DeleteBonsaiForm bonsaiId={bonsai.id} />
               </div>
             </div>
 
             <div>
-              <p className="editorial-kicker text-[10px]">Ficha</p>
+              <p className="editorial-kicker text-[10px]">{dict.common.collectionSheet}</p>
               <h1 className="mt-3 font-display text-[clamp(2.2rem,6vw,4.6rem)] leading-none text-paper">
                 {bonsai.name}
               </h1>
@@ -105,31 +113,31 @@ export default async function BonsaiDetailPage({
 
             <div className="grid gap-3 md:grid-cols-2">
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Estado</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">{dict.common.state}</p>
                 <p className="mt-3 text-[1.02rem] text-paper">{bonsai.status}</p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Colección</p>
-                <p className="mt-3 text-[1.02rem] text-paper">{COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">{dict.common.collection}</p>
+                <p className="mt-3 text-[1.02rem] text-paper">{getCollectionStatusLabel(locale, bonsai.collectionStatus)}</p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Ubicación</p>
-                <p className="mt-3 text-[1.02rem] text-paper">{bonsai.location ?? "No indicada"}</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">{dict.common.location}</p>
+                <p className="mt-3 text-[1.02rem] text-paper">{bonsai.location ?? dict.common.notIndicated}</p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Estilo</p>
-                <p className="mt-3 text-[1.02rem] text-paper">{bonsai.style ?? "Sin definir"}</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">{dict.common.style}</p>
+                <p className="mt-3 text-[1.02rem] text-paper">{bonsai.style ?? dict.common.notDefined}</p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Edad estimada</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">{dict.common.estimatedAge}</p>
                 <p className="mt-3 text-[1.02rem] text-paper">
-                  {estimatedAge != null ? `${estimatedAge} años` : "No disponible"}
+                  {estimatedAge != null ? `${estimatedAge} ${dict.common.years}` : dict.common.unavailable}
                 </p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4 sm:col-span-2">
-                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Adquirido</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">{dict.common.acquired}</p>
                 <p className="mt-3 text-[1.02rem] text-paper">
-                  {bonsai.acquiredAt ? formatDate(bonsai.acquiredAt) : "Sin fecha"}
+                  {bonsai.acquiredAt ? formatDate(bonsai.acquiredAt, intlLocale) : dict.common.noDate}
                 </p>
               </div>
             </div>
@@ -147,7 +155,7 @@ export default async function BonsaiDetailPage({
                   &lt;
                 </span>
                 <div>
-                  <p className="editorial-kicker text-[10px]">Anterior</p>
+                  <p className="editorial-kicker text-[10px]">{dict.common.previous}</p>
                   <p className="mt-2 font-display text-3xl text-paper">
                     {previousBonsai.name}
                   </p>
@@ -160,7 +168,7 @@ export default async function BonsaiDetailPage({
                 className="group flex items-center justify-end gap-4 rounded-[1.6rem] surface-soft p-4 text-right transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
               >
                 <div>
-                  <p className="editorial-kicker text-[10px]">Siguiente</p>
+                  <p className="editorial-kicker text-[10px]">{dict.common.next}</p>
                   <p className="mt-2 font-display text-3xl text-paper">
                     {nextBonsai.name}
                   </p>
@@ -177,12 +185,12 @@ export default async function BonsaiDetailPage({
       <section className="space-y-5 rounded-[2.2rem] surface-panel p-5 sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="editorial-kicker text-xs">Imágenes</p>
-            <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">Galería</h2>
+            <p className="editorial-kicker text-xs">{dict.common.photos}</p>
+            <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">{dict.common.gallery}</h2>
           </div>
         </div>
 
-        <TogglePanel buttonLabel="Añadir imagen">
+        <TogglePanel buttonLabel={dict.common.addImage}>
           <div className="w-full rounded-[1.8rem] bg-white/[0.035] p-4">
             <PhotoUploadForm bonsaiId={bonsai.id} />
           </div>
@@ -192,7 +200,7 @@ export default async function BonsaiDetailPage({
           <PhotoGallery photos={photoGalleryItems} />
         ) : (
           <p className="rounded-[1.8rem] bg-white/[0.035] px-5 py-6 text-sm text-paper/56">
-            Aún no hay fotos registradas.
+            {dict.common.noPhotosYet}
           </p>
         )}
       </section>
@@ -200,11 +208,11 @@ export default async function BonsaiDetailPage({
       <section className="space-y-5 rounded-[2.2rem] surface-panel p-5 sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="editorial-kicker text-xs">Evolución</p>
-            <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">Cuidados</h2>
+            <p className="editorial-kicker text-xs">{dict.common.timeline}</p>
+            <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">{dict.common.care}</h2>
           </div>
           <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
-            <Button className="w-full sm:w-auto">Añadir cuidado</Button>
+            <Button className="w-full sm:w-auto">{dict.common.addCare}</Button>
           </Link>
         </div>
 
@@ -219,6 +227,7 @@ export default async function BonsaiDetailPage({
             performedAt: event.performedAt,
             photos: event.photos
           }))}
+          locale={locale}
         />
       </section>
     </div>

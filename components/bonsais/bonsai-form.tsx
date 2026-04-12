@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input, Textarea } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { COLLECTION_STATUS_OPTIONS } from "@/lib/constants";
+import { getCollectionStatusOptions, type Locale } from "@/lib/i18n";
 
 type BonsaiFormProps = {
   mode?: "create" | "edit";
@@ -31,9 +31,11 @@ function formatDateInput(value: Date | null) {
 
 export function BonsaiForm({
   mode = "create",
-  bonsai
-}: BonsaiFormProps) {
+  bonsai,
+  locale
+}: BonsaiFormProps & { locale: Locale }) {
   const action = mode === "edit" ? updateBonsaiAction : createBonsaiAction;
+  const statusOptions = getCollectionStatusOptions(locale);
 
   return (
     <form action={action} className="grid gap-5">
@@ -42,16 +44,16 @@ export function BonsaiForm({
       ) : null}
 
       <div className="grid gap-5 md:grid-cols-2">
-        <FormField label="Nombre">
+        <FormField label={locale === "es" ? "Nombre" : locale === "en" ? "Name" : "名前"}>
           <Input
             name="name"
             required
-            placeholder="Nombre del bonsái"
+            placeholder={locale === "es" ? "Nombre del bonsái" : locale === "en" ? "Bonsai name" : "盆栽の名前"}
             defaultValue={bonsai?.name ?? ""}
           />
         </FormField>
 
-        <FormField label="Especie">
+        <FormField label={locale === "es" ? "Especie" : locale === "en" ? "Species" : "樹種"}>
           <Input
             name="species"
             required
@@ -60,23 +62,29 @@ export function BonsaiForm({
           />
         </FormField>
 
-        <FormField label="Estilo">
+        <FormField label={locale === "es" ? "Estilo" : locale === "en" ? "Style" : "樹形"}>
           <Input
             name="style"
-            placeholder="Moyogi, Chokkan, Kengai..."
+            placeholder={locale === "ja" ? "模様木、直幹、懸崖..." : "Moyogi, Chokkan, Kengai..."}
             defaultValue={bonsai?.style ?? ""}
           />
         </FormField>
 
-        <FormField label="Ubicación">
+        <FormField label={locale === "es" ? "Ubicación" : locale === "en" ? "Location" : "置き場所"}>
           <Input
             name="location"
-            placeholder="Terraza norte, interior..."
+            placeholder={
+              locale === "es"
+                ? "Terraza norte, interior..."
+                : locale === "en"
+                  ? "North terrace, indoors..."
+                  : "北向きのテラス、室内..."
+            }
             defaultValue={bonsai?.location ?? ""}
           />
         </FormField>
 
-        <FormField label="Fecha de adquisición">
+        <FormField label={locale === "es" ? "Fecha de adquisición" : locale === "en" ? "Acquisition date" : "取得日"}>
           <Input
             name="acquiredAt"
             type="date"
@@ -85,25 +93,37 @@ export function BonsaiForm({
         </FormField>
 
         <FormField
-          label="Edad al comprarlo"
-          hint="Edad estimada en años en el momento de adquisición"
+          label={
+            locale === "es"
+              ? "Edad al comprarlo"
+              : locale === "en"
+                ? "Age when acquired"
+                : "取得時の樹齢"
+          }
+          hint={
+            locale === "es"
+              ? "Edad estimada en años en el momento de adquisición"
+              : locale === "en"
+                ? "Estimated age in years at the time of acquisition"
+                : "取得時点でのおおよその樹齢（年）"
+          }
         >
           <Input
             name="ageAtAcquisitionYears"
             type="number"
             min="0"
             step="1"
-            placeholder="Ej. 8"
+            placeholder={locale === "ja" ? "例: 8" : locale === "en" ? "e.g. 8" : "Ej. 8"}
             defaultValue={bonsai?.ageAtAcquisitionYears ?? ""}
           />
         </FormField>
 
-        <FormField label="Estado en colección">
+        <FormField label={locale === "es" ? "Estado en colección" : locale === "en" ? "Collection status" : "コレクション状態"}>
           <Select
             name="collectionStatus"
             defaultValue={bonsai?.collectionStatus ?? "ACTIVE"}
           >
-            {COLLECTION_STATUS_OPTIONS.map((option) => (
+            {statusOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -112,10 +132,16 @@ export function BonsaiForm({
         </FormField>
       </div>
 
-      <FormField label="Notas">
+      <FormField label={locale === "es" ? "Notas" : locale === "en" ? "Notes" : "メモ"}>
         <Textarea
           name="notes"
-          placeholder="Observaciones iniciales, sustrato, procedencia..."
+          placeholder={
+            locale === "es"
+              ? "Observaciones iniciales, sustrato, procedencia..."
+              : locale === "en"
+                ? "Initial observations, substrate, origin..."
+                : "初期メモ、用土、入手元..."
+          }
           defaultValue={bonsai?.notes ?? ""}
         />
       </FormField>
@@ -127,12 +153,28 @@ export function BonsaiForm({
           defaultChecked={bonsai?.isPublic ?? true}
           className="h-4 w-4 rounded border-white/20 bg-transparent"
         />
-        <span>Mostrar este bonsái en la colección pública</span>
+        <span>
+          {locale === "es"
+            ? "Mostrar este bonsái en la colección pública"
+            : locale === "en"
+              ? "Show this bonsai in the public collection"
+              : "この盆栽を公開コレクションに表示する"}
+        </span>
       </label>
 
       <div className="flex justify-end">
         <Button type="submit" className="bg-moss-500 text-paper hover:bg-moss-400">
-          {mode === "edit" ? "Guardar cambios" : "Guardar bonsái"}
+          {mode === "edit"
+            ? locale === "es"
+              ? "Guardar cambios"
+              : locale === "en"
+                ? "Save changes"
+                : "変更を保存"
+            : locale === "es"
+              ? "Guardar bonsái"
+              : locale === "en"
+                ? "Save bonsai"
+                : "盆栽を保存"}
         </Button>
       </div>
     </form>

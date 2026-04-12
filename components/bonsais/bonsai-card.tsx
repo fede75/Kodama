@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CARE_EVENT_LABELS, COLLECTION_STATUS_LABELS } from "@/lib/constants";
+import { getCareEventLabel, getCollectionStatusLabel, getDictionary, getIntlLocale, type Locale } from "@/lib/i18n";
 import { formatDate } from "@/lib/utils";
 
 type BonsaiCardProps = {
@@ -10,7 +10,7 @@ type BonsaiCardProps = {
     style: string | null;
     location: string | null;
     status: string;
-    collectionStatus: keyof typeof COLLECTION_STATUS_LABELS;
+    collectionStatus: "ACTIVE" | "DECEASED" | "SOLD" | "GIFTED" | "OTHER";
     photos: Array<{
       id: string;
       imageUrl: string;
@@ -18,7 +18,7 @@ type BonsaiCardProps = {
       isPrimary: boolean;
     }>;
     careEvents: Array<{
-      type: keyof typeof CARE_EVENT_LABELS;
+      type: "WATERING" | "FERTILIZING" | "PRUNING" | "PINCHING" | "REPOTTING" | "WIRING" | "DEFOLIATION" | "PEST_TREATMENT";
       performedAt: Date;
     }>;
     _count: {
@@ -29,12 +29,15 @@ type BonsaiCardProps = {
     };
   };
   href?: string;
+  locale: Locale;
 };
 
-export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCardProps) {
+export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}`, locale }: BonsaiCardProps) {
   const latestCare = bonsai.careEvents[0];
   const coverPhoto = bonsai.photos[0];
   const isInactive = bonsai.collectionStatus !== "ACTIVE";
+  const dict = getDictionary(locale);
+  const intlLocale = getIntlLocale(locale);
 
   return (
     <Link
@@ -49,7 +52,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
           <div className="order-1 overflow-hidden rounded-[1.7rem] bg-black/20 sm:h-full">
             <img
               src={coverPhoto.imageUrl}
-              alt={coverPhoto.caption ?? `Foto de ${bonsai.name}`}
+              alt={coverPhoto.caption ?? `${dict.common.photos} · ${bonsai.name}`}
               className="aspect-[4/5] h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
               loading="lazy"
             />
@@ -57,7 +60,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
         ) : (
           <div className="order-1 flex items-end overflow-hidden rounded-[1.7rem] bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4 sm:h-full">
             <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-paper/72">
-              Sin foto
+              {dict.common.noPhoto}
             </div>
           </div>
         )}
@@ -74,7 +77,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
             </div>
             {isInactive ? (
               <span className="shrink-0 rounded-full bg-clay-500/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-clay-200">
-                {COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}
+                {getCollectionStatusLabel(locale, bonsai.collectionStatus)}
               </span>
             ) : null}
           </div>
@@ -82,39 +85,39 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
           <div className="mt-7 grid gap-4 sm:grid-cols-2">
             <div className="space-y-1">
               <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
-                Estado
+                {dict.common.state}
               </p>
               <p className="text-[0.98rem] text-paper/80">{bonsai.status}</p>
             </div>
             <div className="space-y-1">
               <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
-                Ubicación
+                {dict.common.location}
               </p>
-              <p className="text-[0.98rem] text-paper/80">{bonsai.location ?? "No indicada"}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.location ?? dict.common.notIndicated}</p>
             </div>
             <div className="space-y-1">
               <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
-                Estilo
+                {dict.common.style}
               </p>
-              <p className="text-[0.98rem] text-paper/80">{bonsai.style ?? "Sin definir"}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.style ?? dict.common.notDefined}</p>
             </div>
             <div className="space-y-1">
               <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
-                Último cuidado
+                {dict.card.latestCare}
               </p>
               <p className="text-[0.98rem] text-paper/80">
                 {latestCare
-                  ? `${CARE_EVENT_LABELS[latestCare.type]} · ${formatDate(latestCare.performedAt)}`
-                  : "Todavía no registrado"}
+                  ? `${getCareEventLabel(locale, latestCare.type)} · ${formatDate(latestCare.performedAt, intlLocale)}`
+                  : dict.card.notYetRecorded}
               </p>
             </div>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-5 text-[0.78rem] font-semibold uppercase tracking-[0.1em] text-paper/42">
-            <span>{bonsai._count.votes} votos</span>
-            <span>{bonsai._count.comments} mensajes</span>
-            <span>{bonsai._count.careEvents} cuidados</span>
-            <span>{bonsai._count.photos} fotos</span>
+            <span>{bonsai._count.votes} {dict.common.votes}</span>
+            <span>{bonsai._count.comments} {dict.common.messages}</span>
+            <span>{bonsai._count.careEvents} {dict.common.care.toLowerCase()}</span>
+            <span>{bonsai._count.photos} {dict.common.photos.toLowerCase()}</span>
           </div>
         </div>
       </div>

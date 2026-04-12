@@ -6,8 +6,14 @@ import { CommentsSection } from "@/components/social/comments-section";
 import { VoteForm } from "@/components/social/vote-form";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth-guards";
-import { COLLECTION_STATUS_LABELS } from "@/lib/constants";
 import { getPublicBonsaiDetail } from "@/lib/bonsais";
+import {
+  getCollectionStatusLabel,
+  getDictionary,
+  getIntlLocale,
+  getLocale,
+  replaceTemplate
+} from "@/lib/i18n";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -18,6 +24,9 @@ export default async function PublicBonsaiDetailPage({
   params: Promise<{ userId: string; bonsaiId: string }>;
 }) {
   const { userId, bonsaiId } = await params;
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const intlLocale = getIntlLocale(locale);
   const currentUser = await getCurrentUser();
   const result = await getPublicBonsaiDetail(userId, bonsaiId, currentUser?.id);
   const bonsai = result?.bonsais[0];
@@ -46,7 +55,7 @@ export default async function PublicBonsaiDetailPage({
                 variant="secondary"
                 className="w-full border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper sm:w-auto"
               >
-                Volver
+                {dict.common.back}
               </Button>
             </Link>
 
@@ -64,17 +73,26 @@ export default async function PublicBonsaiDetailPage({
                     ownerId={result.id}
                     voted={bonsai.votes.length > 0}
                     voteCount={bonsai._count.votes}
+                    locale={locale}
                   />
                 ) : (
                   <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-paper/70">
-                    {bonsai._count.votes} votos
+                    {bonsai._count.votes} {dict.common.votes}
                   </div>
                 )}
                 <Link
                   href={`/colecciones-publicas/${result.id}`}
                   className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-paper/78 transition hover:bg-white/[0.08]"
                 >
-                  Ver colección de {result.name ?? "este usuario"}
+                  {replaceTemplate(dict.publicBonsaiDetail.viewCollectionOf, {
+                    name:
+                      result.name ??
+                      (locale === "es"
+                        ? "este usuario"
+                        : locale === "en"
+                          ? "this user"
+                          : "このユーザー")
+                  })}
                 </Link>
               </div>
             </div>
@@ -87,31 +105,31 @@ export default async function PublicBonsaiDetailPage({
 
             <div className="grid gap-4 rounded-[2rem] border border-white/8 bg-black/30 p-5 text-paper shadow-card md:grid-cols-2 sm:p-6">
               <div>
-                <p className="text-sm text-paper/42">Estado</p>
+                <p className="text-sm text-paper/42">{dict.common.state}</p>
                 <p className="mt-1 text-lg font-semibold">{bonsai.status}</p>
               </div>
               <div>
-                <p className="text-sm text-paper/42">Colección</p>
+                <p className="text-sm text-paper/42">{dict.common.collection}</p>
                 <p className="mt-1 text-lg font-semibold">
-                  {COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}
+                  {getCollectionStatusLabel(locale, bonsai.collectionStatus)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-paper/42">Ubicación</p>
+                <p className="text-sm text-paper/42">{dict.common.location}</p>
                 <p className="mt-1 text-lg font-semibold">
-                  {bonsai.location ?? "No indicada"}
+                  {bonsai.location ?? dict.common.notIndicated}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-paper/42">Estilo</p>
+                <p className="text-sm text-paper/42">{dict.common.style}</p>
                 <p className="mt-1 text-lg font-semibold">
-                  {bonsai.style ?? "Sin definir"}
+                  {bonsai.style ?? dict.common.notDefined}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-paper/42">Adquirido</p>
+                <p className="text-sm text-paper/42">{dict.common.acquired}</p>
                 <p className="mt-1 text-lg font-semibold">
-                  {bonsai.acquiredAt ? formatDate(bonsai.acquiredAt) : "Sin fecha"}
+                  {bonsai.acquiredAt ? formatDate(bonsai.acquiredAt, intlLocale) : dict.common.noDate}
                 </p>
               </div>
             </div>
@@ -122,13 +140,13 @@ export default async function PublicBonsaiDetailPage({
               {mainPhoto ? (
                 <img
                   src={mainPhoto.imageUrl}
-                  alt={mainPhoto.caption ?? `Foto principal de ${bonsai.name}`}
+                  alt={mainPhoto.caption ?? `${dict.common.photos} · ${bonsai.name}`}
                   className="h-[clamp(16rem,42vw,26rem)] w-full object-cover"
                 />
               ) : (
                 <div className="flex h-[clamp(16rem,42vw,26rem)] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6">
                   <div className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
-                    Sin foto
+                    {dict.common.noPhoto}
                   </div>
                 </div>
               )}
@@ -136,10 +154,10 @@ export default async function PublicBonsaiDetailPage({
             {mainPhoto ? (
               <div className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] px-5 py-4 text-sm text-paper/62 shadow-card">
                 <p className="font-semibold text-paper">
-                  {mainPhoto.caption ?? "Foto"}
+                  {mainPhoto.caption ?? dict.publicBonsaiDetail.photo}
                 </p>
                 <p className="mt-1 uppercase tracking-[0.18em] text-paper/38">
-                  {formatDate(mainPhoto.takenAt)}
+                  {formatDate(mainPhoto.takenAt, intlLocale)}
                 </p>
               </div>
             ) : null}
@@ -148,19 +166,19 @@ export default async function PublicBonsaiDetailPage({
       </section>
 
       <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-card sm:p-6">
-        <h2 className="font-display text-3xl text-paper">Fotos</h2>
+        <h2 className="font-display text-3xl text-paper">{dict.common.photos}</h2>
         {photoGalleryItems.length > 0 ? (
           <PhotoGallery photos={photoGalleryItems} readOnly />
         ) : (
           <p className="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-paper/62">
-            Aún no hay fotos registradas.
+            {dict.common.noPhotosYet}
           </p>
         )}
       </section>
 
       {result.showCareInPublic ? (
         <section className="space-y-5 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-5 shadow-card sm:p-6">
-          <h2 className="font-display text-3xl text-paper">Cuidados</h2>
+          <h2 className="font-display text-3xl text-paper">{dict.publicBonsaiDetail.careSection}</h2>
           <CareEventsList
             bonsaiId={bonsai.id}
             items={bonsai.careEvents.map((event) => ({
@@ -173,6 +191,7 @@ export default async function PublicBonsaiDetailPage({
               photos: event.photos
             }))}
             readOnly
+            locale={locale}
           />
         </section>
       ) : null}
@@ -182,6 +201,7 @@ export default async function PublicBonsaiDetailPage({
         ownerId={result.id}
         currentUserId={currentUser?.id}
         comments={bonsai.comments}
+        locale={locale}
       />
     </div>
   );

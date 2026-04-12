@@ -3,7 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Fraunces, Manrope, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/layout/app-shell";
-import { getDictionary, getLocale } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n";
 
 const bodyFont = Manrope({
   subsets: ["latin"],
@@ -34,7 +34,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
-  const dict = getDictionary(locale);
 
   return (
     <html lang={locale}>

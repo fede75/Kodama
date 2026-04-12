@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { getDictionary, type Locale } from "@/lib/i18n";
 
 export function FeaturedBonsaiCard({
   bonsai,
   rank,
-  rangeLabel
+  rangeLabel,
+  locale
 }: {
   bonsai: {
     id: string;
@@ -26,8 +28,10 @@ export function FeaturedBonsaiCard({
   };
   rank?: number;
   rangeLabel?: string;
+  locale: Locale;
 }) {
   const photo = bonsai.photos[0] ?? null;
+  const dict = getDictionary(locale);
 
   return (
     <article className="group relative overflow-hidden rounded-[2.2rem] surface-panel p-4 transition duration-500 hover:-translate-y-1.5 sm:p-5">
@@ -37,7 +41,7 @@ export function FeaturedBonsaiCard({
           <div className="overflow-hidden rounded-[1.7rem] bg-black/20">
             <img
               src={photo.imageUrl}
-              alt={photo.caption ?? `Foto de ${bonsai.name}`}
+              alt={photo.caption ?? `${dict.common.photos} · ${bonsai.name}`}
               className="aspect-[4/5] h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
               loading="lazy"
             />
@@ -45,7 +49,7 @@ export function FeaturedBonsaiCard({
         ) : (
           <div className="flex items-end overflow-hidden rounded-[1.7rem] bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4">
             <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-paper/72">
-              Sin foto
+              {dict.common.noPhoto}
             </div>
           </div>
         )}
@@ -79,25 +83,25 @@ export function FeaturedBonsaiCard({
           <div className="mt-7 grid gap-4 sm:grid-cols-3">
             <div className="space-y-1">
               <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
-                Votos
+                {locale === "es" ? "Votos" : locale === "en" ? "Votes" : "投票"}
               </p>
               <p className="text-[0.98rem] text-paper/82">{bonsai.voteCount}</p>
             </div>
             <div className="space-y-1">
               <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
-                Comentarios
+                {dict.common.comments}
               </p>
               <p className="text-[0.98rem] text-paper/82">{bonsai._count.comments}</p>
             </div>
             <div className="space-y-1">
               <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
-                Colección
+                {dict.common.collection}
               </p>
               <Link
                 href={`/colecciones-publicas/${bonsai.user.id}`}
                 className="text-[0.98rem] text-paper/82 underline-offset-4 transition hover:text-moss-200 hover:underline"
               >
-                {bonsai.user.name ?? "Usuario Kodama"}
+                {bonsai.user.name ?? (locale === "es" ? "Usuario Kodama" : locale === "en" ? "Kodama user" : "Kodama ユーザー")}
               </Link>
             </div>
           </div>

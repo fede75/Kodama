@@ -1,12 +1,20 @@
 import Link from "next/link";
-import { CARE_EVENT_LABELS } from "@/lib/constants";
+import { getCareEventLabel, getDictionary, getIntlLocale, type Locale } from "@/lib/i18n";
 import { formatDateTime } from "@/lib/utils";
 import { DeleteCareEventForm } from "@/components/bonsais/delete-care-event-form";
 
 type CareEventListItem = {
   id: string;
   bonsaiId: string;
-  type: keyof typeof CARE_EVENT_LABELS;
+  type:
+    | "WATERING"
+    | "FERTILIZING"
+    | "PRUNING"
+    | "PINCHING"
+    | "REPOTTING"
+    | "WIRING"
+    | "DEFOLIATION"
+    | "PEST_TREATMENT";
   title: string | null;
   notes: string | null;
   performedAt: Date;
@@ -22,16 +30,21 @@ type CareEventListItem = {
 export function CareEventsList({
   bonsaiId,
   items,
-  readOnly = false
+  readOnly = false,
+  locale
 }: {
   bonsaiId: string;
   items: CareEventListItem[];
   readOnly?: boolean;
+  locale: Locale;
 }) {
+  const dict = getDictionary(locale);
+  const intlLocale = getIntlLocale(locale);
+
   if (items.length === 0) {
     return (
       <p className="rounded-[1.8rem] bg-white/[0.035] px-5 py-6 text-sm text-paper/56">
-        Aún no hay cuidados registrados.
+        {dict.common.noCareYet}
       </p>
     );
   }
@@ -50,31 +63,31 @@ export function CareEventsList({
             <div className="relative flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-7">
               <div className="xl:w-[12rem] xl:shrink-0">
                 <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/44">
-                  Fecha
+                  {locale === "es" ? "Fecha" : locale === "en" ? "Date" : "日付"}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-moss-100 sm:text-base">
-                  {formatDateTime(item.performedAt)}
+                  {formatDateTime(item.performedAt, intlLocale)}
                 </p>
               </div>
 
               <div className="xl:w-[11rem] xl:shrink-0">
                 {readOnly ? (
                   <p className="font-display text-[clamp(1.55rem,3.2vw,1.9rem)] leading-[1.02] text-paper">
-                    {CARE_EVENT_LABELS[item.type]}
+                    {getCareEventLabel(locale, item.type)}
                   </p>
                 ) : (
                   <Link
                     href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
                     className="inline-flex font-display text-[clamp(1.55rem,3.2vw,1.9rem)] leading-[1.02] text-paper transition hover:text-moss-200"
                   >
-                    {CARE_EVENT_LABELS[item.type]}
+                    {getCareEventLabel(locale, item.type)}
                   </Link>
                 )}
               </div>
 
               <div className="min-w-0 flex-1 space-y-3">
                 <p className="text-[0.98rem] leading-7 text-paper/78">
-                  {item.notes ?? "Sin notas"}
+                  {item.notes ?? (locale === "es" ? "Sin notas" : locale === "en" ? "No notes" : "メモなし")}
                 </p>
                 {extraPhotos.length > 0 ? (
                   <div className="flex gap-2 overflow-x-auto pb-1">
@@ -85,7 +98,7 @@ export function CareEventsList({
                       >
                         <img
                           src={photo.imageUrl}
-                          alt={photo.caption ?? "Imagen del cuidado"}
+                          alt={photo.caption ?? (locale === "es" ? "Imagen del cuidado" : locale === "en" ? "Care image" : "手入れの画像")}
                           className="aspect-square w-full object-cover"
                           loading="lazy"
                         />
@@ -106,14 +119,14 @@ export function CareEventsList({
                   <div className="w-[4.5rem] overflow-hidden rounded-[1rem] bg-black/20 sm:w-[5.5rem]">
                     <img
                       src={mainPhoto.imageUrl}
-                      alt={mainPhoto.caption ?? "Imagen principal del cuidado"}
+                      alt={mainPhoto.caption ?? (locale === "es" ? "Imagen principal del cuidado" : locale === "en" ? "Main care image" : "手入れのメイン画像")}
                       className="aspect-[4/5] w-full object-cover"
                       loading="lazy"
                     />
                   </div>
                 ) : (
                   <div className="flex w-[4.5rem] items-end rounded-[1rem] bg-[linear-gradient(135deg,rgba(111,149,70,0.2),rgba(10,13,12,0.85))] p-2 text-[10px] font-medium uppercase tracking-[0.08em] text-paper/44 sm:w-[5.5rem] sm:p-3 sm:text-[11px]">
-                    Sin imagen
+                    {dict.common.noPhoto}
                   </div>
                 )}
               </div>
