@@ -68,6 +68,43 @@ export default async function BonsaiDetailPage({
 
   return (
     <div className="space-y-7">
+      {(previousBonsai || nextBonsai) ? (
+        <div className="grid gap-2 xl:grid-cols-2">
+          {previousBonsai ? (
+            <Link
+              href={`/bonsais/${previousBonsai.id}`}
+              className="group flex items-center gap-3 rounded-[1.35rem] surface-soft px-4 py-3 transition duration-300 hover:bg-white/[0.06]"
+            >
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.05] text-sm text-paper/70 transition group-hover:bg-white/[0.09] group-hover:text-paper">
+                &lt;
+              </span>
+              <div>
+                <p className="editorial-kicker text-[9px]">{dict.common.previous}</p>
+                <p className="mt-1 text-sm text-paper/84">
+                  {previousBonsai.name}
+                </p>
+              </div>
+            </Link>
+          ) : <div />}
+          {nextBonsai ? (
+            <Link
+              href={`/bonsais/${nextBonsai.id}`}
+              className="group flex items-center justify-end gap-3 rounded-[1.35rem] surface-soft px-4 py-3 text-right transition duration-300 hover:bg-white/[0.06]"
+            >
+              <div>
+                <p className="editorial-kicker text-[9px]">{dict.common.next}</p>
+                <p className="mt-1 text-sm text-paper/84">
+                  {nextBonsai.name}
+                </p>
+              </div>
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.05] text-sm text-paper/70 transition group-hover:bg-white/[0.09] group-hover:text-paper">
+                &gt;
+              </span>
+            </Link>
+          ) : null}
+        </div>
+      ) : null}
+
       <section className="relative overflow-hidden rounded-[2rem] surface-panel p-4 sm:p-5 xl:p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
         <div className="grid gap-5 2xl:grid-cols-[1.35fr_0.9fr]">
@@ -92,19 +129,6 @@ export default async function BonsaiDetailPage({
                     <AppIcon name="arrow-left" className="h-[1rem] w-[1rem]" />
                   </Button>
                 </Link>
-                <Link href={`/bonsais/${bonsai.id}/editar`} className="block sm:inline-flex">
-                  <Button variant="secondary" className="w-full sm:w-auto">
-                    <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
-                    {dict.common.edit}
-                  </Button>
-                </Link>
-                <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
-                  <Button className="w-full sm:w-auto">
-                    <AppIcon name="plus" className="h-[0.95rem] w-[0.95rem]" />
-                    {dict.common.addCare}
-                  </Button>
-                </Link>
-                <DeleteBonsaiForm bonsaiId={bonsai.id} />
               </div>
             </div>
 
@@ -117,6 +141,17 @@ export default async function BonsaiDetailPage({
                 <p className="text-[1rem] text-paper/56">
                   {bonsai.species}
                 </p>
+                <Link href={`/bonsais/${bonsai.id}/editar`} className="inline-flex">
+                  <Button
+                    variant="secondary"
+                    className="h-9 w-9 rounded-full px-0"
+                    aria-label={dict.common.edit}
+                    title={dict.common.edit}
+                  >
+                    <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
+                  </Button>
+                </Link>
+                <DeleteBonsaiForm bonsaiId={bonsai.id} iconOnly />
                 {speciesReference ? (
                   <Link
                     href={`/especies/${speciesReference.slug}`}
@@ -168,42 +203,6 @@ export default async function BonsaiDetailPage({
           </div>
         </div>
 
-        {(previousBonsai || nextBonsai) ? (
-          <div className="mt-5 grid gap-3 border-t border-white/8 pt-5 xl:grid-cols-2">
-            {previousBonsai ? (
-              <Link
-                href={`/bonsais/${previousBonsai.id}`}
-                className="group flex items-center gap-4 rounded-[1.6rem] surface-soft p-4 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
-              >
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.06] text-xl text-paper/82 transition group-hover:bg-white/[0.1]">
-                  &lt;
-                </span>
-                <div>
-                  <p className="editorial-kicker text-[10px]">{dict.common.previous}</p>
-                  <p className="mt-2 font-display text-3xl text-paper">
-                    {previousBonsai.name}
-                  </p>
-                </div>
-              </Link>
-            ) : <div />}
-            {nextBonsai ? (
-              <Link
-                href={`/bonsais/${nextBonsai.id}`}
-                className="group flex items-center justify-end gap-4 rounded-[1.6rem] surface-soft p-4 text-right transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
-              >
-                <div>
-                  <p className="editorial-kicker text-[10px]">{dict.common.next}</p>
-                  <p className="mt-2 font-display text-3xl text-paper">
-                    {nextBonsai.name}
-                  </p>
-                </div>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.06] text-xl text-paper/82 transition group-hover:bg-white/[0.1]">
-                  &gt;
-                </span>
-              </Link>
-            ) : null}
-          </div>
-        ) : null}
       </section>
 
       <section className="space-y-5 rounded-[2.2rem] surface-panel p-5 sm:p-6">
@@ -212,13 +211,16 @@ export default async function BonsaiDetailPage({
             <p className="editorial-kicker text-xs">{dict.common.photos}</p>
             <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">{dict.common.gallery}</h2>
           </div>
+          <TogglePanel
+            buttonLabel={dict.common.addImage}
+            buttonClassName="w-full sm:w-auto"
+            buttonIcon={<AppIcon name="plus" className="h-[0.95rem] w-[0.95rem]" />}
+          >
+            <div className="w-full rounded-[1.8rem] bg-white/[0.035] p-4">
+              <PhotoUploadForm bonsaiId={bonsai.id} />
+            </div>
+          </TogglePanel>
         </div>
-
-        <TogglePanel buttonLabel={dict.common.addImage}>
-          <div className="w-full rounded-[1.8rem] bg-white/[0.035] p-4">
-            <PhotoUploadForm bonsaiId={bonsai.id} />
-          </div>
-        </TogglePanel>
 
         {photoGalleryItems.length > 0 ? (
           <PhotoGallery photos={photoGalleryItems} />
