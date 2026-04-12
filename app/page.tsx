@@ -211,19 +211,13 @@ export default async function HomePage() {
             <div className="mt-4">
               <div className="flex items-end justify-between gap-6">
               <div>
-                <p className="font-display text-[clamp(2rem,5vw,3rem)] text-paper">
+                <p className="font-display text-[clamp(1.7rem,4vw,2.35rem)] text-paper">
                   {dict.home.bonsaiOfMoment}
                 </p>
                 {topVotedBonsai ? (
                   <>
-                    <p className="mt-3 text-sm uppercase tracking-[0.16em] text-paper/38">
-                      {dict.home.last30Days}
-                    </p>
-                    <p className="mt-3 text-lg text-paper/82">
+                    <p className="mt-3 text-[1.05rem] text-paper/82">
                       {topVotedBonsai.name}
-                    </p>
-                    <p className="mt-2 text-sm leading-7 text-paper/52">
-                      {topVotedBonsai.species} · {topVotedBonsai.voteCount} {dict.common.votes}
                     </p>
                   </>
                 ) : (
@@ -241,7 +235,7 @@ export default async function HomePage() {
                   <img
                     src={topVotedBonsai.photos[0].imageUrl}
                     alt={topVotedBonsai.photos[0].caption ?? topVotedBonsai.name}
-                    className="h-32 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    className="h-40 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                     loading="lazy"
                   />
                 </div>
