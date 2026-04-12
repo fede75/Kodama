@@ -34,11 +34,9 @@ export default async function EditBonsaiPage({
         <Link href={`/bonsais/${bonsai.id}`}>
           <Button
             variant="secondary"
-            className="h-11 w-11 border-white/14 bg-white/[0.03] px-0 text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
-            title={locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
-            aria-label={locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
+            className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
           >
-            <span aria-hidden="true" className="text-lg leading-none">←</span>
+            {locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
           </Button>
         </Link>
       </div>

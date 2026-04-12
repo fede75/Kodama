@@ -12,17 +12,18 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   const dict = getDictionary(locale);
   const navItems = user
     ? [
-        { href: "/", label: dict.nav.home, icon: "home" as const },
+        { href: "/", label: dict.nav.home },
         { href: "/colecciones-publicas", label: dict.nav.publicCollections },
         { href: "/bonsais-destacados", label: dict.nav.featuredBonsais },
         { href: "/bonsais", label: dict.nav.myCollection },
-        { href: "/ajustes", label: dict.nav.settings, icon: "settings" as const },
+        { href: "/bonsais/new", label: dict.nav.registerBonsai },
+        { href: "/ajustes", label: dict.nav.settings },
         ...(user.role === "ADMIN"
-          ? [{ href: "/admin", label: dict.nav.admin, icon: "admin" as const }]
+          ? [{ href: "/admin", label: dict.nav.admin }]
           : [])
       ]
     : [
-        { href: "/", label: dict.nav.home, icon: "home" as const },
+        { href: "/", label: dict.nav.home },
         { href: "/colecciones-publicas", label: dict.nav.publicCollections },
         { href: "/bonsais-destacados", label: dict.nav.featuredBonsais }
       ];

@@ -22,11 +22,9 @@ export default async function NewBonsaiPage() {
         <Link href="/bonsais">
           <Button
             variant="secondary"
-            className="h-11 w-11 border-white/14 bg-white/[0.03] px-0 text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
-            title={dict.common.back}
-            aria-label={dict.common.back}
+            className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
           >
-            <span aria-hidden="true" className="text-lg leading-none">←</span>
+            {dict.common.back}
           </Button>
         </Link>
       </div>

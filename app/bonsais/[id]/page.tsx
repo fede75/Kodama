@@ -66,82 +66,6 @@ export default async function BonsaiDetailPage({
     <div className="space-y-7">
       <section className="relative overflow-hidden rounded-[2rem] surface-panel p-4 sm:p-5 xl:p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
-        {(previousBonsai || nextBonsai) ? (
-          <div className="mb-5 flex items-center justify-between gap-3 border-b border-white/8 pb-4">
-            <div className="flex items-center gap-2">
-              <Link href="/bonsais" className="inline-flex">
-                <Button
-                  variant="secondary"
-                  className="h-10 w-10 border-white/12 bg-white/[0.03] px-0 text-paper/84 hover:border-white/20 hover:bg-white/[0.07] hover:text-paper"
-                  title={dict.common.back}
-                  aria-label={dict.common.back}
-                >
-                  <span aria-hidden="true" className="text-base leading-none">←</span>
-                </Button>
-              </Link>
-              <Link href={`/bonsais/${bonsai.id}/editar`} className="inline-flex">
-                <Button
-                  variant="secondary"
-                  className="h-10 w-10 border-white/12 bg-white/[0.03] px-0 text-paper/84 hover:border-white/20 hover:bg-white/[0.07] hover:text-paper"
-                  title={dict.common.edit}
-                  aria-label={dict.common.edit}
-                >
-                  <span aria-hidden="true" className="text-sm leading-none">✎</span>
-                </Button>
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {previousBonsai ? (
-                <Link href={`/bonsais/${previousBonsai.id}`} className="inline-flex">
-                  <Button
-                    variant="secondary"
-                    className="h-10 min-w-10 border-white/12 bg-white/[0.03] px-3 text-paper/82 hover:border-white/20 hover:bg-white/[0.07] hover:text-paper"
-                    title={`${dict.common.previous}: ${previousBonsai.name}`}
-                    aria-label={`${dict.common.previous}: ${previousBonsai.name}`}
-                  >
-                    <span aria-hidden="true" className="text-base leading-none">←</span>
-                  </Button>
-                </Link>
-              ) : null}
-              {nextBonsai ? (
-                <Link href={`/bonsais/${nextBonsai.id}`} className="inline-flex">
-                  <Button
-                    variant="secondary"
-                    className="h-10 min-w-10 border-white/12 bg-white/[0.03] px-3 text-paper/82 hover:border-white/20 hover:bg-white/[0.07] hover:text-paper"
-                    title={`${dict.common.next}: ${nextBonsai.name}`}
-                    aria-label={`${dict.common.next}: ${nextBonsai.name}`}
-                  >
-                    <span aria-hidden="true" className="text-base leading-none">→</span>
-                  </Button>
-                </Link>
-              ) : null}
-            </div>
-          </div>
-        ) : (
-          <div className="mb-5 flex items-center gap-2 border-b border-white/8 pb-4">
-            <Link href="/bonsais" className="inline-flex">
-              <Button
-                variant="secondary"
-                className="h-10 w-10 border-white/12 bg-white/[0.03] px-0 text-paper/84 hover:border-white/20 hover:bg-white/[0.07] hover:text-paper"
-                title={dict.common.back}
-                aria-label={dict.common.back}
-              >
-                <span aria-hidden="true" className="text-base leading-none">←</span>
-              </Button>
-            </Link>
-            <Link href={`/bonsais/${bonsai.id}/editar`} className="inline-flex">
-              <Button
-                variant="secondary"
-                className="h-10 w-10 border-white/12 bg-white/[0.03] px-0 text-paper/84 hover:border-white/20 hover:bg-white/[0.07] hover:text-paper"
-                title={dict.common.edit}
-                aria-label={dict.common.edit}
-              >
-                <span aria-hidden="true" className="text-sm leading-none">✎</span>
-              </Button>
-            </Link>
-          </div>
-        )}
         <div className="grid gap-5 2xl:grid-cols-[1.35fr_0.9fr]">
           <div className="overflow-hidden rounded-[2rem] bg-black/20">
             <MainPhotoViewer
@@ -155,6 +79,16 @@ export default async function BonsaiDetailPage({
           <div className="flex flex-col gap-4">
             <div className="rounded-[2rem] surface-soft p-5 sm:p-6">
               <div className="flex flex-wrap gap-3">
+                <Link href="/bonsais" className="block sm:inline-flex">
+                  <Button variant="secondary" className="w-full sm:w-auto">
+                    {dict.common.back}
+                  </Button>
+                </Link>
+                <Link href={`/bonsais/${bonsai.id}/editar`} className="block sm:inline-flex">
+                  <Button variant="secondary" className="w-full sm:w-auto">
+                    {dict.common.edit}
+                  </Button>
+                </Link>
                 <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
                   <Button className="w-full sm:w-auto">{dict.common.addCare}</Button>
                 </Link>
@@ -210,6 +144,42 @@ export default async function BonsaiDetailPage({
           </div>
         </div>
 
+        {(previousBonsai || nextBonsai) ? (
+          <div className="mt-5 grid gap-3 border-t border-white/8 pt-5 xl:grid-cols-2">
+            {previousBonsai ? (
+              <Link
+                href={`/bonsais/${previousBonsai.id}`}
+                className="group flex items-center gap-4 rounded-[1.6rem] surface-soft p-4 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
+              >
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.06] text-xl text-paper/82 transition group-hover:bg-white/[0.1]">
+                  &lt;
+                </span>
+                <div>
+                  <p className="editorial-kicker text-[10px]">{dict.common.previous}</p>
+                  <p className="mt-2 font-display text-3xl text-paper">
+                    {previousBonsai.name}
+                  </p>
+                </div>
+              </Link>
+            ) : <div />}
+            {nextBonsai ? (
+              <Link
+                href={`/bonsais/${nextBonsai.id}`}
+                className="group flex items-center justify-end gap-4 rounded-[1.6rem] surface-soft p-4 text-right transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
+              >
+                <div>
+                  <p className="editorial-kicker text-[10px]">{dict.common.next}</p>
+                  <p className="mt-2 font-display text-3xl text-paper">
+                    {nextBonsai.name}
+                  </p>
+                </div>
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.06] text-xl text-paper/82 transition group-hover:bg-white/[0.1]">
+                  &gt;
+                </span>
+              </Link>
+            ) : null}
+          </div>
+        ) : null}
       </section>
 
       <section className="space-y-5 rounded-[2.2rem] surface-panel p-5 sm:p-6">
