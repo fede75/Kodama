@@ -6,15 +6,18 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   createBonsai,
+  createPublicBonsaiComment,
   createCareEvent,
   deleteCareEventPhoto,
   deleteCareEvent,
   deleteBonsai,
+  deletePublicBonsaiComment,
   deletePhoto,
   getCareEventDetail,
   getBonsaiDetail,
   setPrimaryCareEventPhoto,
   setPrimaryPhoto,
+  togglePublicBonsaiVote,
   updateCollectionSettings,
   updateCareEvent,
   updateBonsai
@@ -399,4 +402,63 @@ export async function deleteCareEventPhotoAction(formData: FormData) {
 
   revalidatePath(`/bonsais/${bonsaiId}`);
   revalidatePath(`/bonsais/${bonsaiId}/eventos/${careEventId}/editar`);
+}
+
+export async function togglePublicBonsaiVoteAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+  const ownerId = parseOptionalString(formData.get("ownerId"));
+
+  if (!bonsaiId || !ownerId) {
+    throw new Error("Faltan datos para votar este bonsái.");
+  }
+
+  await togglePublicBonsaiVote({
+    bonsaiId,
+    userId: user.id
+  });
+
+  revalidatePath("/");
+  revalidatePath("/bonsais-destacados");
+  revalidatePath(`/colecciones-publicas/${ownerId}`);
+  revalidatePath(`/colecciones-publicas/${ownerId}/bonsais/${bonsaiId}`);
+}
+
+export async function createPublicBonsaiCommentAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+  const ownerId = parseOptionalString(formData.get("ownerId"));
+  const content = parseOptionalString(formData.get("content"));
+  const parentCommentId = parseOptionalString(formData.get("parentCommentId"));
+
+  if (!bonsaiId || !ownerId || !content) {
+    throw new Error("Escribe un comentario antes de enviarlo.");
+  }
+
+  await createPublicBonsaiComment({
+    bonsaiId,
+    authorId: user.id,
+    content,
+    parentCommentId
+  });
+
+  revalidatePath(`/colecciones-publicas/${ownerId}/bonsais/${bonsaiId}`);
+}
+
+export async function deletePublicBonsaiCommentAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const commentId = parseOptionalString(formData.get("commentId"));
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+  const ownerId = parseOptionalString(formData.get("ownerId"));
+
+  if (!commentId || !bonsaiId || !ownerId) {
+    throw new Error("Faltan datos para eliminar el comentario.");
+  }
+
+  await deletePublicBonsaiComment({
+    commentId,
+    userId: user.id
+  });
+
+  revalidatePath(`/colecciones-publicas/${ownerId}/bonsais/${bonsaiId}`);
 }

@@ -8,6 +8,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   const navItems = user
     ? [
         { href: "/", label: "Inicio" },
+        { href: "/bonsais-destacados", label: "Bonsáis destacados" },
         { href: "/colecciones-publicas", label: "Colecciones públicas" },
         { href: "/bonsais", label: "Mi colección" },
         { href: "/bonsais/new", label: "Registra bonsái" },
@@ -18,6 +19,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       ]
     : [
         { href: "/", label: "Acceso" },
+        { href: "/bonsais-destacados", label: "Bonsáis destacados" },
         { href: "/colecciones-publicas", label: "Colecciones públicas" }
       ];
 

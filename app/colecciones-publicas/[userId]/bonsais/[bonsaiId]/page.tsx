@@ -2,7 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CareEventsList } from "@/components/bonsais/care-events-list";
 import { PhotoGallery } from "@/components/bonsais/photo-gallery";
+import { CommentsSection } from "@/components/social/comments-section";
+import { VoteForm } from "@/components/social/vote-form";
 import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/lib/auth-guards";
 import { COLLECTION_STATUS_LABELS } from "@/lib/constants";
 import { getPublicBonsaiDetail } from "@/lib/bonsais";
 import { formatDate } from "@/lib/utils";
@@ -15,7 +18,8 @@ export default async function PublicBonsaiDetailPage({
   params: Promise<{ userId: string; bonsaiId: string }>;
 }) {
   const { userId, bonsaiId } = await params;
-  const result = await getPublicBonsaiDetail(userId, bonsaiId);
+  const currentUser = await getCurrentUser();
+  const result = await getPublicBonsaiDetail(userId, bonsaiId, currentUser?.id);
   const bonsai = result?.bonsais[0];
 
   if (!result || !bonsai) {
@@ -50,9 +54,29 @@ export default async function PublicBonsaiDetailPage({
               <h1 className="font-display text-[clamp(2.2rem,6vw,3rem)] leading-none text-paper">
                 {bonsai.name}
               </h1>
-              <p className="mt-3 text-sm uppercase tracking-[0.22em] text-paper/42">
+              <p className="mt-3 text-[1rem] text-paper/56">
                 {bonsai.species}
               </p>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                {currentUser ? (
+                  <VoteForm
+                    bonsaiId={bonsai.id}
+                    ownerId={result.id}
+                    voted={bonsai.votes.length > 0}
+                    voteCount={bonsai._count.votes}
+                  />
+                ) : (
+                  <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-paper/70">
+                    {bonsai._count.votes} votos
+                  </div>
+                )}
+                <Link
+                  href={`/colecciones-publicas/${result.id}`}
+                  className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-paper/78 transition hover:bg-white/[0.08]"
+                >
+                  Ver colección de {result.name ?? "este usuario"}
+                </Link>
+              </div>
             </div>
 
             {bonsai.notes ? (
@@ -152,6 +176,13 @@ export default async function PublicBonsaiDetailPage({
           />
         </section>
       ) : null}
+
+      <CommentsSection
+        bonsaiId={bonsai.id}
+        ownerId={result.id}
+        currentUserId={currentUser?.id}
+        comments={bonsai.comments}
+      />
     </div>
   );
 }

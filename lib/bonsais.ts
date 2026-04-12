@@ -1,6 +1,23 @@
 import { CareEventType, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
+const publicCommentSelect = {
+  id: true,
+  bonsaiId: true,
+  authorId: true,
+  parentCommentId: true,
+  content: true,
+  createdAt: true,
+  updatedAt: true,
+  author: {
+    select: {
+      id: true,
+      name: true,
+      image: true
+    }
+  }
+} satisfies Prisma.BonsaiCommentSelect;
+
 const bonsaiListInclude = {
   careEvents: {
     orderBy: { performedAt: "desc" as const },
@@ -34,7 +51,8 @@ const publicBonsaiListInclude = {
       careEvents: true,
       healthIssues: true,
       journal: true,
-      photos: true
+      photos: true,
+      votes: true
     }
   }
 };
@@ -137,7 +155,11 @@ export async function getPublicCollection(userId: string) {
   });
 }
 
-export async function getPublicBonsaiDetail(userId: string, bonsaiId: string) {
+export async function getPublicBonsaiDetail(
+  userId: string,
+  bonsaiId: string,
+  currentUserId?: string | null
+) {
   return prisma.user.findFirst({
     where: {
       id: userId,
@@ -146,17 +168,263 @@ export async function getPublicBonsaiDetail(userId: string, bonsaiId: string) {
     select: {
       id: true,
       name: true,
+      collectionLocation: true,
       showCareInPublic: true,
       bonsais: {
         where: {
           id: bonsaiId,
           isPublic: true
         },
-        include: bonsaiDetailInclude,
+        include: {
+          ...bonsaiDetailInclude,
+          _count: {
+            select: {
+              votes: true,
+              comments: true
+            }
+          },
+          votes: {
+            where: { userId: currentUserId ?? "__no-user__" },
+            select: { id: true }
+          },
+          comments: {
+            where: {
+              parentCommentId: null
+            },
+            orderBy: { createdAt: "asc" },
+            select: {
+              ...publicCommentSelect,
+              replies: {
+                orderBy: { createdAt: "asc" },
+                select: publicCommentSelect
+              }
+            }
+          }
+        },
         take: 1
       }
     }
   });
+}
+
+export async function togglePublicBonsaiVote(input: {
+  bonsaiId: string;
+  userId: string;
+}) {
+  const bonsai = await prisma.bonsai.findFirst({
+    where: {
+      id: input.bonsaiId,
+      isPublic: true,
+      user: {
+        isCollectionPublic: true
+      }
+    },
+    select: {
+      id: true,
+      userId: true
+    }
+  });
+
+  if (!bonsai) {
+    throw new Error("El bonsái indicado no está disponible para votos públicos.");
+  }
+
+  const existingVote = await prisma.bonsaiVote.findUnique({
+    where: {
+      userId_bonsaiId: {
+        userId: input.userId,
+        bonsaiId: input.bonsaiId
+      }
+    },
+    select: { id: true }
+  });
+
+  if (existingVote) {
+    await prisma.bonsaiVote.delete({
+      where: { id: existingVote.id }
+    });
+
+    return { voted: false, ownerId: bonsai.userId };
+  }
+
+  await prisma.bonsaiVote.create({
+    data: {
+      userId: input.userId,
+      bonsaiId: input.bonsaiId
+    }
+  });
+
+  return { voted: true, ownerId: bonsai.userId };
+}
+
+export async function createPublicBonsaiComment(input: {
+  bonsaiId: string;
+  authorId: string;
+  content: string;
+  parentCommentId?: string;
+}) {
+  const bonsai = await prisma.bonsai.findFirst({
+    where: {
+      id: input.bonsaiId,
+      isPublic: true,
+      user: {
+        isCollectionPublic: true
+      }
+    },
+    select: {
+      id: true,
+      userId: true
+    }
+  });
+
+  if (!bonsai) {
+    throw new Error("No se puede comentar un bonsái que no sea público.");
+  }
+
+  if (input.parentCommentId) {
+    const parent = await prisma.bonsaiComment.findFirst({
+      where: {
+        id: input.parentCommentId,
+        bonsaiId: input.bonsaiId,
+        parentCommentId: null
+      },
+      select: { id: true }
+    });
+
+    if (!parent) {
+      throw new Error("El comentario al que intentas responder no existe.");
+    }
+  }
+
+  const comment = await prisma.bonsaiComment.create({
+    data: {
+      bonsaiId: input.bonsaiId,
+      authorId: input.authorId,
+      content: input.content,
+      parentCommentId: input.parentCommentId
+    }
+  });
+
+  return { commentId: comment.id, ownerId: bonsai.userId };
+}
+
+export async function deletePublicBonsaiComment(input: {
+  commentId: string;
+  userId: string;
+}) {
+  const comment = await prisma.bonsaiComment.findFirst({
+    where: {
+      id: input.commentId
+    },
+    select: {
+      id: true,
+      authorId: true,
+      bonsai: {
+        select: {
+          id: true,
+          userId: true
+        }
+      }
+    }
+  });
+
+  if (!comment) {
+    throw new Error("El comentario indicado no existe.");
+  }
+
+  const canDelete =
+    comment.authorId === input.userId || comment.bonsai.userId === input.userId;
+
+  if (!canDelete) {
+    throw new Error("No tienes permiso para eliminar este comentario.");
+  }
+
+  await prisma.bonsaiComment.delete({
+    where: { id: input.commentId }
+  });
+
+  return {
+    bonsaiId: comment.bonsai.id,
+    ownerId: comment.bonsai.userId
+  };
+}
+
+export async function listFeaturedBonsais(options?: {
+  range?: "30d" | "all";
+  limit?: number;
+}) {
+  const range = options?.range ?? "30d";
+  const limit = options?.limit ?? 24;
+  const threshold =
+    range === "30d"
+      ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      : null;
+
+  const bonsais = await prisma.bonsai.findMany({
+    where: {
+      isPublic: true,
+      user: {
+        isCollectionPublic: true
+      }
+    },
+    select: {
+      id: true,
+      name: true,
+      species: true,
+      style: true,
+      location: true,
+      notes: true,
+      userId: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          collectionLocation: true
+        }
+      },
+      photos: {
+        orderBy: [{ isPrimary: "desc" }, { takenAt: "desc" }],
+        take: 1,
+        select: {
+          id: true,
+          imageUrl: true,
+          caption: true,
+          isPrimary: true
+        }
+      },
+      _count: {
+        select: {
+          comments: true
+        }
+      },
+      votes: {
+        where: threshold ? { createdAt: { gte: threshold } } : undefined,
+        select: {
+          id: true
+        }
+      }
+    }
+  });
+
+  return bonsais
+    .map((bonsai) => ({
+      ...bonsai,
+      voteCount: bonsai.votes.length
+    }))
+    .filter((bonsai) => bonsai.voteCount > 0)
+    .sort((a, b) => {
+      if (b.voteCount !== a.voteCount) {
+        return b.voteCount - a.voteCount;
+      }
+
+      return a.name.localeCompare(b.name, "es");
+    })
+    .slice(0, limit);
+}
+
+export async function getTopVotedBonsaiLast30Days() {
+  const [bonsai] = await listFeaturedBonsais({ range: "30d", limit: 1 });
+  return bonsai ?? null;
 }
 
 export async function createBonsai(

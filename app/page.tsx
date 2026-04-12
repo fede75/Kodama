@@ -10,8 +10,9 @@ import {
 } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
+import { FeaturedBonsaiCard } from "@/components/social/featured-bonsai-card";
 import { getCurrentUser } from "@/lib/auth-guards";
-import { listBonsais } from "@/lib/bonsais";
+import { getTopVotedBonsaiLast30Days, listBonsais } from "@/lib/bonsais";
 import { CARE_EVENT_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 
@@ -26,7 +27,10 @@ export default async function HomePage() {
     heroFiles.length > 0
       ? `/images/${heroFiles[Math.floor(Math.random() * heroFiles.length)]}`
       : "/images/kodama-hero-fallback.svg";
-  const bonsais = currentUser ? await listBonsais(currentUser.id) : [];
+  const [bonsais, topVotedBonsai] = await Promise.all([
+    currentUser ? listBonsais(currentUser.id) : Promise.resolve([]),
+    getTopVotedBonsaiLast30Days()
+  ]);
   const recentCare = bonsais
     .flatMap((bonsai) =>
       bonsai.careEvents.map((event) => ({
@@ -155,7 +159,7 @@ export default async function HomePage() {
       </section>
 
       <SignedIn>
-        <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           <Link
             href="/bonsais/new"
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
@@ -172,6 +176,26 @@ export default async function HomePage() {
               </div>
               <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
                 Abrir
+              </span>
+            </div>
+          </Link>
+
+          <Link
+            href="/bonsais-destacados"
+            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
+          >
+            <p className="editorial-kicker text-[10px]">Destacados</p>
+            <div className="mt-4 flex items-end justify-between gap-6">
+              <div>
+                <p className="font-display text-[clamp(2rem,5vw,3rem)] text-paper">
+                  Bonsáis votados
+                </p>
+                <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
+                  Sigue los árboles que más conversación y votos han generado en la comunidad.
+                </p>
+              </div>
+              <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
+                Ver
               </span>
             </div>
           </Link>
@@ -197,6 +221,34 @@ export default async function HomePage() {
           </Link>
         </section>
       </SignedIn>
+
+      <section className="space-y-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="editorial-kicker text-xs">Comunidad</p>
+            <h2 className="mt-2 font-display text-4xl text-paper">
+              Bonsái del momento
+            </h2>
+          </div>
+          <Link href="/bonsais-destacados" className="block sm:inline-flex">
+            <Button variant="secondary" className="w-full sm:w-auto">
+              Ver ranking completo
+            </Button>
+          </Link>
+        </div>
+
+        {topVotedBonsai ? (
+          <FeaturedBonsaiCard
+            bonsai={topVotedBonsai}
+            rank={1}
+            rangeLabel="Últimos 30 días"
+          />
+        ) : (
+          <div className="rounded-[2rem] surface-soft p-6 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-8">
+            Todavía no hay votos suficientes para destacar un bonsái este mes.
+          </div>
+        )}
+      </section>
     </div>
   );
 }

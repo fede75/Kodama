@@ -61,6 +61,8 @@ model User {
   updatedAt           DateTime   @updatedAt
   bonsais             Bonsai[]
   reminders           Reminder[]
+  bonsaiVotes         BonsaiVote[]
+  bonsaiComments      BonsaiComment[]
   accounts            Account[]
   sessions            Session[]
 }
@@ -86,8 +88,41 @@ model Bonsai {
   journal               JournalEntry[]
   photos                Photo[]
   reminders             Reminder[]
+  votes                 BonsaiVote[]
+  comments              BonsaiComment[]
 
   @@index([userId, name])
+}
+
+model BonsaiVote {
+  id        String   @id @default(cuid())
+  userId    String
+  bonsaiId  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bonsai    Bonsai   @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, bonsaiId])
+  @@index([bonsaiId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model BonsaiComment {
+  id              String          @id @default(cuid())
+  bonsaiId        String
+  authorId        String
+  parentCommentId String?
+  content         String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  bonsai          Bonsai          @relation(fields: [bonsaiId], references: [id], onDelete: Cascade)
+  author          User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parentComment   BonsaiComment?  @relation("BonsaiCommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies         BonsaiComment[] @relation("BonsaiCommentReplies")
+
+  @@index([bonsaiId, createdAt])
+  @@index([authorId, createdAt])
+  @@index([parentCommentId, createdAt])
 }
 
 model CareEvent {
