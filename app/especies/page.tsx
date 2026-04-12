@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DeleteSpeciesForm } from "@/components/admin/delete-species-form";
 import { SpeciesJsonEditor } from "@/components/admin/species-json-editor";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { getLocale } from "@/lib/i18n-server";
 import {
@@ -56,6 +57,7 @@ export default async function SpeciesPage({
           {isAdmin ? (
             <Link href="/especies?mode=new" className="inline-flex">
               <Button>
+                <AppIcon name="plus" className="h-[1rem] w-[1rem]" />
                 {locale === "es"
                   ? "Nueva especie"
                   : locale === "en"
@@ -93,18 +95,21 @@ export default async function SpeciesPage({
               <div className="flex flex-wrap gap-3">
                 <Link href="/especies?mode=new" className="inline-flex">
                   <Button variant="secondary">
+                    <AppIcon name="plus" className="h-[0.95rem] w-[0.95rem]" />
                     {locale === "es" ? "Nueva especie" : locale === "en" ? "New species" : "新しい樹種"}
                   </Button>
                 </Link>
                 {selectedSpecies ? (
                   <Link href={`/especies/${selectedSpecies.slug}`} className="inline-flex">
                     <Button variant="secondary">
+                      <AppIcon name="info" className="h-[0.95rem] w-[0.95rem]" />
                       {locale === "es" ? "Ver ficha" : locale === "en" ? "View record" : "詳細を見る"}
                     </Button>
                   </Link>
                 ) : null}
                 <Link href="/especies" className="inline-flex">
                   <Button variant="secondary">
+                    <AppIcon name="close" className="h-[0.95rem] w-[0.95rem]" />
                     {locale === "es" ? "Cerrar editor" : locale === "en" ? "Close editor" : "エディタを閉じる"}
                   </Button>
                 </Link>
@@ -190,7 +195,8 @@ export default async function SpeciesPage({
                   <div className="mt-5 flex flex-wrap gap-3">
                     <Link href={`/especies?species=${item.slug}`} className="inline-flex">
                       <Button variant="secondary">
-                        {locale === "es" ? "Editar JSON" : locale === "en" ? "Edit JSON" : "JSONを編集"}
+                        <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
+                        {locale === "es" ? "Editar" : locale === "en" ? "Edit" : "編集"}
                       </Button>
                     </Link>
                     <DeleteSpeciesForm slug={item.slug} />

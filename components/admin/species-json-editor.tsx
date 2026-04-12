@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { upsertSpeciesJsonAction, type SpeciesImportState } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 import { Textarea } from "@/components/ui/input";
 
 const initialState: SpeciesImportState = {
@@ -35,6 +36,7 @@ export function SpeciesJsonEditor({
         />
         <div className="flex flex-wrap items-center gap-3">
           <Button type="submit" disabled={pending}>
+            <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
             {pending ? "Guardando..." : "Guardar especie"}
           </Button>
           <Button
@@ -42,6 +44,7 @@ export function SpeciesJsonEditor({
             variant="secondary"
             onClick={() => setValue(exampleJson)}
           >
+            <AppIcon name="info" className="h-[0.95rem] w-[0.95rem]" />
             Cargar ejemplo
           </Button>
         </div>

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { CareEventForm } from "@/components/bonsais/care-event-form";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 import { getBonsaiDetail } from "@/lib/bonsais";
 import { getLocale } from "@/lib/i18n-server";
 
@@ -35,8 +36,9 @@ export default async function NewCareEventPage({
           <Button
             variant="secondary"
             className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+            aria-label={locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
           >
-            {locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
+            <AppIcon name="arrow-left" className="h-[1rem] w-[1rem]" />
           </Button>
         </Link>
       </div>

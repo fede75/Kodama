@@ -108,5 +108,5 @@ export async function deleteSpeciesAction(formData: FormData) {
   revalidatePath("/admin");
   revalidatePath("/especies");
   revalidatePath(`/especies/${slug}`);
-  redirect("/admin");
+  redirect("/especies");
 }

@@ -7,6 +7,7 @@ import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { PhotoUploadForm } from "@/components/bonsais/photo-upload-form";
 import { TogglePanel } from "@/components/bonsais/toggle-panel";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { getBonsaiDetail, listBonsais } from "@/lib/bonsais";
 import {
@@ -83,17 +84,25 @@ export default async function BonsaiDetailPage({
             <div className="rounded-[2rem] surface-soft p-5 sm:p-6">
               <div className="flex flex-wrap gap-3">
                 <Link href="/bonsais" className="block sm:inline-flex">
-                  <Button variant="secondary" className="w-full sm:w-auto">
-                    {dict.common.back}
+                  <Button
+                    variant="secondary"
+                    className="w-full sm:w-auto"
+                    aria-label={dict.common.back}
+                  >
+                    <AppIcon name="arrow-left" className="h-[1rem] w-[1rem]" />
                   </Button>
                 </Link>
                 <Link href={`/bonsais/${bonsai.id}/editar`} className="block sm:inline-flex">
                   <Button variant="secondary" className="w-full sm:w-auto">
+                    <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
                     {dict.common.edit}
                   </Button>
                 </Link>
                 <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
-                  <Button className="w-full sm:w-auto">{dict.common.addCare}</Button>
+                  <Button className="w-full sm:w-auto">
+                    <AppIcon name="plus" className="h-[0.95rem] w-[0.95rem]" />
+                    {dict.common.addCare}
+                  </Button>
                 </Link>
                 <DeleteBonsaiForm bonsaiId={bonsai.id} />
               </div>
@@ -115,7 +124,7 @@ export default async function BonsaiDetailPage({
                     title={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                     aria-label={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                   >
-                    i
+                    <AppIcon name="info" className="h-[0.95rem] w-[0.95rem]" />
                   </Link>
                 ) : null}
               </div>
@@ -227,7 +236,10 @@ export default async function BonsaiDetailPage({
             <h2 className="mt-2 font-display text-3xl text-paper sm:text-4xl">{dict.common.care}</h2>
           </div>
           <Link href={`/bonsais/${bonsai.id}/eventos/nuevo`} className="block sm:inline-flex">
-            <Button className="w-full sm:w-auto">{dict.common.addCare}</Button>
+            <Button className="w-full sm:w-auto">
+              <AppIcon name="plus" className="h-[0.95rem] w-[0.95rem]" />
+              {dict.common.addCare}
+            </Button>
           </Link>
         </div>
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { BonsaiForm } from "@/components/bonsais/bonsai-form";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 import { getDictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
 
@@ -23,8 +24,9 @@ export default async function NewBonsaiPage() {
           <Button
             variant="secondary"
             className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+            aria-label={dict.common.back}
           >
-            {dict.common.back}
+            <AppIcon name="arrow-left" className="h-[1rem] w-[1rem]" />
           </Button>
         </Link>
       </div>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CareEventForm } from "@/components/bonsais/care-event-form";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { getCareEventDetail } from "@/lib/bonsais";
 import { getLocale } from "@/lib/i18n-server";
@@ -35,8 +36,9 @@ export default async function EditCareEventPage({
           <Button
             variant="secondary"
             className="border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper"
+            aria-label={locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
           >
-            {locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}
+            <AppIcon name="arrow-left" className="h-[1rem] w-[1rem]" />
           </Button>
         </Link>
       </div>

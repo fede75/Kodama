@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { deleteSpeciesAction } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 
 export function DeleteSpeciesForm({ slug }: { slug: string }) {
   const formRef = useRef<HTMLFormElement>(null);
@@ -23,6 +24,7 @@ export function DeleteSpeciesForm({ slug }: { slug: string }) {
         variant="secondary"
         className="border-red-400/20 bg-red-500/10 text-red-100 hover:border-red-300/30 hover:bg-red-500/16 hover:text-red-50"
       >
+        <AppIcon name="trash" className="h-[0.95rem] w-[0.95rem]" />
         Eliminar
       </Button>
     </form>

@@ -1,18 +1,89 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { AppIcon, IconBadge } from "@/components/ui/icon";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { getLocale } from "@/lib/i18n-server";
 import { getSpeciesBySlug } from "@/lib/species";
 
 export const dynamic = "force-dynamic";
 
-function formatMonths(months: unknown) {
+function getMonthFormatter(locale: string) {
+  const intlLocale =
+    locale === "es" ? "es-ES" : locale === "en" ? "en-GB" : "ja-JP";
+
+  return new Intl.DateTimeFormat(intlLocale, { month: "long" });
+}
+
+function formatMonths(months: unknown, locale: string) {
   if (!Array.isArray(months) || months.length === 0) {
     return null;
   }
 
-  return months.join(", ");
+  const formatter = getMonthFormatter(locale);
+
+  return months
+    .filter((month): month is number => typeof month === "number" && month >= 1 && month <= 12)
+    .map((month) => formatter.format(new Date(Date.UTC(2024, month - 1, 1))))
+    .join(", ");
+}
+
+function formatCadence(
+  days: number | null | undefined,
+  locale: string
+) {
+  if (days == null) {
+    return null;
+  }
+
+  if (locale === "es") {
+    return `Cada ${days} días`;
+  }
+
+  if (locale === "en") {
+    return `Every ${days} days`;
+  }
+
+  return `${days}日ごと`;
+}
+
+function formatWateringFrequency(
+  value: unknown,
+  locale: string
+) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  const entries = [
+    ["spring", locale === "es" ? "Primavera" : locale === "en" ? "Spring" : "春"],
+    ["summer", locale === "es" ? "Verano" : locale === "en" ? "Summer" : "夏"],
+    ["autumn", locale === "es" ? "Otoño" : locale === "en" ? "Autumn" : "秋"],
+    ["winter", locale === "es" ? "Invierno" : locale === "en" ? "Winter" : "冬"]
+  ] as const;
+
+  const record = value as Record<string, unknown>;
+  const chunks = entries
+    .map(([key, label]) => {
+      const days = record[key];
+
+      if (typeof days !== "number") {
+        return null;
+      }
+
+      if (locale === "es") {
+        return `${label}: cada ${days} días`;
+      }
+
+      if (locale === "en") {
+        return `${label}: every ${days} days`;
+      }
+
+      return `${label}: ${days}日ごと`;
+    })
+    .filter(Boolean);
+
+  return chunks.length > 0 ? chunks.join(" · ") : null;
 }
 
 export default async function SpeciesDetailPage({
@@ -47,16 +118,19 @@ export default async function SpeciesDetailPage({
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            <Link href="/especies" className="inline-flex">
-              <Button variant="secondary">←</Button>
-            </Link>
-            {user?.role === "ADMIN" ? (
-              <a href={`/admin?species=${species.slug}`} className="inline-flex">
-                <Button variant="secondary">
-                  {locale === "es" ? "Editar JSON" : locale === "en" ? "Edit JSON" : "JSONを編集"}
+            <div className="flex flex-wrap gap-3">
+              <Link href="/especies" className="inline-flex">
+                <Button variant="secondary" aria-label={locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}>
+                  <AppIcon name="arrow-left" className="h-[1.05rem] w-[1.05rem]" />
                 </Button>
-              </a>
+              </Link>
+              {user?.role === "ADMIN" ? (
+                <Link href={`/especies?species=${species.slug}`} className="inline-flex">
+                  <Button variant="secondary">
+                    <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
+                    {locale === "es" ? "Editar" : locale === "en" ? "Edit" : "編集"}
+                  </Button>
+                </Link>
             ) : null}
           </div>
         </div>
@@ -68,15 +142,20 @@ export default async function SpeciesDetailPage({
             {locale === "es" ? "Condiciones base" : locale === "en" ? "Core conditions" : "基本条件"}
           </h2>
           <div className="mt-5 space-y-4 text-paper/70">
-            <div>
+            <div className="flex gap-4">
+              <IconBadge name="map-pin" className="mt-1 shrink-0" />
+              <div>
               <p className="text-xs uppercase tracking-[0.18em] text-paper/36">
                 {locale === "es" ? "Ubicación" : locale === "en" ? "Placement" : "置き場所"}
               </p>
               <p className="mt-2 text-base text-paper">
                 {translation?.placementNotes ?? "—"}
               </p>
+              </div>
             </div>
-            <div>
+            <div className="flex gap-4">
+              <IconBadge name="thermometer" className="mt-1 shrink-0" />
+              <div>
               <p className="text-xs uppercase tracking-[0.18em] text-paper/36">
                 {locale === "es" ? "Temperatura" : locale === "en" ? "Temperature" : "温度"}
               </p>
@@ -86,14 +165,18 @@ export default async function SpeciesDetailPage({
               <p className="mt-2 text-sm text-paper/48">
                 {species.minTemperatureC ?? "—"}° / {species.maxTemperatureC ?? "—"}°
               </p>
+              </div>
             </div>
-            <div>
+            <div className="flex gap-4">
+              <IconBadge name="layers" className="mt-1 shrink-0" />
+              <div>
               <p className="text-xs uppercase tracking-[0.18em] text-paper/36">
                 {locale === "es" ? "Sustrato" : locale === "en" ? "Substrate" : "用土"}
               </p>
               <p className="mt-2 text-base text-paper">
                 {translation?.substrateNotes ?? "—"}
               </p>
+              </div>
             </div>
           </div>
         </article>
@@ -101,31 +184,62 @@ export default async function SpeciesDetailPage({
         <article className="grid gap-4 md:grid-cols-2">
           {[
             {
+              icon: "droplets" as const,
               title: locale === "es" ? "Riego" : locale === "en" ? "Watering" : "水やり",
               notes: translation?.wateringNotes,
-              meta:
-                typeof species.wateringFrequencyDays === "object" && species.wateringFrequencyDays
-                  ? JSON.stringify(species.wateringFrequencyDays)
-                  : null
+              meta: formatWateringFrequency(species.wateringFrequencyDays, locale)
             },
             {
+              icon: "leaf" as const,
               title: locale === "es" ? "Abonado" : locale === "en" ? "Fertilizing" : "施肥",
               notes: translation?.fertilizingNotes,
-              meta: formatMonths(species.fertilizingActiveMonths)
+              meta: [
+                formatMonths(species.fertilizingActiveMonths, locale)
+                  ? locale === "es"
+                    ? `Meses recomendados: ${formatMonths(species.fertilizingActiveMonths, locale)}`
+                    : locale === "en"
+                      ? `Recommended months: ${formatMonths(species.fertilizingActiveMonths, locale)}`
+                      : `推奨時期: ${formatMonths(species.fertilizingActiveMonths, locale)}`
+                  : null,
+                formatCadence(species.fertilizingFrequencyDays, locale)
+              ].filter(Boolean).join(" · ")
             },
             {
+              icon: "scissors" as const,
               title: locale === "es" ? "Poda" : locale === "en" ? "Pruning" : "剪定",
               notes: translation?.pruningNotes,
-              meta: formatMonths(species.pruningActiveMonths)
+              meta: [
+                formatMonths(species.pruningActiveMonths, locale)
+                  ? locale === "es"
+                    ? `Meses recomendados: ${formatMonths(species.pruningActiveMonths, locale)}`
+                    : locale === "en"
+                      ? `Recommended months: ${formatMonths(species.pruningActiveMonths, locale)}`
+                      : `推奨時期: ${formatMonths(species.pruningActiveMonths, locale)}`
+                  : null,
+                formatCadence(species.pruningFrequencyDays, locale)
+              ].filter(Boolean).join(" · ")
             },
             {
+              icon: "shovel" as const,
               title: locale === "es" ? "Trasplante" : locale === "en" ? "Repotting" : "植え替え",
               notes: translation?.repottingNotes,
-              meta: formatMonths(species.repottingActiveMonths)
+              meta: [
+                formatMonths(species.repottingActiveMonths, locale)
+                  ? locale === "es"
+                    ? `Meses recomendados: ${formatMonths(species.repottingActiveMonths, locale)}`
+                    : locale === "en"
+                      ? `Recommended months: ${formatMonths(species.repottingActiveMonths, locale)}`
+                      : `推奨時期: ${formatMonths(species.repottingActiveMonths, locale)}`
+                  : null,
+                formatCadence(species.repottingFrequencyDays, locale)
+              ].filter(Boolean).join(" · ")
             }
           ].map((item) => (
             <div key={item.title} className="rounded-[1.8rem] surface-soft p-5">
-              <p className="font-display text-2xl text-paper">{item.title}</p>
+              <div className="flex items-center gap-3">
+                <IconBadge name={item.icon} className="h-11 w-11" iconClassName="h-[1.1rem] w-[1.1rem]" />
+                <p className="font-display text-2xl text-paper">{item.title}</p>
+              </div>
               <p className="mt-4 text-sm leading-7 text-paper/62">{item.notes ?? "—"}</p>
               {item.meta ? (
                 <p className="mt-4 text-xs uppercase tracking-[0.16em] text-paper/36">

@@ -5,6 +5,7 @@ import { PhotoGallery } from "@/components/bonsais/photo-gallery";
 import { CommentsSection } from "@/components/social/comments-section";
 import { VoteForm } from "@/components/social/vote-form";
 import { Button } from "@/components/ui/button";
+import { AppIcon } from "@/components/ui/icon";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { getPublicBonsaiDetail } from "@/lib/bonsais";
 import {
@@ -57,8 +58,9 @@ export default async function PublicBonsaiDetailPage({
               <Button
                 variant="secondary"
                 className="w-full border-white/14 bg-white/[0.03] text-paper hover:border-white/24 hover:bg-white/[0.08] hover:text-paper sm:w-auto"
+                aria-label={dict.common.back}
               >
-                {dict.common.back}
+                <AppIcon name="arrow-left" className="h-[1rem] w-[1rem]" />
               </Button>
             </Link>
 
@@ -77,7 +79,7 @@ export default async function PublicBonsaiDetailPage({
                     title={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                     aria-label={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                   >
-                    i
+                    <AppIcon name="info" className="h-[0.95rem] w-[0.95rem]" />
                   </Link>
                 ) : null}
               </div>
