@@ -7,6 +7,10 @@ import { getCollectionStatusOptions, type Locale } from "@/lib/i18n";
 
 type BonsaiFormProps = {
   mode?: "create" | "edit";
+  speciesOptions: Array<{
+    value: string;
+    label: string;
+  }>;
   bonsai?: {
     id: string;
     name: string;
@@ -32,10 +36,20 @@ function formatDateInput(value: Date | null) {
 export function BonsaiForm({
   mode = "create",
   bonsai,
+  speciesOptions,
   locale
 }: BonsaiFormProps & { locale: Locale }) {
   const action = mode === "edit" ? updateBonsaiAction : createBonsaiAction;
   const statusOptions = getCollectionStatusOptions(locale);
+  const hasCurrentSpecies =
+    bonsai?.species &&
+    !speciesOptions.some((option) => option.value === bonsai.species);
+  const speciesPlaceholder =
+    locale === "es"
+      ? "Selecciona una especie"
+      : locale === "en"
+        ? "Select a species"
+        : "樹種を選択";
 
   return (
     <form action={action} className="grid gap-5">
@@ -57,18 +71,31 @@ export function BonsaiForm({
           label={locale === "es" ? "Especie" : locale === "en" ? "Species" : "樹種"}
           hint={
             locale === "es"
-              ? "Usa el nombre comun o cientifico para enlazar esta ficha con el inventario de especies."
+              ? "Selecciona una especie del inventario para vincular automáticamente esta ficha."
               : locale === "en"
-                ? "Use the common or scientific name to link this record to the species inventory."
-                : "一般名または学名を使うと、樹種インベントリと自動で関連付けできます。"
+                ? "Select a species from the inventory to link this record automatically."
+                : "インベントリから樹種を選ぶと、この記録に自動で関連付けされます。"
           }
         >
-          <Input
+          <Select
             name="species"
             required
-            placeholder="Juniperus procumbens nana"
             defaultValue={bonsai?.species ?? ""}
-          />
+          >
+            <option value="" disabled>
+              {speciesPlaceholder}
+            </option>
+            {hasCurrentSpecies ? (
+              <option value={bonsai?.species ?? ""}>
+                {bonsai?.species}
+              </option>
+            ) : null}
+            {speciesOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
         </FormField>
 
         <FormField label={locale === "es" ? "Estilo" : locale === "en" ? "Style" : "樹形"}>

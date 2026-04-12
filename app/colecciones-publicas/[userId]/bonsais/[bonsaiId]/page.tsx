@@ -75,11 +75,11 @@ export default async function PublicBonsaiDetailPage({
                 {speciesReference ? (
                   <Link
                     href={`/especies/${speciesReference.slug}`}
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-paper/74 transition hover:bg-white/[0.08] hover:text-paper"
+                    className="inline-flex items-center justify-center text-paper/60 transition hover:text-paper"
                     title={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                     aria-label={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                   >
-                    <AppIcon name="info" className="h-[0.95rem] w-[0.95rem]" />
+                    <AppIcon name="info" className="h-[1.1rem] w-[1.1rem]" />
                   </Link>
                 ) : null}
               </div>

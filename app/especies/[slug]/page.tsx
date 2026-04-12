@@ -118,19 +118,19 @@ export default async function SpeciesDetailPage({
             </p>
           </div>
 
-            <div className="flex flex-wrap gap-3">
-              <Link href="/especies" className="inline-flex">
-                <Button variant="secondary" aria-label={locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}>
-                  <AppIcon name="arrow-left" className="h-[1.05rem] w-[1.05rem]" />
+          <div className="flex flex-wrap gap-3">
+            <Link href="/especies" className="inline-flex">
+              <Button variant="secondary" aria-label={locale === "es" ? "Volver" : locale === "en" ? "Back" : "戻る"}>
+                <AppIcon name="arrow-left" className="h-[1.05rem] w-[1.05rem]" />
+              </Button>
+            </Link>
+            {user?.role === "ADMIN" ? (
+              <Link href={`/especies?species=${species.slug}`} className="inline-flex">
+                <Button variant="secondary">
+                  <AppIcon name="edit" className="h-[1.05rem] w-[1.05rem]" />
+                  {locale === "es" ? "Editar" : locale === "en" ? "Edit" : "編集"}
                 </Button>
               </Link>
-              {user?.role === "ADMIN" ? (
-                <Link href={`/especies?species=${species.slug}`} className="inline-flex">
-                  <Button variant="secondary">
-                    <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
-                    {locale === "es" ? "Editar" : locale === "en" ? "Edit" : "編集"}
-                  </Button>
-                </Link>
             ) : null}
           </div>
         </div>
@@ -182,9 +182,9 @@ export default async function SpeciesDetailPage({
         </article>
 
         <article className="grid gap-4 md:grid-cols-2">
-          {[
-            {
-              icon: "droplets" as const,
+            {[
+              {
+                icon: "droplets" as const,
               title: locale === "es" ? "Riego" : locale === "en" ? "Watering" : "水やり",
               notes: translation?.wateringNotes,
               meta: formatWateringFrequency(species.wateringFrequencyDays, locale)
@@ -237,7 +237,7 @@ export default async function SpeciesDetailPage({
           ].map((item) => (
             <div key={item.title} className="rounded-[1.8rem] surface-soft p-5">
               <div className="flex items-center gap-3">
-                <IconBadge name={item.icon} className="h-11 w-11" iconClassName="h-[1.1rem] w-[1.1rem]" />
+                <IconBadge name={item.icon} iconClassName="h-[1.5rem] w-[1.5rem]" />
                 <p className="font-display text-2xl text-paper">{item.title}</p>
               </div>
               <p className="mt-4 text-sm leading-7 text-paper/62">{item.notes ?? "—"}</p>

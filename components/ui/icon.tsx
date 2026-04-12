@@ -187,11 +187,11 @@ export function IconBadge({
   return (
     <span
       className={cn(
-        "inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/8 bg-white/[0.045] text-paper/72",
+        "inline-flex items-center justify-center text-paper/68",
         className
       )}
     >
-      <AppIcon name={name} className={cn("h-[1.05rem] w-[1.05rem]", iconClassName)} />
+      <AppIcon name={name} className={cn("h-[1.35rem] w-[1.35rem]", iconClassName)} />
     </span>
   );
 }
