@@ -12,21 +12,21 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   const dict = getDictionary(locale);
   const navItems = user
     ? [
-        { href: "/", label: dict.nav.home, icon: "home" as const },
-        { href: "/especies", label: dict.nav.species },
+        { href: "/bonsais", label: dict.nav.myCollection },
         { href: "/colecciones-publicas", label: dict.nav.publicCollections },
         { href: "/bonsais-destacados", label: dict.nav.featuredBonsais },
-        { href: "/bonsais", label: dict.nav.myCollection },
+        { href: "/especies", label: dict.nav.species },
+        { href: "/", label: dict.nav.home, icon: "home" as const },
         { href: "/ajustes", label: dict.nav.settings, icon: "settings" as const },
         ...(user.role === "ADMIN"
           ? [{ href: "/admin", label: dict.nav.admin, icon: "admin" as const }]
           : [])
       ]
     : [
-        { href: "/", label: dict.nav.home, icon: "home" as const },
-        { href: "/especies", label: dict.nav.species },
         { href: "/colecciones-publicas", label: dict.nav.publicCollections },
-        { href: "/bonsais-destacados", label: dict.nav.featuredBonsais }
+        { href: "/bonsais-destacados", label: dict.nav.featuredBonsais },
+        { href: "/especies", label: dict.nav.species },
+        { href: "/", label: dict.nav.home, icon: "home" as const }
       ];
 
   return (

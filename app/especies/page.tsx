@@ -175,6 +175,22 @@ export default async function SpeciesPage({
                 className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
               >
                 <Link href={`/especies/${item.slug}`} className="block">
+                  <div className="mb-5 overflow-hidden rounded-[1.5rem] bg-black/20">
+                    {item.photos[0] ? (
+                      <img
+                        src={item.photos[0].imageUrl}
+                        alt={translation?.commonName ?? item.slug}
+                        className="aspect-[4/3] h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex aspect-[4/3] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4">
+                        <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-paper/72">
+                          {locale === "es" ? "Sin imagen" : locale === "en" ? "No image" : "画像なし"}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <p className="font-display text-3xl text-paper">
                     {translation?.commonName ?? item.slug}
                   </p>

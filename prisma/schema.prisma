@@ -143,6 +143,7 @@ model Species {
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @updatedAt
   bonsais                 Bonsai[]
+  photos                  SpeciesPhoto[]
   translations            SpeciesTranslation[]
 }
 
@@ -263,6 +264,20 @@ model Photo {
 
   @@index([bonsaiId, takenAt])
   @@index([bonsaiId, isPrimary])
+}
+
+model SpeciesPhoto {
+  id          String   @id @default(cuid())
+  speciesId    String
+  imageUrl    String
+  caption     String?
+  isPrimary   Boolean  @default(false)
+  takenAt     DateTime @default(now())
+  createdAt   DateTime @default(now())
+  species     Species  @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+
+  @@index([speciesId, takenAt])
+  @@index([speciesId, isPrimary])
 }
 
 model Reminder {

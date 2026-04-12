@@ -63,6 +63,7 @@ export type SpeciesJsonInput = {
 type SpeciesWithTranslations = Prisma.SpeciesGetPayload<{
   include: {
     translations: true;
+    photos: true;
   };
 }>;
 
@@ -414,6 +415,10 @@ export async function listSpecies(locale: Locale) {
   return prisma.species.findMany({
     orderBy: { slug: "asc" },
     include: {
+      photos: {
+        orderBy: [{ isPrimary: "desc" }, { takenAt: "desc" }],
+        take: 1
+      },
       translations: {
         where: { locale }
       },
@@ -434,6 +439,9 @@ export async function getSpeciesBySlug(slug: string, locale: Locale) {
   return prisma.species.findUnique({
     where: { slug },
     include: {
+      photos: {
+        orderBy: [{ isPrimary: "desc" }, { takenAt: "desc" }]
+      },
       translations: {
         where: { locale }
       }
@@ -445,6 +453,9 @@ export async function getSpeciesForAdmin(slug: string) {
   return prisma.species.findUnique({
     where: { slug },
     include: {
+      photos: {
+        orderBy: [{ isPrimary: "desc" }, { takenAt: "desc" }]
+      },
       translations: {
         orderBy: { locale: "asc" }
       }
@@ -601,9 +612,113 @@ export async function findSpeciesForDisplay(label: string, locale: Locale) {
       ]
     },
     include: {
+      photos: {
+        orderBy: [{ isPrimary: "desc" }, { takenAt: "desc" }],
+        take: 1
+      },
       translations: {
         where: { locale }
       }
     }
+  });
+}
+
+export async function createSpeciesPhoto(input: {
+  speciesId: string;
+  imageUrl: string;
+  caption?: string;
+  takenAt?: Date;
+}) {
+  return prisma.$transaction(async (tx) => {
+    const existingPhoto = await tx.speciesPhoto.findFirst({
+      where: { speciesId: input.speciesId },
+      select: { id: true }
+    });
+
+    return tx.speciesPhoto.create({
+      data: {
+        speciesId: input.speciesId,
+        imageUrl: input.imageUrl,
+        caption: input.caption,
+        isPrimary: !existingPhoto,
+        takenAt: input.takenAt ?? new Date()
+      }
+    });
+  });
+}
+
+export async function setPrimarySpeciesPhoto(input: {
+  photoId: string;
+  speciesId: string;
+}) {
+  const species = await prisma.species.findFirst({
+    where: {
+      id: input.speciesId,
+      photos: {
+        some: {
+          id: input.photoId
+        }
+      }
+    },
+    select: { id: true }
+  });
+
+  if (!species) {
+    throw new Error("La imagen indicada no existe o no pertenece a la especie.");
+  }
+
+  await prisma.$transaction([
+    prisma.speciesPhoto.updateMany({
+      where: { speciesId: input.speciesId },
+      data: { isPrimary: false }
+    }),
+    prisma.speciesPhoto.update({
+      where: { id: input.photoId },
+      data: { isPrimary: true }
+    })
+  ]);
+}
+
+export async function deleteSpeciesPhoto(input: {
+  photoId: string;
+  speciesId: string;
+}) {
+  return prisma.$transaction(async (tx) => {
+    const photo = await tx.speciesPhoto.findFirst({
+      where: {
+        id: input.photoId,
+        speciesId: input.speciesId
+      },
+      select: {
+        id: true,
+        imageUrl: true,
+        isPrimary: true
+      }
+    });
+
+    if (!photo) {
+      throw new Error("La imagen indicada no existe o no pertenece a la especie.");
+    }
+
+    await tx.speciesPhoto.delete({
+      where: { id: input.photoId }
+    });
+
+    if (photo.isPrimary) {
+      const replacement = await tx.speciesPhoto.findFirst({
+        where: { speciesId: input.speciesId },
+        orderBy: [{ takenAt: "desc" }, { createdAt: "desc" }],
+        select: { id: true }
+      });
+
+      if (replacement) {
+        await tx.speciesPhoto.update({
+          where: { id: replacement.id },
+          data: { isPrimary: true }
+        });
+      }
+    }
+
+    return photo;
   });
 }
