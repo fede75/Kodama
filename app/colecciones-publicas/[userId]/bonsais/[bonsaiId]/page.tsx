@@ -14,6 +14,7 @@ import {
   replaceTemplate
 } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { findSpeciesForDisplay } from "@/lib/species";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -45,6 +46,8 @@ export default async function PublicBonsaiDetailPage({
     takenAt: photo.takenAt.toISOString()
   }));
 
+  const speciesReference = await findSpeciesForDisplay(bonsai.species, locale);
+
   return (
     <div className="space-y-7">
       <section className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,19,18,0.96),rgba(9,12,11,0.94))] p-4 shadow-[0_28px_80px_-42px_rgba(0,0,0,0.82)] sm:rounded-[2.5rem] sm:p-6 lg:p-8">
@@ -63,9 +66,21 @@ export default async function PublicBonsaiDetailPage({
               <h1 className="font-display text-[clamp(2.2rem,6vw,3rem)] leading-none text-paper">
                 {bonsai.name}
               </h1>
-              <p className="mt-3 text-[1rem] text-paper/56">
-                {bonsai.species}
-              </p>
+              <div className="mt-3 flex items-center gap-3">
+                <p className="text-[1rem] text-paper/56">
+                  {bonsai.species}
+                </p>
+                {speciesReference ? (
+                  <Link
+                    href={`/especies/${speciesReference.slug}`}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-paper/74 transition hover:bg-white/[0.08] hover:text-paper"
+                    title={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
+                    aria-label={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
+                  >
+                    i
+                  </Link>
+                ) : null}
+              </div>
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 {currentUser ? (
                   <VoteForm

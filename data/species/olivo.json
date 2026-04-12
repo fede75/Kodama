@@ -1,0 +1,113 @@
+{
+  "slug": "olivo",
+  "placement": {
+    "type": "OUTDOOR",
+    "light": "FULL_SUN",
+    "sunHours": 6
+  },
+  "temperature": {
+    "min": -3,
+    "max": 40
+  },
+  "watering": {
+    "frequencyDays": {
+      "spring": 3,
+      "summer": 2,
+      "autumn": 4,
+      "winter": 6
+    }
+  },
+  "fertilizing": {
+    "activeMonths": [3, 4, 5, 9, 10],
+    "frequencyDays": 30
+  },
+  "pruning": {
+    "activeMonths": [3, 4, 5, 6, 7],
+    "frequencyDays": 45
+  },
+  "repotting": {
+    "activeMonths": [3, 4],
+    "frequencyDays": 1095
+  },
+  "substrate": {
+    "drainage": "HIGH"
+  },
+  "risks": ["indoor", "low_light", "overwatering"],
+  "translations": {
+    "es": {
+      "commonName": "Olivo",
+      "scientificName": "Olea europaea",
+      "placement": {
+        "notes": "Debe mantenerse en exterior con mucho sol."
+      },
+      "temperature": {
+        "notes": "Tolera bien calor y heladas ligeras, pero no frío intenso prolongado."
+      },
+      "watering": {
+        "notes": "Regar cuando la superficie del sustrato esté seca. Evitar acumulación de agua."
+      },
+      "fertilizing": {
+        "notes": "Abonar en primavera y otoño. Reducir en verano muy caluroso y evitar en invierno."
+      },
+      "pruning": {
+        "notes": "Tolera bien la poda de mantenimiento. La poda fuerte se hace mejor a final de invierno."
+      },
+      "repotting": {
+        "notes": "Trasplantar en primavera cada 2 a 4 años."
+      },
+      "substrate": {
+        "notes": "Requiere sustrato muy drenante."
+      }
+    },
+    "en": {
+      "commonName": "Olive",
+      "scientificName": "Olea europaea",
+      "placement": {
+        "notes": "It should be kept outdoors in plenty of sun."
+      },
+      "temperature": {
+        "notes": "It tolerates heat and light frost well, but not prolonged severe cold."
+      },
+      "watering": {
+        "notes": "Water when the surface of the soil is dry. Avoid water accumulation."
+      },
+      "fertilizing": {
+        "notes": "Fertilize in spring and autumn. Reduce during very hot summer and avoid in winter."
+      },
+      "pruning": {
+        "notes": "It tolerates maintenance pruning well. Strong pruning is best done at the end of winter."
+      },
+      "repotting": {
+        "notes": "Repot in spring every 2 to 4 years."
+      },
+      "substrate": {
+        "notes": "It requires a very free-draining substrate."
+      }
+    },
+    "ja": {
+      "commonName": "オリーブ",
+      "scientificName": "Olea europaea",
+      "placement": {
+        "notes": "屋外で管理し、十分な日照を確保します。"
+      },
+      "temperature": {
+        "notes": "暑さと軽い霜には耐えますが、厳しい寒さが長く続く環境は避けます。"
+      },
+      "watering": {
+        "notes": "用土の表面が乾いたら水を与え、過湿を避けます。"
+      },
+      "fertilizing": {
+        "notes": "春と秋に施肥し、真夏は控えめにし、冬は避けます。"
+      },
+      "pruning": {
+        "notes": "維持剪定によく耐えます。強い剪定は冬の終わりが適しています。"
+      },
+      "repotting": {
+        "notes": "春に2年から4年ごとを目安に植え替えます。"
+      },
+      "substrate": {
+        "notes": "水はけの良い用土が必要です。"
+      }
+    }
+  }
+}

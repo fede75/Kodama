@@ -1,0 +1,113 @@
+{
+  "slug": "acebuche",
+  "placement": {
+    "type": "OUTDOOR",
+    "light": "FULL_SUN",
+    "sunHours": 6
+  },
+  "temperature": {
+    "min": -3,
+    "max": 40
+  },
+  "watering": {
+    "frequencyDays": {
+      "spring": 3,
+      "summer": 2,
+      "autumn": 4,
+      "winter": 6
+    }
+  },
+  "fertilizing": {
+    "activeMonths": [3, 4, 5, 9, 10],
+    "frequencyDays": 30
+  },
+  "pruning": {
+    "activeMonths": [3, 4, 5, 6, 7],
+    "frequencyDays": 45
+  },
+  "repotting": {
+    "activeMonths": [3, 4],
+    "frequencyDays": 1095
+  },
+  "substrate": {
+    "drainage": "HIGH"
+  },
+  "risks": ["indoor", "low_light", "overwatering"],
+  "translations": {
+    "es": {
+      "commonName": "Acebuche",
+      "scientificName": "Olea europaea var. sylvestris",
+      "placement": {
+        "notes": "Debe mantenerse en exterior con sol directo."
+      },
+      "temperature": {
+        "notes": "Tolera calor y heladas ligeras, pero no frio intenso prolongado."
+      },
+      "watering": {
+        "notes": "Regar cuando el sustrato este seco en superficie. Evitar encharcamiento."
+      },
+      "fertilizing": {
+        "notes": "Abonar en primavera y otono. Reducir en verano y evitar en invierno."
+      },
+      "pruning": {
+        "notes": "Poda de mantenimiento en crecimiento. Poda fuerte a final de invierno."
+      },
+      "repotting": {
+        "notes": "Trasplantar en primavera cada 2-4 anos."
+      },
+      "substrate": {
+        "notes": "Sustrato muy drenante para evitar exceso de humedad."
+      }
+    },
+    "en": {
+      "commonName": "Wild olive",
+      "scientificName": "Olea europaea var. sylvestris",
+      "placement": {
+        "notes": "It should be kept outdoors in direct sun."
+      },
+      "temperature": {
+        "notes": "It tolerates heat and light frost, but not prolonged severe cold."
+      },
+      "watering": {
+        "notes": "Water when the substrate is dry on the surface. Avoid waterlogging."
+      },
+      "fertilizing": {
+        "notes": "Fertilize in spring and autumn. Reduce in summer and avoid in winter."
+      },
+      "pruning": {
+        "notes": "Maintenance pruning during growth. Strong pruning at the end of winter."
+      },
+      "repotting": {
+        "notes": "Repot in spring every 2 to 4 years."
+      },
+      "substrate": {
+        "notes": "Use a very free-draining substrate to avoid excess moisture."
+      }
+    },
+    "ja": {
+      "commonName": "アセブチェ",
+      "scientificName": "Olea europaea var. sylvestris",
+      "placement": {
+        "notes": "屋外で管理し、直射日光をしっかり当てる必要があります。"
+      },
+      "temperature": {
+        "notes": "暑さと軽い霜には耐えますが、厳しい寒さが長く続く環境は避けます。"
+      },
+      "watering": {
+        "notes": "用土の表面が乾いたら水を与えます。過湿は避けてください。"
+      },
+      "fertilizing": {
+        "notes": "春と秋に施肥し、夏は控えめにし、冬は避けます。"
+      },
+      "pruning": {
+        "notes": "生育期は維持剪定を行い、強い剪定は冬の終わりに行います。"
+      },
+      "repotting": {
+        "notes": "春に2年から4年ごとを目安に植え替えます。"
+      },
+      "substrate": {
+        "notes": "過湿を避けるため、水はけの良い用土が必要です。"
+      }
+    }
+  }
+}

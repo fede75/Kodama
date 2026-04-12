@@ -20,6 +20,7 @@ const dictionaries = {
     },
     nav: {
       home: "Inicio",
+      species: "Especies",
       publicCollections: "Colecciones públicas",
       featuredBonsais: "Bonsáis destacados",
       myCollection: "Mi colección",
@@ -92,6 +93,12 @@ const dictionaries = {
       otherCollectionsDescription:
         "Descubre cómo otros usuarios documentan la evolución de sus árboles.",
       community: "Comunidad",
+      species: "Especies",
+      speciesInventory: "Inventario de especies",
+      speciesDescription:
+        "Consulta las especies dadas de alta y usa sus fichas como referencia de cultivo y mantenimiento.",
+      viewSpecies: "Ver especies",
+      speciesRegistered: "especies registradas",
       bonsaiOfMoment: "Bonsái del momento",
       fullRanking: "Ver ranking completo",
       noVotesThisMonth: "Todavía no hay votos suficientes para destacar un bonsái este mes.",
@@ -204,6 +211,7 @@ const dictionaries = {
     },
     nav: {
       home: "Home",
+      species: "Species",
       publicCollections: "Public collections",
       featuredBonsais: "Featured bonsai",
       myCollection: "My collection",
@@ -276,6 +284,12 @@ const dictionaries = {
       otherCollectionsDescription:
         "Discover how other users document the evolution of their trees.",
       community: "Community",
+      species: "Species",
+      speciesInventory: "Species inventory",
+      speciesDescription:
+        "Browse the registered species and use their records as a reference for care and cultivation.",
+      viewSpecies: "View species",
+      speciesRegistered: "registered species",
       bonsaiOfMoment: "Bonsai of the moment",
       fullRanking: "View full ranking",
       noVotesThisMonth: "There are not enough votes yet to feature a bonsai this month.",
@@ -388,6 +402,7 @@ const dictionaries = {
     },
     nav: {
       home: "ホーム",
+      species: "樹種",
       publicCollections: "公開コレクション",
       featuredBonsais: "注目の盆栽",
       myCollection: "マイコレクション",
@@ -460,6 +475,12 @@ const dictionaries = {
       otherCollectionsDescription:
         "ほかのユーザーがどのように樹の変化を記録しているかを見てみましょう。",
       community: "コミュニティ",
+      species: "樹種",
+      speciesInventory: "樹種インベントリ",
+      speciesDescription:
+        "登録済みの樹種を一覧し、それぞれの育成メモを参考情報として確認できます。",
+      viewSpecies: "樹種を見る",
+      speciesRegistered: "登録済み樹種",
       bonsaiOfMoment: "今月の盆栽",
       fullRanking: "ランキングを見る",
       noVotesThisMonth: "今月の注目盆栽を決めるには、まだ投票数が足りません。",

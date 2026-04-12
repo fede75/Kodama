@@ -15,6 +15,7 @@ import { getCurrentUser } from "@/lib/auth-guards";
 import { getTopVotedBonsaiLast30Days, listBonsais } from "@/lib/bonsais";
 import { getCareEventLabel, getDictionary, getIntlLocale } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { listSpecies } from "@/lib/species";
 import { formatDate } from "@/lib/utils";
 
 export default async function HomePage() {
@@ -31,9 +32,10 @@ export default async function HomePage() {
     heroFiles.length > 0
       ? `/images/${heroFiles[Math.floor(Math.random() * heroFiles.length)]}`
       : "/images/kodama-hero-fallback.svg";
-  const [bonsais, topVotedBonsai] = await Promise.all([
+  const [bonsais, topVotedBonsai, species] = await Promise.all([
     currentUser ? listBonsais(currentUser.id) : Promise.resolve([]),
-    getTopVotedBonsaiLast30Days()
+    getTopVotedBonsaiLast30Days(),
+    listSpecies(locale)
   ]);
   const recentCare = bonsais
     .flatMap((bonsai) =>
@@ -163,7 +165,7 @@ export default async function HomePage() {
       </section>
 
       <SignedIn>
-        <section className="grid gap-4 md:grid-cols-2">
+        <section className="grid gap-4 md:grid-cols-3">
           <Link
             href="/bonsais-destacados"
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
@@ -203,8 +205,80 @@ export default async function HomePage() {
               </span>
             </div>
           </Link>
+
+          <Link
+            href="/especies"
+            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
+          >
+            <p className="editorial-kicker text-[10px]">{dict.home.species}</p>
+            <div className="mt-4 flex items-end justify-between gap-6">
+              <div>
+                <p className="font-display text-[clamp(2rem,5vw,3rem)] text-paper">
+                  {dict.home.speciesInventory}
+                </p>
+                <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
+                  {dict.home.speciesDescription}
+                </p>
+                <p className="mt-4 text-sm uppercase tracking-[0.16em] text-paper/38">
+                  {species.length} {dict.home.speciesRegistered}
+                </p>
+              </div>
+              <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
+                {dict.home.viewSpecies}
+              </span>
+            </div>
+          </Link>
         </section>
       </SignedIn>
+
+      <section className="space-y-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="editorial-kicker text-xs">{dict.home.species}</p>
+            <h2 className="mt-2 font-display text-4xl text-paper">
+              {dict.home.speciesInventory}
+            </h2>
+          </div>
+          <Link href="/especies" className="block sm:inline-flex">
+            <Button variant="secondary" className="w-full sm:w-auto">
+              {dict.home.viewSpecies}
+            </Button>
+          </Link>
+        </div>
+
+        {species.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-3">
+            {species.slice(0, 3).map((item) => {
+              const translation = item.translations[0];
+              return (
+                <Link
+                  key={item.id}
+                  href={`/especies/${item.slug}`}
+                  className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
+                >
+                  <p className="font-display text-3xl text-paper">
+                    {translation?.commonName ?? item.slug}
+                  </p>
+                  <p className="mt-3 text-sm uppercase tracking-[0.16em] text-paper/40">
+                    {translation?.scientificName ?? item.slug}
+                  </p>
+                  <p className="mt-4 text-sm leading-7 text-paper/52">
+                    {translation?.placementNotes ?? translation?.wateringNotes ?? translation?.substrateNotes ?? ""}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="rounded-[2rem] surface-soft p-6 text-paper/56">
+            {locale === "es"
+              ? "Todavía no hay especies registradas."
+              : locale === "en"
+                ? "There are no registered species yet."
+                : "まだ登録済みの樹種はありません。"}
+          </div>
+        )}
+      </section>
 
       <section className="space-y-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

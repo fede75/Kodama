@@ -1,0 +1,113 @@
+{
+  "slug": "olmo-chino",
+  "placement": {
+    "type": "OUTDOOR",
+    "light": "FULL_SUN",
+    "sunHours": 5
+  },
+  "temperature": {
+    "min": -8,
+    "max": 35
+  },
+  "watering": {
+    "frequencyDays": {
+      "spring": 2,
+      "summer": 1,
+      "autumn": 3,
+      "winter": 5
+    }
+  },
+  "fertilizing": {
+    "activeMonths": [3, 4, 5, 6, 9, 10],
+    "frequencyDays": 30
+  },
+  "pruning": {
+    "activeMonths": [4, 5, 6, 7, 8],
+    "frequencyDays": 30
+  },
+  "repotting": {
+    "activeMonths": [2, 3],
+    "frequencyDays": 730
+  },
+  "substrate": {
+    "drainage": "MEDIUM"
+  },
+  "risks": ["indoor", "underwatering", "pests"],
+  "translations": {
+    "es": {
+      "commonName": "Olmo chino",
+      "scientificName": "Ulmus parvifolia",
+      "placement": {
+        "notes": "Mejor en exterior, con mucho sol o semisombra luminosa."
+      },
+      "temperature": {
+        "notes": "Tolera bien el frío moderado y el calor si está bien regado."
+      },
+      "watering": {
+        "notes": "Mantener el sustrato húmedo sin encharcar. En verano puede necesitar riego frecuente."
+      },
+      "fertilizing": {
+        "notes": "Abonar en primavera y otoño para mantener crecimiento vigoroso."
+      },
+      "pruning": {
+        "notes": "Responde muy bien a la poda y al pinzado frecuente."
+      },
+      "repotting": {
+        "notes": "Trasplantar en primavera cada 2 a 3 años."
+      },
+      "substrate": {
+        "notes": "Sustrato equilibrado, con drenaje correcto y algo de retención."
+      }
+    },
+    "en": {
+      "commonName": "Chinese elm",
+      "scientificName": "Ulmus parvifolia",
+      "placement": {
+        "notes": "Best kept outdoors, with plenty of sun or bright partial shade."
+      },
+      "temperature": {
+        "notes": "It tolerates moderate cold and heat well if watered properly."
+      },
+      "watering": {
+        "notes": "Keep the substrate moist but not waterlogged. It may need frequent watering in summer."
+      },
+      "fertilizing": {
+        "notes": "Fertilize in spring and autumn to maintain vigorous growth."
+      },
+      "pruning": {
+        "notes": "It responds very well to pruning and frequent pinching."
+      },
+      "repotting": {
+        "notes": "Repot in spring every 2 to 3 years."
+      },
+      "substrate": {
+        "notes": "Balanced substrate with proper drainage and some retention."
+      }
+    },
+    "ja": {
+      "commonName": "ニレケヤキ",
+      "scientificName": "Ulmus parvifolia",
+      "placement": {
+        "notes": "屋外管理が基本で、十分な日照または明るい半日陰が適しています。"
+      },
+      "temperature": {
+        "notes": "適切に水管理すれば、適度な寒さや暑さにもよく耐えます。"
+      },
+      "watering": {
+        "notes": "用土は湿り気を保ちつつ、過湿にはしないようにします。夏は水やり回数が増えることがあります。"
+      },
+      "fertilizing": {
+        "notes": "樹勢を保つため、春と秋に施肥します。"
+      },
+      "pruning": {
+        "notes": "剪定やこまめな摘み取りによく反応します。"
+      },
+      "repotting": {
+        "notes": "春に2年から3年ごとを目安に植え替えます。"
+      },
+      "substrate": {
+        "notes": "排水性と適度な保水性を持つ用土が適しています。"
+      }
+    }
+  }
+}

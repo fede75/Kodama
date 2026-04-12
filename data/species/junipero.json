@@ -1,0 +1,113 @@
+{
+  "slug": "manzano",
+  "placement": {
+    "type": "OUTDOOR",
+    "light": "FULL_SUN",
+    "sunHours": 6
+  },
+  "temperature": {
+    "min": -10,
+    "max": 35
+  },
+  "watering": {
+    "frequencyDays": {
+      "spring": 2,
+      "summer": 1,
+      "autumn": 3,
+      "winter": 5
+    }
+  },
+  "fertilizing": {
+    "activeMonths": [3, 4, 5],
+    "frequencyDays": 30
+  },
+  "pruning": {
+    "activeMonths": [2, 3],
+    "frequencyDays": 365
+  },
+  "repotting": {
+    "activeMonths": [2, 3],
+    "frequencyDays": 730
+  },
+  "substrate": {
+    "drainage": "MEDIUM"
+  },
+  "risks": ["pests", "fungus"],
+  "translations": {
+    "es": {
+      "commonName": "Manzano",
+      "scientificName": "Malus",
+      "placement": {
+        "notes": "Exterior con sol directo."
+      },
+      "temperature": {
+        "notes": "Necesita frío invernal."
+      },
+      "watering": {
+        "notes": "No dejar secar completamente."
+      },
+      "fertilizing": {
+        "notes": "Abonar antes de floración."
+      },
+      "pruning": {
+        "notes": "Poda en reposo invernal."
+      },
+      "repotting": {
+        "notes": "Trasplante en primavera."
+      },
+      "substrate": {
+        "notes": "Buen drenaje con cierta retención."
+      }
+    },
+    "en": {
+      "commonName": "Apple tree",
+      "scientificName": "Malus",
+      "placement": {
+        "notes": "Outdoor with full sun."
+      },
+      "temperature": {
+        "notes": "Requires winter cold."
+      },
+      "watering": {
+        "notes": "Do not allow complete drying."
+      },
+      "fertilizing": {
+        "notes": "Fertilize before flowering."
+      },
+      "pruning": {
+        "notes": "Prune during winter dormancy."
+      },
+      "repotting": {
+        "notes": "Repot in spring."
+      },
+      "substrate": {
+        "notes": "Good drainage with some retention."
+      }
+    },
+    "ja": {
+      "commonName": "リンゴ",
+      "scientificName": "Malus",
+      "placement": {
+        "notes": "屋外の日当たりの良い場所に置きます。"
+      },
+      "temperature": {
+        "notes": "冬の低温が必要です。"
+      },
+      "watering": {
+        "notes": "完全に乾燥させないようにします。"
+      },
+      "fertilizing": {
+        "notes": "開花前に施肥します。"
+      },
+      "pruning": {
+        "notes": "冬の休眠期に剪定します。"
+      },
+      "repotting": {
+        "notes": "春に植え替えます。"
+      },
+      "substrate": {
+        "notes": "排水性と保水性のバランスが重要です。"
+      }
+    }
+  }
+}

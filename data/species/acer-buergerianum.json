@@ -1,0 +1,113 @@
+{
+  "slug": "acer-buergerianum",
+  "placement": {
+    "type": "OUTDOOR",
+    "light": "FULL_SUN",
+    "sunHours": 6
+  },
+  "temperature": {
+    "min": -10,
+    "max": 38
+  },
+  "watering": {
+    "frequencyDays": {
+      "spring": 2,
+      "summer": 1,
+      "autumn": 3,
+      "winter": 5
+    }
+  },
+  "fertilizing": {
+    "activeMonths": [3, 4, 5, 9, 10],
+    "frequencyDays": 30
+  },
+  "pruning": {
+    "activeMonths": [4, 5, 6, 7],
+    "frequencyDays": 45
+  },
+  "repotting": {
+    "activeMonths": [2, 3],
+    "frequencyDays": 730
+  },
+  "substrate": {
+    "drainage": "MEDIUM"
+  },
+  "risks": ["underwatering", "root_bound"],
+  "translations": {
+    "es": {
+      "commonName": "Arce tridente",
+      "scientificName": "Acer buergerianum",
+      "placement": {
+        "notes": "Exterior con buena exposición al sol."
+      },
+      "temperature": {
+        "notes": "Muy resistente al frío."
+      },
+      "watering": {
+        "notes": "Mantener humedad constante."
+      },
+      "fertilizing": {
+        "notes": "Abonar en primavera y otoño."
+      },
+      "pruning": {
+        "notes": "Tolera bien la poda."
+      },
+      "repotting": {
+        "notes": "Trasplante en primavera."
+      },
+      "substrate": {
+        "notes": "Sustrato equilibrado con buen drenaje."
+      }
+    },
+    "en": {
+      "commonName": "Trident maple",
+      "scientificName": "Acer buergerianum",
+      "placement": {
+        "notes": "Outdoor with good sun exposure."
+      },
+      "temperature": {
+        "notes": "Very cold hardy."
+      },
+      "watering": {
+        "notes": "Maintain consistent moisture."
+      },
+      "fertilizing": {
+        "notes": "Fertilize in spring and autumn."
+      },
+      "pruning": {
+        "notes": "Responds well to pruning."
+      },
+      "repotting": {
+        "notes": "Repot in spring."
+      },
+      "substrate": {
+        "notes": "Balanced, well-draining soil."
+      }
+    },
+    "ja": {
+      "commonName": "トウカエデ",
+      "scientificName": "Acer buergerianum",
+      "placement": {
+        "notes": "屋外で日当たりの良い場所に置きます。"
+      },
+      "temperature": {
+        "notes": "耐寒性が高い樹種です。"
+      },
+      "watering": {
+        "notes": "用土の乾燥を防ぎ、適度な湿り気を保ちます。"
+      },
+      "fertilizing": {
+        "notes": "春と秋に施肥します。"
+      },
+      "pruning": {
+        "notes": "剪定に強くよく反応します。"
+      },
+      "repotting": {
+        "notes": "春に植え替えます。"
+      },
+      "substrate": {
+        "notes": "排水性の良い用土が適しています。"
+      }
+    }
+  }
+}

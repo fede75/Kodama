@@ -1,0 +1,113 @@
+{
+  "slug": "acer-palmatum",
+  "placement": {
+    "type": "OUTDOOR",
+    "light": "PARTIAL_SUN",
+    "sunHours": 4
+  },
+  "temperature": {
+    "min": -10,
+    "max": 35
+  },
+  "watering": {
+    "frequencyDays": {
+      "spring": 2,
+      "summer": 1,
+      "autumn": 3,
+      "winter": 5
+    }
+  },
+  "fertilizing": {
+    "activeMonths": [3, 4, 5, 9, 10],
+    "frequencyDays": 30
+  },
+  "pruning": {
+    "activeMonths": [5, 6, 7],
+    "frequencyDays": 60
+  },
+  "repotting": {
+    "activeMonths": [2, 3],
+    "frequencyDays": 730
+  },
+  "substrate": {
+    "drainage": "MEDIUM"
+  },
+  "risks": ["full_sun", "dry_wind", "underwatering"],
+  "translations": {
+    "es": {
+      "commonName": "Arce japonés",
+      "scientificName": "Acer palmatum",
+      "placement": {
+        "notes": "Exterior en semisombra, evitar sol fuerte en verano."
+      },
+      "temperature": {
+        "notes": "Tolera frío, pero el calor intenso puede dañarlo."
+      },
+      "watering": {
+        "notes": "Mantener el sustrato ligeramente húmedo sin secarse completamente."
+      },
+      "fertilizing": {
+        "notes": "Abonar en primavera y otoño."
+      },
+      "pruning": {
+        "notes": "Poda ligera durante crecimiento."
+      },
+      "repotting": {
+        "notes": "Trasplantar antes de brotación."
+      },
+      "substrate": {
+        "notes": "Sustrato con buena retención de humedad."
+      }
+    },
+    "en": {
+      "commonName": "Japanese maple",
+      "scientificName": "Acer palmatum",
+      "placement": {
+        "notes": "Outdoor in partial shade, avoid strong summer sun."
+      },
+      "temperature": {
+        "notes": "Cold hardy, but sensitive to intense heat."
+      },
+      "watering": {
+        "notes": "Keep soil slightly moist, do not let it dry completely."
+      },
+      "fertilizing": {
+        "notes": "Fertilize in spring and autumn."
+      },
+      "pruning": {
+        "notes": "Light pruning during growth."
+      },
+      "repotting": {
+        "notes": "Repot before bud break."
+      },
+      "substrate": {
+        "notes": "Substrate with good moisture retention."
+      }
+    },
+    "ja": {
+      "commonName": "モミジ",
+      "scientificName": "Acer palmatum",
+      "placement": {
+        "notes": "屋外の半日陰で管理し、夏の強い直射日光は避けます。"
+      },
+      "temperature": {
+        "notes": "耐寒性はありますが、強い暑さには弱いです。"
+      },
+      "watering": {
+        "notes": "用土を乾かしすぎないように管理します。"
+      },
+      "fertilizing": {
+        "notes": "春と秋に施肥します。"
+      },
+      "pruning": {
+        "notes": "生育期に軽く剪定します。"
+      },
+      "repotting": {
+        "notes": "芽吹き前に植え替えます。"
+      },
+      "substrate": {
+        "notes": "適度な保水性のある用土が適しています。"
+      }
+    }
+  }
+}

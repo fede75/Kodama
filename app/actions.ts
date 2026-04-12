@@ -24,6 +24,7 @@ import {
 } from "@/lib/bonsais";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { isVercelBlobUrl } from "@/lib/blob";
+import { findSpeciesReferenceIdByLabel } from "@/lib/species";
 
 function parseOptionalString(value: FormDataEntryValue | null) {
   if (typeof value !== "string") {
@@ -71,10 +72,13 @@ export async function createBonsaiAction(formData: FormData) {
     throw new Error("Nombre y especie son obligatorios.");
   }
 
+  const speciesId = await findSpeciesReferenceIdByLabel(species);
+
   const bonsai = await createBonsai({
     userId: user.id,
     name,
     species,
+    speciesId: speciesId ?? undefined,
     style: parseOptionalString(formData.get("style")),
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),
@@ -242,6 +246,8 @@ export async function updateBonsaiAction(formData: FormData) {
   const species = parseOptionalString(formData.get("species"));
   const collectionStatus = parseOptionalString(formData.get("collectionStatus"));
 
+  const speciesId = await findSpeciesReferenceIdByLabel(species);
+
   if (
     !bonsaiId ||
     !name ||
@@ -261,6 +267,7 @@ export async function updateBonsaiAction(formData: FormData) {
   await updateBonsai(bonsaiId, user.id, {
     name,
     species,
+    speciesId: speciesId ?? null,
     style: parseOptionalString(formData.get("style")),
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),

@@ -15,6 +15,7 @@ import {
   getIntlLocale
 } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { findSpeciesForDisplay } from "@/lib/species";
 import { calculateEstimatedAge, formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -62,6 +63,8 @@ export default async function BonsaiDetailPage({
       ? bonsais[currentIndex + 1]
       : null;
 
+  const speciesReference = await findSpeciesForDisplay(bonsai.species, locale);
+
   return (
     <div className="space-y-7">
       <section className="relative overflow-hidden rounded-[2rem] surface-panel p-4 sm:p-5 xl:p-6">
@@ -101,9 +104,21 @@ export default async function BonsaiDetailPage({
               <h1 className="mt-3 font-display text-[clamp(2.2rem,6vw,4.6rem)] leading-none text-paper">
                 {bonsai.name}
               </h1>
-              <p className="mt-3 text-[1rem] text-paper/56">
-                {bonsai.species}
-              </p>
+              <div className="mt-3 flex items-center gap-3">
+                <p className="text-[1rem] text-paper/56">
+                  {bonsai.species}
+                </p>
+                {speciesReference ? (
+                  <Link
+                    href={`/especies/${speciesReference.slug}`}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-paper/74 transition hover:bg-white/[0.08] hover:text-paper"
+                    title={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
+                    aria-label={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
+                  >
+                    i
+                  </Link>
+                ) : null}
+              </div>
               {bonsai.notes ? (
                 <p className="mt-5 max-w-2xl text-[1rem] leading-8 text-paper/72 sm:text-[1.04rem]">
                   {bonsai.notes}

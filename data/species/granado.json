@@ -1,0 +1,113 @@
+{
+  "slug": "granado",
+  "placement": {
+    "type": "OUTDOOR",
+    "light": "FULL_SUN",
+    "sunHours": 6
+  },
+  "temperature": {
+    "min": -5,
+    "max": 38
+  },
+  "watering": {
+    "frequencyDays": {
+      "spring": 3,
+      "summer": 2,
+      "autumn": 4,
+      "winter": 6
+    }
+  },
+  "fertilizing": {
+    "activeMonths": [3, 4, 5, 6, 9, 10],
+    "frequencyDays": 30
+  },
+  "pruning": {
+    "activeMonths": [4, 5, 6, 7],
+    "frequencyDays": 45
+  },
+  "repotting": {
+    "activeMonths": [3, 4],
+    "frequencyDays": 730
+  },
+  "substrate": {
+    "drainage": "HIGH"
+  },
+  "risks": ["indoor", "low_light", "overwatering"],
+  "translations": {
+    "es": {
+      "commonName": "Granado",
+      "scientificName": "Punica granatum",
+      "placement": {
+        "notes": "Debe cultivarse en exterior con abundante sol."
+      },
+      "temperature": {
+        "notes": "Tolera calor y algo de frío, pero conviene protegerlo de heladas fuertes."
+      },
+      "watering": {
+        "notes": "Regar de forma regular, dejando secar ligeramente la superficie entre riegos."
+      },
+      "fertilizing": {
+        "notes": "Abonar en primavera y otoño, y moderadamente durante la época de crecimiento."
+      },
+      "pruning": {
+        "notes": "Poda de mantenimiento en crecimiento para mejorar ramificación y floración."
+      },
+      "repotting": {
+        "notes": "Trasplantar en primavera cada 2 a 3 años."
+      },
+      "substrate": {
+        "notes": "Necesita sustrato drenante, pero con algo de retención de humedad."
+      }
+    },
+    "en": {
+      "commonName": "Pomegranate",
+      "scientificName": "Punica granatum",
+      "placement": {
+        "notes": "It should be grown outdoors with plenty of sun."
+      },
+      "temperature": {
+        "notes": "It tolerates heat and some cold, but should be protected from severe frost."
+      },
+      "watering": {
+        "notes": "Water regularly, allowing the surface to dry slightly between waterings."
+      },
+      "fertilizing": {
+        "notes": "Fertilize in spring and autumn, and moderately during the growing season."
+      },
+      "pruning": {
+        "notes": "Maintenance pruning during growth helps ramification and flowering."
+      },
+      "repotting": {
+        "notes": "Repot in spring every 2 to 3 years."
+      },
+      "substrate": {
+        "notes": "It needs a draining substrate with some moisture retention."
+      }
+    },
+    "ja": {
+      "commonName": "ザクロ",
+      "scientificName": "Punica granatum",
+      "placement": {
+        "notes": "屋外で管理し、十分な日照を確保します。"
+      },
+      "temperature": {
+        "notes": "暑さには強く、多少の寒さにも耐えますが、強い霜は避けた方が安全です。"
+      },
+      "watering": {
+        "notes": "定期的に水を与えますが、用土表面はやや乾かしてから次の水やりを行います。"
+      },
+      "fertilizing": {
+        "notes": "春と秋を中心に、生育期には適度に施肥します。"
+      },
+      "pruning": {
+        "notes": "生育期の維持剪定は枝分かれと花つきを整えるのに役立ちます。"
+      },
+      "repotting": {
+        "notes": "春に2年から3年ごとを目安に植え替えます。"
+      },
+      "substrate": {
+        "notes": "水はけが良く、適度な保水性もある用土が適しています。"
+      }
+    }
+  }
+}

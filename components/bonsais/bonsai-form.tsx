@@ -53,7 +53,16 @@ export function BonsaiForm({
           />
         </FormField>
 
-        <FormField label={locale === "es" ? "Especie" : locale === "en" ? "Species" : "樹種"}>
+        <FormField
+          label={locale === "es" ? "Especie" : locale === "en" ? "Species" : "樹種"}
+          hint={
+            locale === "es"
+              ? "Usa el nombre comun o cientifico para enlazar esta ficha con el inventario de especies."
+              : locale === "en"
+                ? "Use the common or scientific name to link this record to the species inventory."
+                : "一般名または学名を使うと、樹種インベントリと自動で関連付けできます。"
+          }
+        >
           <Input
             name="species"
             required
