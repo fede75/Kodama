@@ -25,15 +25,18 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[96rem] flex-col px-3 py-3 sm:px-5 sm:py-5 lg:px-8">
-      <header className="sticky top-2 z-40 mb-6 rounded-[1.4rem] border border-white/6 bg-[linear-gradient(180deg,rgba(10,13,12,0.82),rgba(10,13,12,0.7))] px-4 py-4 shadow-[0_24px_90px_-48px_rgba(0,0,0,0.95)] backdrop-blur-2xl sm:top-3 sm:mb-8 sm:rounded-[1.7rem] sm:px-6">
+      <header className="sticky top-2 z-40 mb-6 rounded-[1.4rem] border border-white/5 bg-[linear-gradient(180deg,rgba(8,11,10,0.92),rgba(8,11,10,0.84))] px-4 py-4 shadow-[0_24px_90px_-52px_rgba(0,0,0,0.95)] sm:top-3 sm:mb-8 sm:rounded-[1.7rem] sm:px-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Link href="/" className="inline-flex items-center gap-3 self-start">
-            <div className="flex h-11 w-11 items-center justify-center rounded-[1rem] bg-[linear-gradient(135deg,rgba(118,154,74,0.3),rgba(14,18,17,0.9))] text-base font-semibold text-paper shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:h-12 sm:w-12">
+            <div className="flex h-11 w-11 items-center justify-center rounded-[1rem] border border-white/8 bg-[linear-gradient(135deg,rgba(118,154,74,0.18),rgba(14,18,17,0.96))] text-base font-semibold text-paper shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:h-12 sm:w-12">
               木
             </div>
             <div>
-              <p className="font-display text-[clamp(1.7rem,4vw,2.2rem)] leading-none tracking-[0.03em] text-paper">
+              <p className="font-display text-[clamp(1.7rem,4vw,2.25rem)] leading-none tracking-[0.02em] text-paper">
                 Kodama
+              </p>
+              <p className="mt-1 text-[0.74rem] font-semibold uppercase tracking-[0.12em] text-paper/34">
+                Cuaderno vivo de bonsáis
               </p>
             </div>
           </Link>

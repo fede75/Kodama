@@ -8,18 +8,18 @@
 
 html {
   background:
-    radial-gradient(circle at top, rgba(111, 149, 70, 0.18), transparent 24%),
-    radial-gradient(circle at 80% 8%, rgba(185, 84, 50, 0.12), transparent 16%),
-    linear-gradient(180deg, #060908 0%, #0b0f0e 38%, #0e1312 100%);
+    radial-gradient(circle at 12% 4%, rgba(111, 149, 70, 0.16), transparent 22%),
+    radial-gradient(circle at 82% 6%, rgba(185, 84, 50, 0.08), transparent 18%),
+    linear-gradient(180deg, #040706 0%, #090d0c 30%, #0d1211 100%);
 }
 
 body {
   @apply min-h-screen font-sans text-paper antialiased;
   background-image:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.018), transparent 54%),
-    radial-gradient(circle at left top, rgba(111, 149, 70, 0.14), transparent 24%),
-    radial-gradient(circle at 88% 12%, rgba(185, 84, 50, 0.1), transparent 18%),
-    linear-gradient(180deg, rgba(8, 11, 10, 0.98) 0%, rgba(12, 16, 15, 0.98) 48%, rgba(9, 12, 11, 1) 100%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.014), transparent 54%),
+    radial-gradient(circle at left top, rgba(111, 149, 70, 0.12), transparent 24%),
+    radial-gradient(circle at 88% 12%, rgba(185, 84, 50, 0.08), transparent 16%),
+    linear-gradient(180deg, rgba(6, 9, 8, 0.99) 0%, rgba(10, 14, 13, 0.985) 42%, rgba(10, 13, 12, 1) 100%);
   font-feature-settings: "palt" 1, "liga" 1;
   line-height: 1.55;
   text-rendering: optimizeLegibility;
@@ -32,11 +32,11 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.1;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
-  background-size: 100% 42px, 42px 100%;
+    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+  background-size: 100% 48px, 48px 100%;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.84), rgba(0, 0, 0, 0.18));
 }
 
@@ -45,9 +45,9 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.05;
   background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.9) 0.6px, transparent 0.7px);
-  background-size: 9px 9px;
+  background-size: 10px 10px;
   mix-blend-mode: soft-light;
 }
 
@@ -88,19 +88,64 @@ textarea {
 }
 
 .surface-panel {
-  background: linear-gradient(180deg, rgba(17, 21, 20, 0.86), rgba(10, 13, 12, 0.92));
-  box-shadow: 0 32px 90px -50px rgba(0, 0, 0, 0.94);
+  background:
+    linear-gradient(180deg, rgba(18, 22, 21, 0.86), rgba(10, 13, 12, 0.94));
+  box-shadow: 0 36px 100px -56px rgba(0, 0, 0, 0.95);
 }
 
 .surface-soft {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.016));
+}
+
+.surface-etched {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.surface-deep {
+  background:
+    linear-gradient(180deg, rgba(7, 10, 9, 0.94), rgba(6, 9, 8, 0.98));
+}
+
+.section-ink {
+  position: relative;
+}
+
+.section-ink::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 28%);
+}
+
+.quiet-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+.field-surface {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.metadata-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgba(248, 241, 231, 0.42);
 }
 
 .editorial-kicker {
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(248, 241, 231, 0.5);
+  color: rgba(248, 241, 231, 0.56);
 }

@@ -16,7 +16,7 @@ export function TogglePanel({
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="rounded-full border border-white/14 bg-white/[0.03] px-4 py-2 text-sm font-medium text-paper transition hover:border-white/24 hover:bg-white/[0.08]"
+        className="rounded-full border border-white/10 bg-white/[0.025] px-4 py-2.5 text-sm font-semibold text-paper/82 transition hover:border-white/16 hover:bg-white/[0.06]"
       >
         {open ? "Cerrar" : buttonLabel}
       </button>

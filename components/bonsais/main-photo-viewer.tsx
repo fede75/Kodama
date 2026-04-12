@@ -40,8 +40,8 @@ export function MainPhotoViewer({
 
   if (!imageUrl) {
     return (
-      <div className="flex h-[clamp(16rem,48vw,38rem)] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-5 sm:p-6">
-        <div className="rounded-full bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-paper/72">
+      <div className="flex h-[clamp(18rem,52vw,42rem)] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-6 sm:p-7">
+        <div className="rounded-full bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-paper/72">
           Sin foto
         </div>
       </div>
@@ -59,7 +59,7 @@ export function MainPhotoViewer({
         <img
           src={imageUrl}
           alt={alt}
-          className="h-[clamp(16rem,48vw,38rem)] w-full object-cover transition duration-500 group-hover:scale-[1.015]"
+          className="h-[clamp(18rem,52vw,42rem)] w-full object-cover transition duration-700 group-hover:scale-[1.02]"
         />
       </button>
 
@@ -90,7 +90,7 @@ export function MainPhotoViewer({
               </button>
             </div>
 
-            <div className="overflow-hidden rounded-[2.2rem] bg-black/30 shadow-[0_32px_100px_-38px_rgba(0,0,0,0.96)]">
+            <div className="overflow-hidden rounded-[2.4rem] border border-white/8 bg-black/30 shadow-[0_32px_100px_-38px_rgba(0,0,0,0.96)]">
               <img
                 src={imageUrl}
                 alt={alt}

@@ -8,19 +8,20 @@ export default async function PublicCollectionsPage() {
   const collections = await listPublicCollections();
 
   return (
-    <div className="space-y-8">
-      <section className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div className="space-y-3">
+    <div className="space-y-10">
+      <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-end">
+        <div className="space-y-4">
           <p className="editorial-kicker text-xs">Explorar</p>
-          <h1 className="font-display text-4xl leading-none text-paper sm:text-5xl">
+          <h1 className="font-display text-[clamp(3rem,7vw,5.6rem)] leading-[0.9] text-paper">
             Colecciones públicas
           </h1>
-          <p className="max-w-2xl text-sm leading-7 text-paper/50 sm:text-base">
-            Un inventario abierto de colecciones vivas, con foco en imagen, procedencia y acceso directo a cada cuaderno.
+          <p className="max-w-2xl text-[1.04rem] leading-8 text-paper/56">
+            Un recorrido por colecciones abiertas, árboles compartidos y cuadernos vivos que invitan a mirar con más calma.
           </p>
         </div>
-        <div className="rounded-full bg-white/[0.035] px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42">
-          {collections.length} colecciones visibles
+        <div className="justify-self-start rounded-[2rem] border border-white/6 bg-white/[0.025] px-6 py-5 xl:justify-self-end">
+          <p className="metadata-label">Colecciones visibles</p>
+          <p className="mt-3 font-display text-4xl text-paper">{collections.length}</p>
         </div>
       </section>
 
@@ -29,62 +30,65 @@ export default async function PublicCollectionsPage() {
           Todavía no hay colecciones públicas.
         </div>
       ) : (
-        <section className="grid gap-6 2xl:grid-cols-2">
-          {collections.map((collection) => {
+        <section className="grid gap-8 2xl:grid-cols-2">
+          {collections.map((collection, index) => {
             const sampleBonsai = collection.bonsais[0];
             const samplePhoto = sampleBonsai?.photos[0];
 
             return (
               <article
                 key={collection.id}
-                className="group relative overflow-hidden rounded-[2.2rem] surface-panel p-4 transition duration-500 hover:-translate-y-1.5 sm:p-5"
+                className={`group relative overflow-hidden rounded-[2.4rem] transition duration-500 hover:-translate-y-1.5 ${
+                  index % 2 === 0
+                    ? "border border-white/6 bg-[linear-gradient(180deg,rgba(14,18,17,0.84),rgba(8,10,10,0.96))]"
+                    : "border border-white/6 bg-[linear-gradient(180deg,rgba(11,14,13,0.9),rgba(8,10,10,0.98))]"
+                }`}
               >
-                <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-clay-700/15 blur-3xl transition duration-500 group-hover:bg-clay-600/24" />
-                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.02),transparent_45%)]" />
+                <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-clay-700/12 blur-3xl transition duration-500 group-hover:bg-clay-600/18" />
 
-                <div className="grid gap-4 md:grid-cols-[12.5rem_1fr] xl:grid-cols-[14rem_1fr] md:items-stretch">
+                <div className="grid gap-4 p-4 md:grid-cols-[1.02fr_0.98fr] md:items-stretch lg:p-5">
                   {samplePhoto ? (
-                    <div className="overflow-hidden rounded-[1.7rem] bg-black/20">
+                    <div className="overflow-hidden rounded-[2rem] bg-black/20">
                       <img
                         src={samplePhoto.imageUrl}
                         alt={samplePhoto.caption ?? `Foto de ${sampleBonsai?.name ?? "bonsái"}`}
-                        className="aspect-[4/5] h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
+                        className="aspect-[5/6] h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
                         loading="lazy"
                       />
                     </div>
                   ) : (
-                    <div className="flex items-end overflow-hidden rounded-[1.7rem] bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4">
+                    <div className="flex items-end overflow-hidden rounded-[2rem] bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-5">
                       <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-paper/72">
                         Sin foto
                       </div>
                     </div>
                   )}
 
-                  <div className="flex min-h-full flex-col justify-between">
-                    <div>
-                      <p className="editorial-kicker text-[10px]">Colección pública</p>
-                      <h2 className="mt-3 font-display text-[clamp(2rem,4vw,2.5rem)] leading-none text-paper">
-                        {collection.name ?? "Usuario"}
-                      </h2>
-                      <p className="mt-3 text-sm uppercase tracking-[0.16em] text-paper/38">
-                        {collection.collectionLocation ?? "Ubicación no indicada"}
-                      </p>
+                    <div className="flex min-h-full flex-col justify-between">
+                      <div>
+                        <p className="editorial-kicker text-[10px]">Colección pública</p>
+                        <h2 className="mt-4 font-display text-[clamp(2.2rem,4.2vw,3rem)] leading-[0.96] text-paper">
+                          {collection.name ?? "Usuario"}
+                        </h2>
+                        <p className="mt-4 text-[1rem] text-paper/52">
+                          {collection.collectionLocation ?? "Ubicación no indicada"}
+                        </p>
                     </div>
 
-                    <div className="mt-7 grid gap-4 sm:grid-cols-2">
+                    <div className="mt-8 grid gap-5 sm:grid-cols-2">
                       <div className="space-y-1">
-                        <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
+                        <p className="metadata-label">
                           Bonsái destacado
                         </p>
-                        <p className="text-sm text-paper/76">
+                        <p className="text-[1rem] text-paper/78">
                           {sampleBonsai?.name ?? "Sin destacar"}
                         </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
+                        <p className="metadata-label">
                           Visibles
                         </p>
-                        <p className="text-sm text-paper/76">
+                        <p className="text-[1rem] text-paper/78">
                           {collection.bonsais.length} árboles
                         </p>
                       </div>

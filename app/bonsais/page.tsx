@@ -10,38 +10,51 @@ export default async function BonsaisPage() {
   const user = await requireCurrentUser();
   const bonsais = await listBonsais(user.id);
   const activeCount = bonsais.filter((bonsai) => bonsai.collectionStatus === "ACTIVE").length;
+  const withPhotos = bonsais.filter((bonsai) => bonsai.photos.length > 0).length;
 
   return (
-    <div className="space-y-7">
-      <section className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div className="space-y-3">
+    <div className="space-y-10">
+      <section className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr] xl:items-end">
+        <div className="space-y-5">
           <p className="editorial-kicker text-xs">Mi colección</p>
-          <h1 className="font-display text-[clamp(2.2rem,6vw,3rem)] leading-none text-paper">
-            {bonsais.length} árboles
+          <h1 className="max-w-4xl font-display text-[clamp(3rem,8vw,6rem)] leading-[0.9] text-paper">
+            Una galería viva de árboles, memoria y cuidado lento.
           </h1>
-          <p className="max-w-xl text-sm leading-7 text-paper/50 sm:text-base">
-            Vista editorial de la colección con foco en imagen, estado y evolución reciente.
+          <p className="max-w-2xl text-[1.05rem] leading-8 text-paper/58">
+            Tu colección no se presenta como una lista de fichas, sino como un conjunto de ejemplares con carácter propio, imagen, contexto y evolución.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="rounded-full bg-white/[0.035] px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42">
-            {activeCount} activos
+        <div className="grid gap-4 sm:grid-cols-[auto_auto] sm:justify-start xl:justify-end">
+          <div className="surface-etched rounded-[1.9rem] px-5 py-5">
+            <p className="metadata-label">Activos</p>
+            <p className="mt-3 font-display text-4xl text-paper">{activeCount}</p>
+            <p className="mt-2 text-sm text-paper/48">árboles en seguimiento</p>
           </div>
-          <Link href="/bonsais/new" className="block sm:inline-flex">
-            <Button className="w-full sm:w-auto">Registra bonsái</Button>
+          <div className="surface-etched rounded-[1.9rem] px-5 py-5">
+            <p className="metadata-label">Con fotografía</p>
+            <p className="mt-3 font-display text-4xl text-paper">{withPhotos}</p>
+            <p className="mt-2 text-sm text-paper/48">ejemplares documentados</p>
+          </div>
+          <Link href="/bonsais/new" className="block sm:col-span-2 sm:inline-flex sm:justify-end">
+            <Button className="w-full sm:w-auto">Registrar nuevo bonsái</Button>
           </Link>
         </div>
       </section>
 
       {bonsais.length === 0 ? (
-        <div className="rounded-[2rem] surface-soft p-6 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-8">
+        <div className="rounded-[2.4rem] surface-soft p-8 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-10">
           Empieza registrando tu primer bonsái.
         </div>
       ) : (
-        <section className="grid gap-6 xl:grid-cols-2">
-          {bonsais.map((bonsai) => (
-            <BonsaiCard key={bonsai.id} bonsai={bonsai} />
+        <section className="grid gap-8 xl:grid-cols-2">
+          {bonsais.map((bonsai, index) => (
+            <div
+              key={bonsai.id}
+              className={index % 3 === 0 ? "xl:translate-y-6" : index % 3 === 1 ? "" : "xl:-translate-y-4"}
+            >
+              <BonsaiCard bonsai={bonsai} />
+            </div>
           ))}
         </section>
       )}
