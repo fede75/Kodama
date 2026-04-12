@@ -69,7 +69,7 @@ export default async function BonsaiDetailPage({
   return (
     <div className="space-y-7">
       {(previousBonsai || nextBonsai) && (
-        <nav className="flex items-center justify-between gap-4 text-sm text-paper/58" aria-label="Navegación entre bonsáis">
+        <nav className="flex items-center justify-between gap-4 text-[0.95rem] text-paper/58" aria-label="Navegación entre bonsáis">
           <div className="min-w-0">
             {previousBonsai ? (
               <Link

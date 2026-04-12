@@ -28,7 +28,7 @@ export function DeleteBonsaiForm({
       {iconOnly ? (
         <button
           type="submit"
-          className="inline-flex h-12 w-12 items-center justify-center text-red-200 transition hover:text-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/45"
+          className="inline-flex h-12 w-12 items-center justify-center text-paper/62 transition hover:text-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-400/45"
           aria-label="Eliminar bonsái"
           title="Eliminar bonsái"
         >
