@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Fraunces, Manrope } from "next/font/google";
+import { Fraunces, Manrope, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/layout/app-shell";
+import { getDictionary, getLocale } from "@/lib/i18n";
 
 const bodyFont = Manrope({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body"
+});
+
+const bodyFontJa = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-body-ja"
 });
 
 const displayFont = Fraunces({
@@ -21,14 +28,19 @@ export const metadata: Metadata = {
   description: "Gestiona tu colección de bonsáis y su historial de cuidados."
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+
   return (
-    <html lang="es">
-      <body className={`${bodyFont.variable} ${displayFont.variable}`}>
+    <html lang={locale}>
+      <body
+        className={`${bodyFont.variable} ${bodyFontJa.variable} ${displayFont.variable}`}
+      >
         <ClerkProvider>
           <AppShell>{children}</AppShell>
         </ClerkProvider>

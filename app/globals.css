@@ -27,6 +27,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html[lang="ja"] body {
+  font-family: var(--font-body-ja), var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[lang="ja"] .font-display,
+html[lang="ja"] .editorial-kicker {
+  font-family: var(--font-body-ja), var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+
 body::before {
   content: "";
   position: fixed;

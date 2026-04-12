@@ -1,26 +1,30 @@
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { getCurrentUser } from "@/lib/auth-guards";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { TopNav } from "@/components/layout/top-nav";
+import { getDictionary, getLocale } from "@/lib/i18n";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
   const navItems = user
     ? [
-        { href: "/", label: "Inicio" },
-        { href: "/colecciones-publicas", label: "Colecciones públicas" },
-        { href: "/bonsais-destacados", label: "Bonsáis destacados" },
-        { href: "/bonsais", label: "Mi colección" },
-        { href: "/bonsais/new", label: "Registra bonsái" },
-        { href: "/ajustes", label: "Ajustes" },
+        { href: "/", label: dict.nav.home },
+        { href: "/colecciones-publicas", label: dict.nav.publicCollections },
+        { href: "/bonsais-destacados", label: dict.nav.featuredBonsais },
+        { href: "/bonsais", label: dict.nav.myCollection },
+        { href: "/bonsais/new", label: dict.nav.registerBonsai },
+        { href: "/ajustes", label: dict.nav.settings },
         ...(user.role === "ADMIN"
-          ? [{ href: "/admin", label: "Administración" }]
+          ? [{ href: "/admin", label: dict.nav.admin }]
           : [])
       ]
     : [
-        { href: "/", label: "Inicio" },
-        { href: "/colecciones-publicas", label: "Colecciones públicas" },
-        { href: "/bonsais-destacados", label: "Bonsáis destacados" }
+        { href: "/", label: dict.nav.home },
+        { href: "/colecciones-publicas", label: dict.nav.publicCollections },
+        { href: "/bonsais-destacados", label: dict.nav.featuredBonsais }
       ];
 
   return (
@@ -40,8 +44,9 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
             <TopNav items={navItems} />
-            {user ? (
-              <div className="self-start lg:self-auto">
+            <div className="flex items-center gap-3 self-start lg:self-auto">
+              <LanguageSwitcher locale={locale} />
+              {user ? (
                 <UserButton
                   appearance={{
                     elements: {
@@ -50,8 +55,8 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                     }
                   }}
                 />
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </div>
         </div>
       </header>

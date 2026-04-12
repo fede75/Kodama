@@ -13,11 +13,14 @@ import { Button } from "@/components/ui/button";
 import { FeaturedBonsaiCard } from "@/components/social/featured-bonsai-card";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { getTopVotedBonsaiLast30Days, listBonsais } from "@/lib/bonsais";
-import { CARE_EVENT_LABELS } from "@/lib/constants";
+import { getCareEventLabel, getDictionary, getIntlLocale, getLocale } from "@/lib/i18n";
 import { formatDate } from "@/lib/utils";
 
 export default async function HomePage() {
   const { userId } = await auth();
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const intlLocale = getIntlLocale(locale);
   const currentUser = userId ? await getCurrentUser() : null;
   const imageDir = path.join(process.cwd(), "public", "images");
   const heroFiles = (await readdir(imageDir)).filter((file) =>
@@ -53,24 +56,24 @@ export default async function HomePage() {
         <div className="grid min-h-[auto] lg:grid-cols-[0.82fr_1.18fr]">
           <div className="order-2 hero-reveal-delay relative z-10 flex flex-col justify-between px-5 py-6 sm:px-7 sm:py-7 lg:order-1 lg:px-9 lg:py-10 xl:px-12">
             <div className="max-w-xl space-y-7">
-              <p className="editorial-kicker text-xs">Cuaderno digital de bonsáis</p>
+              <p className="editorial-kicker text-xs">{dict.home.kicker}</p>
               <h1 className="font-display text-[clamp(2.6rem,9vw,5.8rem)] leading-[0.88] text-paper">
-                Una colección viva.
+                {dict.home.title}
               </h1>
               <p className="max-w-lg text-sm leading-7 text-paper/56 sm:text-base sm:leading-8 lg:text-lg">
-                Cada bonsái pide tiempo, observación y un cuidado sereno. Kodama te ayuda a acompañar ese proceso y a recordar lo importante en cada etapa del árbol.
+                {dict.home.description}
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <SignedIn>
                   <Link href="/bonsais" className="block sm:inline-flex">
                     <Button className="w-full px-6 py-3 sm:w-auto sm:px-7">
-                      Mi colección
+                      {dict.home.myCollection}
                     </Button>
                   </Link>
                   <Link href="/colecciones-publicas" className="block sm:inline-flex">
                     <Button variant="secondary" className="w-full px-6 py-3 sm:w-auto sm:px-7">
-                      Colecciones públicas
+                      {dict.home.publicCollections}
                     </Button>
                   </Link>
                 </SignedIn>
@@ -78,13 +81,13 @@ export default async function HomePage() {
                   <SignInButton mode="modal">
                     <span>
                       <Button className="w-full px-6 py-3 sm:w-auto sm:px-7">
-                        Acceder
+                        {dict.common.access}
                       </Button>
                     </span>
                   </SignInButton>
                   <Link href="/colecciones-publicas" className="block sm:inline-flex">
                     <Button variant="secondary" className="w-full px-6 py-3 sm:w-auto sm:px-7">
-                      Colecciones públicas
+                      {dict.home.publicCollections}
                     </Button>
                   </Link>
                 </SignedOut>
@@ -97,28 +100,28 @@ export default async function HomePage() {
                   href="/bonsais"
                   className="group rounded-[1.7rem] surface-soft p-5 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
                 >
-                  <p className="editorial-kicker text-[10px]">Colección</p>
+                  <p className="editorial-kicker text-[10px]">{dict.home.collection}</p>
                   <p className="mt-4 font-display text-3xl text-paper">{bonsais.length}</p>
                   <p className="mt-2 text-sm text-paper/52">
-                    árboles registrados
+                    {dict.home.treesRegistered}
                   </p>
                 </Link>
                 <div className="rounded-[1.7rem] surface-soft p-5">
-                  <p className="editorial-kicker text-[10px]">Actividad reciente</p>
+                  <p className="editorial-kicker text-[10px]">{dict.home.recentActivity}</p>
                   {recentCare.length > 0 ? (
                     <div className="mt-4 space-y-3">
                       {recentCare.map((item) => (
                         <div key={`${item.bonsaiId}-${item.performedAt.toISOString()}`} className="space-y-1">
                           <p className="text-sm text-paper">{item.bonsaiName}</p>
                           <p className="text-xs uppercase tracking-[0.16em] text-paper/38">
-                            {CARE_EVENT_LABELS[item.type]} · {formatDate(item.performedAt)}
+                            {getCareEventLabel(locale, item.type)} · {formatDate(item.performedAt, intlLocale)}
                           </p>
                         </div>
                       ))}
                     </div>
                   ) : (
                     <p className="mt-4 text-sm text-paper/46">
-                      Sin cuidados registrados todavía.
+                      {dict.home.noRecentCare}
                     </p>
                   )}
                 </div>
@@ -126,15 +129,15 @@ export default async function HomePage() {
             </SignedIn>
             <SignedOut>
               <div className="mt-10 max-w-sm rounded-[1.7rem] surface-soft p-5">
-                <p className="editorial-kicker text-[10px]">Acceso</p>
+                <p className="editorial-kicker text-[10px]">{dict.common.access}</p>
                 <p className="mt-4 text-sm leading-7 text-paper/52">
-                  Entra para registrar bonsáis, cuidados, fotos y el historial visual completo de tu colección.
+                  {dict.home.accessPanel}
                 </p>
                 <div className="mt-4">
                   <SignUpButton mode="modal">
                     <span>
                       <Button variant="secondary" className="w-full">
-                        Crear cuenta
+                        {dict.common.createAccount}
                       </Button>
                     </span>
                   </SignUpButton>
@@ -164,18 +167,18 @@ export default async function HomePage() {
             href="/bonsais-destacados"
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
-            <p className="editorial-kicker text-[10px]">Destacados</p>
+            <p className="editorial-kicker text-[10px]">{dict.home.featured}</p>
             <div className="mt-4 flex items-end justify-between gap-6">
               <div>
                 <p className="font-display text-[clamp(2rem,5vw,3rem)] text-paper">
-                  Bonsáis votados
+                  {dict.home.votedBonsais}
                 </p>
                 <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
-                  Sigue los árboles que más conversación y votos han generado en la comunidad.
+                  {dict.home.votedDescription}
                 </p>
               </div>
               <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
-                Ver
+                {dict.common.view}
               </span>
             </div>
           </Link>
@@ -184,18 +187,18 @@ export default async function HomePage() {
             href="/colecciones-publicas"
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
-            <p className="editorial-kicker text-[10px]">Explorar</p>
+            <p className="editorial-kicker text-[10px]">{dict.home.explore}</p>
             <div className="mt-4 flex items-end justify-between gap-6">
               <div>
                 <p className="font-display text-[clamp(2rem,5vw,3rem)] text-paper">
-                  Otras colecciones
+                  {dict.home.otherCollections}
                 </p>
                 <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
-                  Descubre cómo otros usuarios documentan la evolución de sus árboles.
+                  {dict.home.otherCollectionsDescription}
                 </p>
               </div>
               <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
-                Ver
+                {dict.common.view}
               </span>
             </div>
           </Link>
@@ -205,14 +208,14 @@ export default async function HomePage() {
       <section className="space-y-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="editorial-kicker text-xs">Comunidad</p>
+            <p className="editorial-kicker text-xs">{dict.home.community}</p>
             <h2 className="mt-2 font-display text-4xl text-paper">
-              Bonsái del momento
+              {dict.home.bonsaiOfMoment}
             </h2>
           </div>
           <Link href="/bonsais-destacados" className="block sm:inline-flex">
             <Button variant="secondary" className="w-full sm:w-auto">
-              Ver ranking completo
+              {dict.home.fullRanking}
             </Button>
           </Link>
         </div>
@@ -221,11 +224,12 @@ export default async function HomePage() {
           <FeaturedBonsaiCard
             bonsai={topVotedBonsai}
             rank={1}
-            rangeLabel="Últimos 30 días"
+            rangeLabel={dict.home.last30Days}
+            locale={locale}
           />
         ) : (
           <div className="rounded-[2rem] surface-soft p-6 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-8">
-            Todavía no hay votos suficientes para destacar un bonsái este mes.
+            {dict.home.noVotesThisMonth}
           </div>
         )}
       </section>
