@@ -54,7 +54,7 @@ export default async function HomePage() {
                 Una colección viva.
               </h1>
               <p className="max-w-lg text-sm leading-7 text-paper/56 sm:text-base sm:leading-8 lg:text-lg">
-                Inventario, memoria visual y evolución de cada árbol en una interfaz más cercana a una colección que a un panel.
+                Cada bonsái pide tiempo, observación y un cuidado sereno. Kodama te ayuda a acompañar ese proceso y a recordar lo importante en cada etapa del árbol.
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">

@@ -399,6 +399,109 @@ export async function setPrimaryPhoto(input: {
   ]);
 }
 
+export async function deletePhoto(input: {
+  photoId: string;
+  bonsaiId: string;
+  userId: string;
+}) {
+  return prisma.$transaction(async (tx) => {
+    const photo = await tx.photo.findFirst({
+      where: {
+        id: input.photoId,
+        bonsaiId: input.bonsaiId,
+        bonsai: {
+          userId: input.userId
+        }
+      },
+      select: {
+        id: true,
+        imageUrl: true,
+        isPrimary: true
+      }
+    });
+
+    if (!photo) {
+      throw new Error("La foto indicada no existe o no pertenece al usuario actual.");
+    }
+
+    await tx.photo.delete({
+      where: { id: input.photoId }
+    });
+
+    if (photo.isPrimary) {
+      const replacement = await tx.photo.findFirst({
+        where: { bonsaiId: input.bonsaiId },
+        orderBy: [{ takenAt: "desc" }, { createdAt: "desc" }],
+        select: { id: true }
+      });
+
+      if (replacement) {
+        await tx.photo.update({
+          where: { id: replacement.id },
+          data: { isPrimary: true }
+        });
+      }
+    }
+
+    return photo;
+  });
+}
+
+export async function deleteCareEventPhoto(input: {
+  photoId: string;
+  careEventId: string;
+  userId: string;
+}) {
+  return prisma.$transaction(async (tx) => {
+    const photo = await tx.careEventPhoto.findFirst({
+      where: {
+        id: input.photoId,
+        careEventId: input.careEventId,
+        careEvent: {
+          bonsai: {
+            userId: input.userId
+          }
+        }
+      },
+      select: {
+        id: true,
+        imageUrl: true,
+        isPrimary: true,
+        careEvent: {
+          select: {
+            bonsaiId: true
+          }
+        }
+      }
+    });
+
+    if (!photo) {
+      throw new Error("La imagen indicada no existe o no pertenece al usuario actual.");
+    }
+
+    await tx.careEventPhoto.delete({
+      where: { id: input.photoId }
+    });
+
+    if (photo.isPrimary) {
+      const replacement = await tx.careEventPhoto.findFirst({
+        where: { careEventId: input.careEventId },
+        orderBy: [{ takenAt: "desc" }, { createdAt: "desc" }],
+        select: { id: true }
+      });
+
+      if (replacement) {
+        await tx.careEventPhoto.update({
+          where: { id: replacement.id },
+          data: { isPrimary: true }
+        });
+      }
+    }
+
+    return photo;
+  });
+}
+
 export async function getLatestCareEvents(userId: string, limit = 6) {
   return prisma.careEvent.findMany({
     where: {

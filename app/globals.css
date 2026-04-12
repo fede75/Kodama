@@ -14,13 +14,17 @@ html {
 }
 
 body {
-  @apply min-h-screen text-paper antialiased;
+  @apply min-h-screen font-sans text-paper antialiased;
   background-image:
     linear-gradient(135deg, rgba(255, 255, 255, 0.018), transparent 54%),
     radial-gradient(circle at left top, rgba(111, 149, 70, 0.14), transparent 24%),
     radial-gradient(circle at 88% 12%, rgba(185, 84, 50, 0.1), transparent 18%),
     linear-gradient(180deg, rgba(8, 11, 10, 0.98) 0%, rgba(12, 16, 15, 0.98) 48%, rgba(9, 12, 11, 1) 100%);
   font-feature-settings: "palt" 1, "liga" 1;
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body::before {
@@ -93,7 +97,10 @@ textarea {
 }
 
 .editorial-kicker {
-  letter-spacing: 0.22em;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(248, 241, 231, 0.38);
+  color: rgba(248, 241, 231, 0.5);
 }

@@ -1,13 +1,16 @@
 "use server";
 
+import { del } from "@vercel/blob";
 import { CareEventType, CollectionStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   createBonsai,
   createCareEvent,
+  deleteCareEventPhoto,
   deleteCareEvent,
   deleteBonsai,
+  deletePhoto,
   getCareEventDetail,
   getBonsaiDetail,
   setPrimaryCareEventPhoto,
@@ -17,6 +20,7 @@ import {
   updateBonsai
 } from "@/lib/bonsais";
 import { requireCurrentUser } from "@/lib/auth-guards";
+import { isVercelBlobUrl } from "@/lib/blob";
 
 function parseOptionalString(value: FormDataEntryValue | null) {
   if (typeof value !== "string") {
@@ -38,6 +42,15 @@ function parseDate(value: FormDataEntryValue | null) {
 
 function parseCheckbox(value: FormDataEntryValue | null) {
   return value === "on";
+}
+
+function parseOptionalInteger(value: FormDataEntryValue | null) {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return undefined;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? undefined : parsed;
 }
 
 export async function createBonsaiAction(formData: FormData) {
@@ -63,6 +76,7 @@ export async function createBonsaiAction(formData: FormData) {
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),
     acquiredAt: parseDate(formData.get("acquiredAt")),
+    ageAtAcquisitionYears: parseOptionalInteger(formData.get("ageAtAcquisitionYears")),
     collectionStatus: collectionStatus as CollectionStatus,
     isPublic: parseCheckbox(formData.get("isPublic"))
   });
@@ -248,6 +262,7 @@ export async function updateBonsaiAction(formData: FormData) {
     location: parseOptionalString(formData.get("location")),
     notes: parseOptionalString(formData.get("notes")),
     acquiredAt: parseDate(formData.get("acquiredAt")),
+    ageAtAcquisitionYears: parseOptionalInteger(formData.get("ageAtAcquisitionYears")),
     collectionStatus: collectionStatus as CollectionStatus,
     isPublic: parseCheckbox(formData.get("isPublic"))
   });
@@ -329,4 +344,59 @@ export async function setPrimaryCareEventPhotoAction(formData: FormData) {
   });
 
   revalidatePath(`/bonsais/${bonsaiId}`);
+}
+
+export async function deletePhotoAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const photoId = parseOptionalString(formData.get("photoId"));
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+
+  if (!photoId || !bonsaiId) {
+    throw new Error("Faltan datos para eliminar la foto.");
+  }
+
+  const photo = await deletePhoto({
+    photoId,
+    bonsaiId,
+    userId: user.id
+  });
+
+  if (isVercelBlobUrl(photo.imageUrl)) {
+    try {
+      await del(photo.imageUrl);
+    } catch (error) {
+      console.error("No se pudo eliminar el archivo de Blob", error);
+    }
+  }
+
+  revalidatePath("/bonsais");
+  revalidatePath(`/bonsais/${bonsaiId}`);
+}
+
+export async function deleteCareEventPhotoAction(formData: FormData) {
+  const user = await requireCurrentUser();
+  const photoId = parseOptionalString(formData.get("photoId"));
+  const careEventId = parseOptionalString(formData.get("careEventId"));
+  const bonsaiId = parseOptionalString(formData.get("bonsaiId"));
+
+  if (!photoId || !careEventId || !bonsaiId) {
+    throw new Error("Faltan datos para eliminar la imagen.");
+  }
+
+  const photo = await deleteCareEventPhoto({
+    photoId,
+    careEventId,
+    userId: user.id
+  });
+
+  if (isVercelBlobUrl(photo.imageUrl)) {
+    try {
+      await del(photo.imageUrl);
+    } catch (error) {
+      console.error("No se pudo eliminar el archivo de Blob", error);
+    }
+  }
+
+  revalidatePath(`/bonsais/${bonsaiId}`);
+  revalidatePath(`/bonsais/${bonsaiId}/eventos/${careEventId}/editar`);
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DeletePhotoForm } from "@/components/bonsais/delete-photo-form";
 import { setPrimaryPhotoAction } from "@/app/actions";
 import { formatDate } from "@/lib/utils";
 
@@ -119,7 +120,7 @@ export function PhotoGallery({
                 {photo.caption ?? "Sin nota"}
               </p>
               {!readOnly ? (
-                <div className="mt-3">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {photo.isPrimary ? (
                     <span className="inline-flex rounded-full bg-moss-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-moss-200">
                       Principal
@@ -136,6 +137,7 @@ export function PhotoGallery({
                       </button>
                     </form>
                   )}
+                  <DeletePhotoForm photoId={photo.id} bonsaiId={photo.bonsaiId} />
                 </div>
               ) : null}
             </div>

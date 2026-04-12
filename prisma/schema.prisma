@@ -66,25 +66,26 @@ model User {
 }
 
 model Bonsai {
-  id           String         @id @default(cuid())
-  userId       String
-  name         String
-  species      String
-  style        String?
-  acquiredAt   DateTime?
-  location     String?
-  notes        String?
-  status       BonsaiStatus   @default(ACTIVE)
+  id                    String           @id @default(cuid())
+  userId                String
+  name                  String
+  species               String
+  style                 String?
+  acquiredAt            DateTime?
+  ageAtAcquisitionYears Int?
+  location              String?
+  notes                 String?
+  status                BonsaiStatus     @default(ACTIVE)
   collectionStatus CollectionStatus @default(ACTIVE)
-  isPublic     Boolean        @default(true)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  careEvents   CareEvent[]
-  healthIssues HealthIssue[]
-  journal      JournalEntry[]
-  photos       Photo[]
-  reminders    Reminder[]
+  isPublic              Boolean          @default(true)
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  careEvents            CareEvent[]
+  healthIssues          HealthIssue[]
+  journal               JournalEntry[]
+  photos                Photo[]
+  reminders             Reminder[]
 
   @@index([userId, name])
 }

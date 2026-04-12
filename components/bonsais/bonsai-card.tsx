@@ -68,7 +68,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
               <p className="font-display text-[clamp(2rem,4vw,2.6rem)] leading-none text-paper">
                 {bonsai.name}
               </p>
-              <p className="mt-3 text-sm uppercase tracking-[0.16em] text-paper/38">
+              <p className="mt-3 text-[0.98rem] text-paper/52">
                 {bonsai.species}
               </p>
             </div>
@@ -81,28 +81,28 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
 
           <div className="mt-7 grid gap-4 sm:grid-cols-2">
             <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Estado
               </p>
-              <p className="text-sm text-paper/76">{bonsai.status}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.status}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Ubicación
               </p>
-              <p className="text-sm text-paper/76">{bonsai.location ?? "No indicada"}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.location ?? "No indicada"}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Estilo
               </p>
-              <p className="text-sm text-paper/76">{bonsai.style ?? "Sin definir"}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.style ?? "Sin definir"}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Último cuidado
               </p>
-              <p className="text-sm text-paper/76">
+              <p className="text-[0.98rem] text-paper/80">
                 {latestCare
                   ? `${CARE_EVENT_LABELS[latestCare.type]} · ${formatDate(latestCare.performedAt)}`
                   : "Todavía no registrado"}
@@ -110,7 +110,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-6 text-xs uppercase tracking-[0.16em] text-paper/34">
+          <div className="mt-8 flex flex-wrap gap-5 text-[0.78rem] font-semibold uppercase tracking-[0.1em] text-paper/42">
             <span>{bonsai._count.careEvents} cuidados</span>
             <span>{bonsai._count.photos} fotos</span>
             <span>{bonsai._count.journal} notas</span>

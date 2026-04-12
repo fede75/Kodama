@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { COLLECTION_STATUS_LABELS } from "@/lib/constants";
 import { getBonsaiDetail, listBonsais } from "@/lib/bonsais";
-import { formatDate } from "@/lib/utils";
+import { calculateEstimatedAge, formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +43,10 @@ export default async function BonsaiDetailPage({
     takenAt: photo.takenAt.toISOString()
   }));
   const currentIndex = bonsais.findIndex((item) => item.id === bonsai.id);
+  const estimatedAge = calculateEstimatedAge(
+    bonsai.acquiredAt,
+    bonsai.ageAtAcquisitionYears
+  );
   const previousBonsai =
     currentIndex > 0 ? bonsais[currentIndex - 1] : null;
   const nextBonsai =
@@ -89,11 +93,11 @@ export default async function BonsaiDetailPage({
               <h1 className="mt-3 font-display text-[clamp(2.2rem,6vw,4.6rem)] leading-none text-paper">
                 {bonsai.name}
               </h1>
-              <p className="mt-3 text-sm uppercase tracking-[0.18em] text-paper/46">
+              <p className="mt-3 text-[1rem] text-paper/56">
                 {bonsai.species}
               </p>
               {bonsai.notes ? (
-                <p className="mt-5 max-w-2xl text-sm leading-7 text-paper/62 sm:text-base">
+                <p className="mt-5 max-w-2xl text-[1rem] leading-8 text-paper/72 sm:text-[1.04rem]">
                   {bonsai.notes}
                 </p>
               ) : null}
@@ -101,24 +105,30 @@ export default async function BonsaiDetailPage({
 
             <div className="grid gap-3 md:grid-cols-2">
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Estado</p>
-                <p className="mt-3 text-lg text-paper">{bonsai.status}</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Estado</p>
+                <p className="mt-3 text-[1.02rem] text-paper">{bonsai.status}</p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Colección</p>
-                <p className="mt-3 text-lg text-paper">{COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Colección</p>
+                <p className="mt-3 text-[1.02rem] text-paper">{COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}</p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Ubicación</p>
-                <p className="mt-3 text-lg text-paper">{bonsai.location ?? "No indicada"}</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Ubicación</p>
+                <p className="mt-3 text-[1.02rem] text-paper">{bonsai.location ?? "No indicada"}</p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Estilo</p>
-                <p className="mt-3 text-lg text-paper">{bonsai.style ?? "Sin definir"}</p>
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Estilo</p>
+                <p className="mt-3 text-[1.02rem] text-paper">{bonsai.style ?? "Sin definir"}</p>
+              </div>
+              <div className="rounded-[1.6rem] surface-soft p-4">
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Edad estimada</p>
+                <p className="mt-3 text-[1.02rem] text-paper">
+                  {estimatedAge != null ? `${estimatedAge} años` : "No disponible"}
+                </p>
               </div>
               <div className="rounded-[1.6rem] surface-soft p-4 sm:col-span-2">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-paper/34">Adquirido</p>
-                <p className="mt-3 text-lg text-paper">
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">Adquirido</p>
+                <p className="mt-3 text-[1.02rem] text-paper">
                   {bonsai.acquiredAt ? formatDate(bonsai.acquiredAt) : "Sin fecha"}
                 </p>
               </div>

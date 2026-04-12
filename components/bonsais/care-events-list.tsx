@@ -47,22 +47,25 @@ export function CareEventsList({
             key={item.id}
             className="relative overflow-hidden rounded-[2rem] surface-soft p-5 shadow-[0_26px_70px_-46px_rgba(0,0,0,0.95)] sm:p-6"
           >
-            <div className="relative flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-6">
-              <div className="xl:w-[11rem] xl:shrink-0">
-                <p className="font-display text-[clamp(1.8rem,4vw,2.2rem)] leading-none text-moss-200">
+            <div className="relative flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-7">
+              <div className="xl:w-[12rem] xl:shrink-0">
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/44">
+                  Fecha
+                </p>
+                <p className="mt-2 text-sm leading-6 text-moss-100 sm:text-base">
                   {formatDateTime(item.performedAt)}
                 </p>
               </div>
 
-              <div className="xl:w-[10rem] xl:shrink-0">
+              <div className="xl:w-[11rem] xl:shrink-0">
                 {readOnly ? (
-                  <p className="font-display text-[clamp(1.7rem,3.5vw,2rem)] leading-none text-paper">
+                  <p className="font-display text-[clamp(1.55rem,3.2vw,1.9rem)] leading-[1.02] text-paper">
                     {CARE_EVENT_LABELS[item.type]}
                   </p>
                 ) : (
                   <Link
                     href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
-                    className="inline-flex font-display text-[clamp(1.7rem,3.5vw,2rem)] leading-none text-paper transition hover:text-moss-200"
+                    className="inline-flex font-display text-[clamp(1.55rem,3.2vw,1.9rem)] leading-[1.02] text-paper transition hover:text-moss-200"
                   >
                     {CARE_EVENT_LABELS[item.type]}
                   </Link>
@@ -70,7 +73,7 @@ export function CareEventsList({
               </div>
 
               <div className="min-w-0 flex-1 space-y-3">
-                <p className="text-sm leading-7 text-paper/62">
+                <p className="text-[0.98rem] leading-7 text-paper/78">
                   {item.notes ?? "Sin notas"}
                 </p>
                 {extraPhotos.length > 0 ? (
@@ -109,7 +112,7 @@ export function CareEventsList({
                     />
                   </div>
                 ) : (
-                  <div className="flex w-[4.5rem] items-end rounded-[1rem] bg-[linear-gradient(135deg,rgba(111,149,70,0.2),rgba(10,13,12,0.85))] p-2 text-[9px] uppercase tracking-[0.14em] text-paper/38 sm:w-[5.5rem] sm:p-3 sm:text-[10px]">
+                  <div className="flex w-[4.5rem] items-end rounded-[1rem] bg-[linear-gradient(135deg,rgba(111,149,70,0.2),rgba(10,13,12,0.85))] p-2 text-[10px] font-medium uppercase tracking-[0.08em] text-paper/44 sm:w-[5.5rem] sm:p-3 sm:text-[11px]">
                     Sin imagen
                   </div>
                 )}

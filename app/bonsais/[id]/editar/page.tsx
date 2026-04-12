@@ -47,6 +47,7 @@ export default async function EditBonsaiPage({
             style: bonsai.style,
             location: bonsai.location,
             acquiredAt: bonsai.acquiredAt,
+            ageAtAcquisitionYears: bonsai.ageAtAcquisitionYears,
             notes: bonsai.notes,
             collectionStatus: bonsai.collectionStatus,
             isPublic: bonsai.isPublic

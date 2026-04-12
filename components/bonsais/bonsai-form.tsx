@@ -14,6 +14,7 @@ type BonsaiFormProps = {
     style: string | null;
     location: string | null;
     acquiredAt: Date | null;
+    ageAtAcquisitionYears: number | null;
     notes: string | null;
     collectionStatus: string;
     isPublic: boolean;
@@ -80,6 +81,20 @@ export function BonsaiForm({
             name="acquiredAt"
             type="date"
             defaultValue={formatDateInput(bonsai?.acquiredAt ?? null)}
+          />
+        </FormField>
+
+        <FormField
+          label="Edad al comprarlo"
+          hint="Edad estimada en años en el momento de adquisición"
+        >
+          <Input
+            name="ageAtAcquisitionYears"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="Ej. 8"
+            defaultValue={bonsai?.ageAtAcquisitionYears ?? ""}
           />
         </FormField>
 

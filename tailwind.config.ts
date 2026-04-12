@@ -65,7 +65,7 @@ const config: Config = {
         paper: "0 28px 80px -42px rgba(55, 36, 26, 0.34)"
       },
       fontFamily: {
-        sans: ["var(--font-body)", "serif"],
+        sans: ["var(--font-body)", "ui-sans-serif", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "serif"]
       }
     }

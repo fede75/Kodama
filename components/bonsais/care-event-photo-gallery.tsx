@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DeleteCareEventPhotoForm } from "@/components/bonsais/delete-photo-form";
 import { setPrimaryCareEventPhotoAction } from "@/app/actions";
 import { formatDate } from "@/lib/utils";
 
@@ -106,7 +107,7 @@ export function CareEventPhotoGallery({
               <p className="text-center text-[11px] uppercase tracking-[0.14em] text-paper/38">
                 {formatDate(photo.takenAt)}
               </p>
-              <div className="mt-3 flex justify-center">
+              <div className="mt-3 flex flex-wrap justify-center gap-2">
                 {photo.isPrimary ? (
                   <span className="rounded-full border border-moss-500/20 bg-moss-500/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-moss-200">
                     Principal
@@ -124,6 +125,11 @@ export function CareEventPhotoGallery({
                     </button>
                   </form>
                 )}
+                <DeleteCareEventPhotoForm
+                  photoId={photo.id}
+                  careEventId={photo.careEventId}
+                  bonsaiId={photo.bonsaiId}
+                />
               </div>
             </div>
           </div>

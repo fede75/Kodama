@@ -24,6 +24,8 @@ async function main() {
       name: "Junípero del patio",
       species: "Juniperus procumbens nana",
       style: "Moyogi",
+      acquiredAt: new Date("2024-03-16T00:00:00.000Z"),
+      ageAtAcquisitionYears: 8,
       location: "Terraza sur",
       notes: "Ejemplar de entrenamiento para seguimiento semanal."
     }
