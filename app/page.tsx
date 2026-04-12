@@ -208,7 +208,7 @@ export default async function HomePage() {
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
             <p className="editorial-kicker text-[10px]">{dict.home.community}</p>
-            <div className="mt-4 grid gap-4 sm:grid-cols-[7.25rem_1fr] sm:items-stretch">
+            <div className="mt-4 grid gap-4 sm:grid-cols-[9rem_1fr] sm:items-stretch">
               {topVotedBonsai?.photos[0] ? (
                 <div className="overflow-hidden rounded-[1.2rem] bg-black/20">
                   <img
