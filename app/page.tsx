@@ -208,23 +208,7 @@ export default async function HomePage() {
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
             <p className="editorial-kicker text-[10px]">{dict.home.community}</p>
-            <div className="mt-4 space-y-4">
-              <div className="overflow-hidden rounded-[1.5rem] bg-black/20">
-                {topVotedBonsai?.photos[0] ? (
-                  <img
-                    src={topVotedBonsai.photos[0].imageUrl}
-                    alt={topVotedBonsai.photos[0].caption ?? topVotedBonsai.name}
-                    className="aspect-[4/3] h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="flex aspect-[4/3] items-end bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4">
-                    <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-paper/72">
-                      {dict.common.noPhoto}
-                    </div>
-                  </div>
-                )}
-              </div>
+            <div className="mt-4">
               <div className="flex items-end justify-between gap-6">
               <div>
                 <p className="font-display text-[clamp(2rem,5vw,3rem)] text-paper">
@@ -252,6 +236,16 @@ export default async function HomePage() {
                 {dict.common.view}
               </span>
               </div>
+              {topVotedBonsai?.photos[0] ? (
+                <div className="mt-4 overflow-hidden rounded-[1.2rem] bg-black/20">
+                  <img
+                    src={topVotedBonsai.photos[0].imageUrl}
+                    alt={topVotedBonsai.photos[0].caption ?? topVotedBonsai.name}
+                    className="h-32 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    loading="lazy"
+                  />
+                </div>
+              ) : null}
             </div>
           </Link>
         </section>
