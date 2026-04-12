@@ -30,9 +30,9 @@ const bonsaiListInclude = {
   _count: {
     select: {
       careEvents: true,
-      healthIssues: true,
-      journal: true,
-      photos: true
+      photos: true,
+      votes: true,
+      comments: true
     }
   }
 };
@@ -49,10 +49,9 @@ const publicBonsaiListInclude = {
   _count: {
     select: {
       careEvents: true,
-      healthIssues: true,
-      journal: true,
       photos: true,
-      votes: true
+      votes: true,
+      comments: true
     }
   }
 };
@@ -133,7 +132,10 @@ export async function listPublicCollections() {
   });
 }
 
-export async function getPublicCollection(userId: string) {
+export async function getPublicCollection(
+  userId: string,
+  currentUserId?: string | null
+) {
   return prisma.user.findFirst({
     where: {
       id: userId,
@@ -148,7 +150,13 @@ export async function getPublicCollection(userId: string) {
         where: {
           isPublic: true
         },
-        include: publicBonsaiListInclude,
+        include: {
+          ...publicBonsaiListInclude,
+          votes: {
+            where: { userId: currentUserId ?? "__no-user__" },
+            select: { id: true }
+          }
+        },
         orderBy: { createdAt: "desc" }
       }
     }

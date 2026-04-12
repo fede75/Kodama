@@ -159,27 +159,7 @@ export default async function HomePage() {
       </section>
 
       <SignedIn>
-        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <Link
-            href="/bonsais/new"
-            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
-          >
-            <p className="editorial-kicker text-[10px]">Registrar</p>
-            <div className="mt-4 flex items-end justify-between gap-6">
-              <div>
-                <p className="font-display text-[clamp(2rem,5vw,3rem)] text-paper">
-                  Nuevo bonsái
-                </p>
-                <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
-                  Añade un árbol nuevo y empieza su seguimiento desde la primera imagen.
-                </p>
-              </div>
-              <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
-                Abrir
-              </span>
-            </div>
-          </Link>
-
+        <section className="grid gap-4 md:grid-cols-2">
           <Link
             href="/bonsais-destacados"
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"

@@ -23,9 +23,9 @@ type BonsaiCardProps = {
     }>;
     _count: {
       careEvents: number;
-      healthIssues: number;
-      journal: number;
       photos: number;
+      votes: number;
+      comments: number;
     };
   };
   href?: string;
@@ -111,10 +111,10 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
           </div>
 
           <div className="mt-8 flex flex-wrap gap-5 text-[0.78rem] font-semibold uppercase tracking-[0.1em] text-paper/42">
+            <span>{bonsai._count.votes} votos</span>
+            <span>{bonsai._count.comments} mensajes</span>
             <span>{bonsai._count.careEvents} cuidados</span>
             <span>{bonsai._count.photos} fotos</span>
-            <span>{bonsai._count.journal} notas</span>
-            <span>{bonsai._count.healthIssues} incidencias</span>
           </div>
         </div>
       </div>

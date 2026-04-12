@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { BonsaiCard } from "@/components/bonsais/bonsai-card";
+import { VoteForm } from "@/components/social/vote-form";
+import { getCurrentUser } from "@/lib/auth-guards";
 import { getPublicCollection } from "@/lib/bonsais";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +12,8 @@ export default async function PublicCollectionDetailPage({
   params: Promise<{ userId: string }>;
 }) {
   const { userId } = await params;
-  const collection = await getPublicCollection(userId);
+  const currentUser = await getCurrentUser();
+  const collection = await getPublicCollection(userId, currentUser?.id);
 
   if (!collection) {
     notFound();
@@ -36,11 +39,29 @@ export default async function PublicCollectionDetailPage({
       ) : (
         <div className="grid gap-5 xl:grid-cols-2">
           {collection.bonsais.map((bonsai) => (
-            <BonsaiCard
-              key={bonsai.id}
-              bonsai={bonsai}
-              href={`/colecciones-publicas/${collection.id}/bonsais/${bonsai.id}`}
-            />
+            <div key={bonsai.id} className="space-y-3">
+              <BonsaiCard
+                bonsai={bonsai}
+                href={`/colecciones-publicas/${collection.id}/bonsais/${bonsai.id}`}
+              />
+              <div className="flex items-center justify-between gap-3 rounded-[1.4rem] border border-white/8 bg-white/[0.025] px-4 py-3">
+                <p className="text-sm text-paper/60">
+                  Vota este bonsái o abre su ficha para comentar.
+                </p>
+                {currentUser ? (
+                  <VoteForm
+                    bonsaiId={bonsai.id}
+                    ownerId={collection.id}
+                    voted={bonsai.votes.length > 0}
+                    voteCount={bonsai._count.votes}
+                  />
+                ) : (
+                  <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-paper/70">
+                    {bonsai._count.votes} votos
+                  </div>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       )}
