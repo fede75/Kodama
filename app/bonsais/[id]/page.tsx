@@ -68,6 +68,35 @@ export default async function BonsaiDetailPage({
 
   return (
     <div className="space-y-7">
+      {(previousBonsai || nextBonsai) && (
+        <nav className="flex items-center justify-between gap-4 text-sm text-paper/58" aria-label="Navegación entre bonsáis">
+          <div className="min-w-0">
+            {previousBonsai ? (
+              <Link
+                href={`/bonsais/${previousBonsai.id}`}
+                className="inline-flex items-center gap-2 transition hover:text-paper"
+                title={`${dict.common.previous}: ${previousBonsai.name}`}
+              >
+                <AppIcon name="arrow-left" className="h-[1.05rem] w-[1.05rem]" />
+                <span className="truncate">{previousBonsai.name}</span>
+              </Link>
+            ) : null}
+          </div>
+          <div className="min-w-0 text-right">
+            {nextBonsai ? (
+              <Link
+                href={`/bonsais/${nextBonsai.id}`}
+                className="inline-flex items-center gap-2 transition hover:text-paper"
+                title={`${dict.common.next}: ${nextBonsai.name}`}
+              >
+                <span className="truncate">{nextBonsai.name}</span>
+                <AppIcon name="arrow-left" className="h-[1.05rem] w-[1.05rem] rotate-180" />
+              </Link>
+            ) : null}
+          </div>
+        </nav>
+      )}
+
       <section className="relative overflow-hidden rounded-[2rem] surface-panel p-4 sm:p-5 xl:p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
         <div className="grid gap-5 2xl:grid-cols-[1.35fr_0.9fr]">
@@ -90,15 +119,13 @@ export default async function BonsaiDetailPage({
                 <p className="text-[1rem] text-paper/56">
                   {bonsai.species}
                 </p>
-                <Link href={`/bonsais/${bonsai.id}/editar`} className="inline-flex">
-                  <Button
-                    variant="secondary"
-                    className="h-11 w-11 rounded-full px-0"
-                    aria-label={dict.common.edit}
-                    title={dict.common.edit}
-                  >
-                    <AppIcon name="edit" className="h-[1.1rem] w-[1.1rem]" />
-                  </Button>
+                <Link
+                  href={`/bonsais/${bonsai.id}/editar`}
+                  className="inline-flex items-center justify-center text-paper/62 transition hover:text-paper"
+                  aria-label={dict.common.edit}
+                  title={dict.common.edit}
+                >
+                  <AppIcon name="edit" className="h-[1.55rem] w-[1.55rem]" />
                 </Link>
                 <DeleteBonsaiForm bonsaiId={bonsai.id} iconOnly />
                 {speciesReference ? (
@@ -108,7 +135,7 @@ export default async function BonsaiDetailPage({
                     title={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                     aria-label={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                   >
-                    <AppIcon name="info" className="h-[1.35rem] w-[1.35rem]" />
+                    <AppIcon name="info" className="h-[1.65rem] w-[1.65rem]" />
                   </Link>
                 ) : null}
               </div>

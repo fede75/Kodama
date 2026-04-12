@@ -29,13 +29,13 @@ export function DeleteBonsaiForm({
         type="submit"
         className={
           iconOnly
-            ? "h-11 w-11 rounded-full border-white/14 bg-white/[0.03] px-0 text-red-200 hover:border-red-300/30 hover:bg-red-500/12 hover:text-red-100"
+            ? "h-12 w-12 px-0 text-red-200 hover:bg-transparent hover:text-red-100"
             : "bg-red-700 text-white hover:bg-red-800"
         }
         aria-label="Eliminar bonsái"
         title="Eliminar bonsái"
       >
-        <AppIcon name="trash" className="h-[1.1rem] w-[1.1rem]" />
+        <AppIcon name="trash" className="h-[1.45rem] w-[1.45rem]" />
         {iconOnly ? null : "Eliminar bonsái"}
       </Button>
     </form>
