@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FeaturedBonsaiCard } from "@/components/social/featured-bonsai-card";
 import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/lib/auth-guards";
 import { listFeaturedBonsais } from "@/lib/bonsais";
 import { getDictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
@@ -14,9 +15,19 @@ export default async function FeaturedBonsaisPage({
 }) {
   const locale = await getLocale();
   const dict = getDictionary(locale);
+  const currentUser = await getCurrentUser();
   const params = await searchParams;
-  const range = params?.range === "all" ? "all" : "30d";
-  const bonsais = await listFeaturedBonsais({ range, limit: 30 });
+  const range =
+    params?.range === "all"
+      ? "all"
+      : params?.range === "liked"
+        ? "liked"
+        : "30d";
+  const bonsais = await listFeaturedBonsais({
+    range,
+    limit: 30,
+    currentUserId: currentUser?.id
+  });
 
   return (
     <div className="space-y-8">
@@ -41,12 +52,21 @@ export default async function FeaturedBonsaisPage({
               {dict.featuredPage.allTime}
             </Button>
           </Link>
+          <Link href="/bonsais-destacados?range=liked">
+            <Button variant={range === "liked" ? "primary" : "secondary"}>
+              {dict.featuredPage.likedByMe}
+            </Button>
+          </Link>
         </div>
       </section>
 
       {bonsais.length === 0 ? (
         <div className="rounded-[2rem] surface-soft p-6 text-paper/58 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.95)] sm:p-8">
-          {dict.featuredPage.empty}
+          {range === "liked"
+            ? currentUser
+              ? dict.featuredPage.emptyLiked
+              : dict.featuredPage.signInForLiked
+            : dict.featuredPage.empty}
         </div>
       ) : (
         <section className="grid gap-6">
@@ -55,7 +75,13 @@ export default async function FeaturedBonsaisPage({
               key={bonsai.id}
               bonsai={bonsai}
               rank={index + 1}
-              rangeLabel={range === "30d" ? dict.featuredPage.range30d : dict.featuredPage.rangeAll}
+              rangeLabel={
+                range === "30d"
+                  ? dict.featuredPage.range30d
+                  : range === "all"
+                    ? dict.featuredPage.rangeAll
+                    : dict.featuredPage.rangeLiked
+              }
               locale={locale}
             />
           ))}

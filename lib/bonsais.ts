@@ -358,11 +358,13 @@ export async function deletePublicBonsaiComment(input: {
 }
 
 export async function listFeaturedBonsais(options?: {
-  range?: "30d" | "all";
+  range?: "30d" | "all" | "liked";
   limit?: number;
+  currentUserId?: string | null;
 }) {
   const range = options?.range ?? "30d";
   const limit = options?.limit ?? 24;
+  const currentUserId = options?.currentUserId ?? null;
   const threshold =
     range === "30d"
       ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
@@ -373,7 +375,16 @@ export async function listFeaturedBonsais(options?: {
       isPublic: true,
       user: {
         isCollectionPublic: true
-      }
+      },
+      ...(range === "liked" && currentUserId
+        ? {
+            votes: {
+              some: {
+                userId: currentUserId
+              }
+            }
+          }
+        : {})
     },
     select: {
       id: true,
@@ -406,7 +417,12 @@ export async function listFeaturedBonsais(options?: {
         }
       },
       votes: {
-        where: threshold ? { createdAt: { gte: threshold } } : undefined,
+        where:
+          range === "liked" && currentUserId
+            ? { userId: currentUserId }
+            : threshold
+              ? { createdAt: { gte: threshold } }
+              : undefined,
         select: {
           id: true
         }
@@ -419,7 +435,7 @@ export async function listFeaturedBonsais(options?: {
       ...bonsai,
       voteCount: bonsai.votes.length
     }))
-    .filter((bonsai) => bonsai.voteCount > 0)
+    .filter((bonsai) => bonsai.voteCount > 0 || range === "liked")
     .sort((a, b) => {
       if (b.voteCount !== a.voteCount) {
         return b.voteCount - a.voteCount;

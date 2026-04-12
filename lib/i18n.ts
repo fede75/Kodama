@@ -112,9 +112,13 @@ const dictionaries = {
         "Descubre qué árboles están despertando más interés en la comunidad y entra en la colección de cada propietario.",
       last30Days: "Últimos 30 días",
       allTime: "Histórico",
+      likedByMe: "Mis favoritos",
       empty: "Aún no hay votos suficientes para construir el ranking.",
+      emptyLiked: "Todavía no has marcado ningún bonsái como favorito.",
+      signInForLiked: "Inicia sesión para ver los bonsáis que te gustan.",
       range30d: "30 días",
-      rangeAll: "Histórico"
+      rangeAll: "Histórico",
+      rangeLiked: "Favoritos"
     },
     publicCollectionsPage: {
       kicker: "Explorar",
@@ -292,9 +296,13 @@ const dictionaries = {
         "Discover which trees are drawing the most interest in the community and jump into each owner's collection.",
       last30Days: "Last 30 days",
       allTime: "All time",
+      likedByMe: "My favorites",
       empty: "There are not enough votes yet to build the ranking.",
+      emptyLiked: "You have not marked any bonsai as favorite yet.",
+      signInForLiked: "Sign in to view the bonsai you like.",
       range30d: "30 days",
-      rangeAll: "All time"
+      rangeAll: "All time",
+      rangeLiked: "Favorites"
     },
     publicCollectionsPage: {
       kicker: "Explore",
@@ -472,9 +480,13 @@ const dictionaries = {
         "コミュニティで関心を集めている樹を見つけ、各オーナーのコレクションへ進みましょう。",
       last30Days: "過去30日",
       allTime: "通算",
+      likedByMe: "お気に入り",
       empty: "ランキングを作るには、まだ十分な投票がありません。",
+      emptyLiked: "まだお気に入りにした盆栽はありません。",
+      signInForLiked: "お気に入りの盆栽を見るにはログインしてください。",
       range30d: "30日",
-      rangeAll: "通算"
+      rangeAll: "通算",
+      rangeLiked: "お気に入り"
     },
     publicCollectionsPage: {
       kicker: "探索",

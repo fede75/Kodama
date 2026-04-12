@@ -43,31 +43,26 @@ export default async function PublicCollectionDetailPage({
       ) : (
         <div className="grid gap-5 xl:grid-cols-2">
           {collection.bonsais.map((bonsai) => (
-            <div key={bonsai.id} className="space-y-3">
-              <BonsaiCard
-                bonsai={bonsai}
-                locale={locale}
-                href={`/colecciones-publicas/${collection.id}/bonsais/${bonsai.id}`}
-              />
-              <div className="flex items-center justify-between gap-3 rounded-[1.4rem] border border-white/8 bg-white/[0.025] px-4 py-3">
-                <p className="text-sm text-paper/60">
-                  {dict.common.voteThisBonsai}
-                </p>
-                {currentUser ? (
+            <BonsaiCard
+              key={bonsai.id}
+              bonsai={bonsai}
+              locale={locale}
+              href={`/colecciones-publicas/${collection.id}/bonsais/${bonsai.id}`}
+              footerAction={
+                currentUser ? (
                   <VoteForm
                     bonsaiId={bonsai.id}
                     ownerId={collection.id}
                     voted={bonsai.votes.length > 0}
                     voteCount={bonsai._count.votes}
                     locale={locale}
+                    showCount={false}
+                    compact
+                    iconOnly
                   />
-                ) : (
-                  <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-paper/70">
-                    {bonsai._count.votes} {dict.common.votes}
-                  </div>
-                )}
-              </div>
-            </div>
+                ) : null
+              }
+            />
           ))}
         </div>
       )}
