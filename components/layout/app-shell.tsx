@@ -30,10 +30,10 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[96rem] flex-col px-3 py-3 sm:px-5 sm:py-5 lg:px-8">
-      <header className="sticky top-2 z-40 mb-6 rounded-[1.4rem] border border-white/6 bg-[linear-gradient(180deg,rgba(10,13,12,0.82),rgba(10,13,12,0.7))] px-4 py-4 shadow-[0_24px_90px_-48px_rgba(0,0,0,0.95)] backdrop-blur-2xl sm:top-3 sm:mb-8 sm:rounded-[1.7rem] sm:px-6">
+      <header className="sticky top-2 z-40 mb-6 border-b border-white/7 bg-[linear-gradient(180deg,rgba(8,11,10,0.88),rgba(8,11,10,0.56),transparent)] px-1 py-3 sm:top-3 sm:mb-8 sm:px-2">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Link href="/" className="inline-flex items-center gap-3 self-start">
-            <div className="flex h-11 w-11 items-center justify-center rounded-[1rem] bg-[linear-gradient(135deg,rgba(118,154,74,0.3),rgba(14,18,17,0.9))] text-base font-semibold text-paper shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:h-12 sm:w-12">
+            <div className="flex h-11 w-11 items-center justify-center rounded-[0.95rem] bg-[linear-gradient(135deg,rgba(118,154,74,0.22),rgba(14,18,17,0.82))] text-base font-semibold text-paper shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:h-12 sm:w-12">
               木
             </div>
             <div>
@@ -52,7 +52,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                   appearance={{
                     elements: {
                       userButtonAvatarBox:
-                        "h-10 w-10 ring-1 ring-white/10 shadow-[0_12px_32px_-18px_rgba(0,0,0,0.9)]"
+                        "h-10 w-10 ring-1 ring-white/8 shadow-[0_10px_24px_-16px_rgba(0,0,0,0.85)]"
                     }
                   }}
                 />
