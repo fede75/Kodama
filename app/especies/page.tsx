@@ -52,7 +52,7 @@ export default async function SpeciesPage({
           </div>
 
           {isAdmin ? (
-            <a href="/especies" className="inline-flex">
+            <Link href="/especies" className="inline-flex">
               <Button>
                 {locale === "es"
                   ? "Nueva especie"
@@ -60,7 +60,7 @@ export default async function SpeciesPage({
                     ? "New species"
                     : "新しい樹種"}
               </Button>
-            </a>
+            </Link>
           ) : null}
         </div>
       </section>
@@ -89,17 +89,17 @@ export default async function SpeciesPage({
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <a href="/especies" className="inline-flex">
+                <Link href="/especies" className="inline-flex">
                   <Button variant="secondary">
                     {locale === "es" ? "Nueva especie" : locale === "en" ? "New species" : "新しい樹種"}
                   </Button>
-                </a>
+                </Link>
                 {selectedSpecies ? (
-                  <a href={`/especies/${selectedSpecies.slug}`} className="inline-flex">
+                  <Link href={`/especies/${selectedSpecies.slug}`} className="inline-flex">
                     <Button variant="secondary">
                       {locale === "es" ? "Ver ficha" : locale === "en" ? "View record" : "詳細を見る"}
                     </Button>
-                  </a>
+                  </Link>
                 ) : null}
               </div>
             </div>
@@ -181,11 +181,11 @@ export default async function SpeciesPage({
 
                 {isAdmin ? (
                   <div className="mt-5 flex flex-wrap gap-3">
-                    <a href={`/especies?species=${item.slug}`} className="inline-flex">
+                    <Link href={`/especies?species=${item.slug}`} className="inline-flex">
                       <Button variant="secondary">
                         {locale === "es" ? "Editar JSON" : locale === "en" ? "Edit JSON" : "JSONを編集"}
                       </Button>
-                    </a>
+                    </Link>
                     <DeleteSpeciesForm slug={item.slug} />
                   </div>
                 ) : null}
