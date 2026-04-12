@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 export default async function SpeciesPage({
   searchParams
 }: {
-  searchParams?: Promise<{ species?: string }>;
+  searchParams?: Promise<{ species?: string; mode?: string }>;
 }) {
   const locale = await getLocale();
   const currentUser = await getCurrentUser();
@@ -26,6 +26,8 @@ export default async function SpeciesPage({
   const selectedSpecies = isAdmin && params.species
     ? await getSpeciesForAdmin(params.species)
     : null;
+  const isCreating = isAdmin && params.mode === "new";
+  const showEditor = isCreating || Boolean(selectedSpecies);
   const exampleJson = getSpeciesJsonExampleString();
   const editorJson = selectedSpecies
     ? serializeSpeciesToJson(selectedSpecies)
@@ -52,7 +54,7 @@ export default async function SpeciesPage({
           </div>
 
           {isAdmin ? (
-            <Link href="/especies" className="inline-flex">
+            <Link href="/especies?mode=new" className="inline-flex">
               <Button>
                 {locale === "es"
                   ? "Nueva especie"
@@ -65,7 +67,7 @@ export default async function SpeciesPage({
         </div>
       </section>
 
-      {isAdmin ? (
+      {isAdmin && showEditor ? (
         <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
           <article className="rounded-[2.3rem] surface-panel p-6 sm:p-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -89,7 +91,7 @@ export default async function SpeciesPage({
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link href="/especies" className="inline-flex">
+                <Link href="/especies?mode=new" className="inline-flex">
                   <Button variant="secondary">
                     {locale === "es" ? "Nueva especie" : locale === "en" ? "New species" : "新しい樹種"}
                   </Button>
@@ -101,6 +103,11 @@ export default async function SpeciesPage({
                     </Button>
                   </Link>
                 ) : null}
+                <Link href="/especies" className="inline-flex">
+                  <Button variant="secondary">
+                    {locale === "es" ? "Cerrar editor" : locale === "en" ? "Close editor" : "エディタを閉じる"}
+                  </Button>
+                </Link>
               </div>
             </div>
 
