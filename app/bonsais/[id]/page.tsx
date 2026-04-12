@@ -68,43 +68,6 @@ export default async function BonsaiDetailPage({
 
   return (
     <div className="space-y-7">
-      {(previousBonsai || nextBonsai) ? (
-        <div className="grid gap-2 xl:grid-cols-2">
-          {previousBonsai ? (
-            <Link
-              href={`/bonsais/${previousBonsai.id}`}
-              className="group flex items-center gap-3 rounded-[1.35rem] surface-soft px-4 py-3 transition duration-300 hover:bg-white/[0.06]"
-            >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.05] text-sm text-paper/70 transition group-hover:bg-white/[0.09] group-hover:text-paper">
-                &lt;
-              </span>
-              <div>
-                <p className="editorial-kicker text-[9px]">{dict.common.previous}</p>
-                <p className="mt-1 text-sm text-paper/84">
-                  {previousBonsai.name}
-                </p>
-              </div>
-            </Link>
-          ) : <div />}
-          {nextBonsai ? (
-            <Link
-              href={`/bonsais/${nextBonsai.id}`}
-              className="group flex items-center justify-end gap-3 rounded-[1.35rem] surface-soft px-4 py-3 text-right transition duration-300 hover:bg-white/[0.06]"
-            >
-              <div>
-                <p className="editorial-kicker text-[9px]">{dict.common.next}</p>
-                <p className="mt-1 text-sm text-paper/84">
-                  {nextBonsai.name}
-                </p>
-              </div>
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.05] text-sm text-paper/70 transition group-hover:bg-white/[0.09] group-hover:text-paper">
-                &gt;
-              </span>
-            </Link>
-          ) : null}
-        </div>
-      ) : null}
-
       <section className="relative overflow-hidden rounded-[2rem] surface-panel p-4 sm:p-5 xl:p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-700/14 blur-3xl" />
         <div className="grid gap-5 2xl:grid-cols-[1.35fr_0.9fr]">
@@ -118,20 +81,6 @@ export default async function BonsaiDetailPage({
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="rounded-[2rem] surface-soft p-5 sm:p-6">
-              <div className="flex flex-wrap gap-3">
-                <Link href="/bonsais" className="block sm:inline-flex">
-                  <Button
-                    variant="secondary"
-                    className="w-full sm:w-auto"
-                    aria-label={dict.common.back}
-                  >
-                    <AppIcon name="arrow-left" className="h-[1rem] w-[1rem]" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
             <div>
               <p className="editorial-kicker text-[10px]">{dict.common.collectionSheet}</p>
               <h1 className="mt-3 font-display text-[clamp(2.2rem,6vw,4.6rem)] leading-none text-paper">
@@ -144,11 +93,11 @@ export default async function BonsaiDetailPage({
                 <Link href={`/bonsais/${bonsai.id}/editar`} className="inline-flex">
                   <Button
                     variant="secondary"
-                    className="h-9 w-9 rounded-full px-0"
+                    className="h-11 w-11 rounded-full px-0"
                     aria-label={dict.common.edit}
                     title={dict.common.edit}
                   >
-                    <AppIcon name="edit" className="h-[0.95rem] w-[0.95rem]" />
+                    <AppIcon name="edit" className="h-[1.1rem] w-[1.1rem]" />
                   </Button>
                 </Link>
                 <DeleteBonsaiForm bonsaiId={bonsai.id} iconOnly />
@@ -159,7 +108,7 @@ export default async function BonsaiDetailPage({
                     title={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                     aria-label={locale === "es" ? "Ver ficha de la especie" : locale === "en" ? "View species record" : "樹種情報を見る"}
                   >
-                    <AppIcon name="info" className="h-[1.1rem] w-[1.1rem]" />
+                    <AppIcon name="info" className="h-[1.35rem] w-[1.35rem]" />
                   </Link>
                 ) : null}
               </div>
@@ -213,7 +162,7 @@ export default async function BonsaiDetailPage({
           </div>
           <TogglePanel
             buttonLabel={dict.common.addImage}
-            buttonClassName="w-full sm:w-auto"
+            buttonClassName="w-full border-moss-500/30 bg-[linear-gradient(135deg,rgba(129,165,85,0.96),rgba(72,95,49,0.96))] text-paper hover:border-moss-400/40 hover:bg-[linear-gradient(135deg,rgba(139,178,91,0.98),rgba(79,104,54,0.98))] sm:w-auto"
             buttonIcon={<AppIcon name="plus" className="h-[0.95rem] w-[0.95rem]" />}
           >
             <div className="w-full rounded-[1.8rem] bg-white/[0.035] p-4">
