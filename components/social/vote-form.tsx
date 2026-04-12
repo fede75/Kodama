@@ -55,11 +55,11 @@ function SubmitButton({
       } ${
         compact ? "px-3 py-1.5 text-[0.76rem] uppercase tracking-[0.08em]" : ""
       } ${
-        iconOnly ? "h-8 w-8 justify-center px-0 py-0 text-base" : ""
+        iconOnly ? "h-8 min-w-8 justify-center px-2 py-0 text-base" : ""
       } disabled:cursor-not-allowed disabled:opacity-60`}
     >
       {iconOnly ? (
-        <span aria-hidden="true" className="leading-none">
+        <span aria-hidden="true" className="text-[1.15rem] leading-none">
           {voted ? "♥" : "♡"}
         </span>
       ) : (

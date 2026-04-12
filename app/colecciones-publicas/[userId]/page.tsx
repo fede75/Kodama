@@ -56,7 +56,6 @@ export default async function PublicCollectionDetailPage({
                     voted={bonsai.votes.length > 0}
                     voteCount={bonsai._count.votes}
                     locale={locale}
-                    showCount={false}
                     compact
                     iconOnly
                   />
