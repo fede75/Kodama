@@ -208,38 +208,36 @@ export default async function HomePage() {
             className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
             <p className="editorial-kicker text-[10px]">{dict.home.community}</p>
-            <div className="mt-4">
-              <div className="flex items-end justify-between gap-6">
-              <div>
-                <p className="font-display text-[clamp(1.7rem,4vw,2.35rem)] text-paper">
-                  {dict.home.bonsaiOfMoment}
-                </p>
-                {topVotedBonsai ? (
-                  <>
-                    <p className="mt-3 text-[1.05rem] text-paper/82">
-                      {topVotedBonsai.name}
-                    </p>
-                  </>
-                ) : (
-                  <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
-                    {dict.home.noVotesThisMonth}
-                  </p>
-                )}
-              </div>
-              <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
-                {dict.common.view}
-              </span>
-              </div>
+            <div className="mt-4 grid gap-4 sm:grid-cols-[7.25rem_1fr] sm:items-stretch">
               {topVotedBonsai?.photos[0] ? (
-                <div className="mt-4 overflow-hidden rounded-[1.2rem] bg-black/20">
+                <div className="overflow-hidden rounded-[1.2rem] bg-black/20">
                   <img
                     src={topVotedBonsai.photos[0].imageUrl}
                     alt={topVotedBonsai.photos[0].caption ?? topVotedBonsai.name}
-                    className="h-40 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    className="h-40 w-full object-cover transition duration-500 group-hover:scale-[1.03] sm:h-full"
                     loading="lazy"
                   />
                 </div>
               ) : null}
+              <div className="flex items-end justify-between gap-6">
+                <div>
+                  <p className="font-display text-[clamp(1.7rem,4vw,2.35rem)] text-paper">
+                    {dict.home.bonsaiOfMoment}
+                  </p>
+                  {topVotedBonsai ? (
+                    <p className="mt-3 text-[1.05rem] text-paper/82">
+                      {topVotedBonsai.name}
+                    </p>
+                  ) : (
+                    <p className="mt-3 max-w-md text-sm leading-7 text-paper/52">
+                      {dict.home.noVotesThisMonth}
+                    </p>
+                  )}
+                </div>
+                <span className="hidden rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-paper/42 sm:inline-flex">
+                  {dict.common.view}
+                </span>
+              </div>
             </div>
           </Link>
         </section>
