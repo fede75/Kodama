@@ -246,8 +246,6 @@ export async function updateBonsaiAction(formData: FormData) {
   const species = parseOptionalString(formData.get("species"));
   const collectionStatus = parseOptionalString(formData.get("collectionStatus"));
 
-  const speciesId = await findSpeciesReferenceIdByLabel(species);
-
   if (
     !bonsaiId ||
     !name ||
@@ -263,6 +261,8 @@ export async function updateBonsaiAction(formData: FormData) {
   if (!bonsai) {
     throw new Error("El bonsái indicado no existe o no pertenece al usuario actual.");
   }
+
+  const speciesId = await findSpeciesReferenceIdByLabel(species);
 
   await updateBonsai(bonsaiId, user.id, {
     name,
