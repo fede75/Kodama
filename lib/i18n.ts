@@ -85,9 +85,9 @@ const dictionaries = {
       accessPanel:
         "Entra para registrar bonsáis, cuidados, fotos y el historial visual completo de tu colección.",
       featured: "Destacados",
-      votedBonsais: "Bonsáis votados",
+      votedBonsais: "Bonsáis Top",
       votedDescription:
-        "Sigue los árboles que más conversación y votos han generado en la comunidad.",
+        "Explora los árboles mejor valorados y con más tracción dentro de la comunidad.",
       explore: "Explorar",
       otherCollections: "Otras colecciones",
       otherCollectionsDescription:
@@ -276,9 +276,9 @@ const dictionaries = {
       accessPanel:
         "Sign in to record bonsai, care, photos and the full visual history of your collection.",
       featured: "Featured",
-      votedBonsais: "Most voted bonsai",
+      votedBonsais: "Top bonsai",
       votedDescription:
-        "Follow the trees that are generating the most attention and conversation in the community.",
+        "Explore the highest-rated trees and the ones gaining the most traction in the community.",
       explore: "Explore",
       otherCollections: "Other collections",
       otherCollectionsDescription:
@@ -467,9 +467,9 @@ const dictionaries = {
       accessPanel:
         "ログインすると、盆栽、手入れ、写真、コレクションの視覚的な履歴を記録できます。",
       featured: "注目",
-      votedBonsais: "投票の多い盆栽",
+      votedBonsais: "トップ盆栽",
       votedDescription:
-        "コミュニティで特に注目され、会話を生んでいる樹を追いかけましょう。",
+        "コミュニティで特に評価が高く、注目を集めている樹を見つけましょう。",
       explore: "見る",
       otherCollections: "ほかのコレクション",
       otherCollectionsDescription:
