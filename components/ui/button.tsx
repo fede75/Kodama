@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "danger";
+  variant?: "primary" | "secondary";
 };
 
 export function Button({
@@ -15,12 +15,10 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "inline-flex items-center justify-center rounded-full px-5 py-2.5 text-[0.95rem] font-semibold tracking-[0.01em] transition duration-300 focus-visible:ring-2 focus-visible:ring-moss-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090d0c]",
+        "inline-flex items-center justify-center rounded-full px-5 py-2.5 text-[0.95rem] font-semibold tracking-[0.02em] transition duration-300 focus-visible:ring-2 focus-visible:ring-moss-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090d0c]",
         variant === "primary"
-          ? "bg-[linear-gradient(135deg,rgba(126,159,82,0.95),rgba(74,97,50,0.95))] text-paper shadow-[0_18px_42px_-28px_rgba(0,0,0,0.92)] hover:-translate-y-0.5 hover:brightness-[1.04]"
-          : variant === "danger"
-            ? "border border-red-900/40 bg-[linear-gradient(180deg,rgba(117,31,31,0.24),rgba(84,18,18,0.22))] text-red-100 hover:-translate-y-0.5 hover:border-red-800/50 hover:bg-[linear-gradient(180deg,rgba(117,31,31,0.28),rgba(84,18,18,0.28))]"
-            : "border border-white/8 bg-white/[0.025] text-paper/82 hover:-translate-y-0.5 hover:border-white/14 hover:bg-white/[0.055] hover:text-paper",
+          ? "bg-[linear-gradient(135deg,rgba(129,165,85,0.96),rgba(72,95,49,0.96))] text-paper shadow-[0_22px_48px_-28px_rgba(0,0,0,0.9)] hover:-translate-y-0.5 hover:shadow-[0_28px_60px_-30px_rgba(0,0,0,0.95)]"
+          : "border border-white/10 bg-white/[0.035] text-paper/84 hover:-translate-y-0.5 hover:border-white/16 hover:bg-white/[0.07] hover:text-paper",
         className
       )}
       {...props}

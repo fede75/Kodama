@@ -39,72 +39,70 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
   return (
     <Link
       href={href}
-      className="group relative block overflow-hidden rounded-[2.35rem] transition duration-500 hover:-translate-y-1.5"
+      className="group relative overflow-hidden rounded-[2.2rem] surface-panel p-4 transition duration-500 hover:-translate-y-1.5 sm:p-5"
     >
-      <div className="absolute inset-0 rounded-[2.35rem] border border-white/6 bg-[linear-gradient(180deg,rgba(14,18,17,0.84),rgba(8,10,10,0.96))]" />
-      <div className="pointer-events-none absolute left-[-8%] top-[-12%] h-44 w-44 rounded-full bg-moss-700/10 blur-3xl transition duration-500 group-hover:bg-moss-600/16" />
-      <div className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-white/8 to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-clay-700/15 blur-3xl transition duration-500 group-hover:bg-clay-600/24" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.02),transparent_45%)]" />
 
-      <div className="relative grid gap-4 p-4 md:grid-cols-[1fr_0.95fr] md:items-end lg:p-5">
+      <div className="grid gap-4 md:grid-cols-[12.5rem_1fr] xl:grid-cols-[14rem_1fr] md:items-stretch">
         {coverPhoto ? (
-          <div className="order-1 overflow-hidden rounded-[1.95rem] bg-black/20">
+          <div className="order-1 overflow-hidden rounded-[1.7rem] bg-black/20 sm:h-full">
             <img
               src={coverPhoto.imageUrl}
               alt={coverPhoto.caption ?? `Foto de ${bonsai.name}`}
-              className="aspect-[5/6] h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
+              className="aspect-[4/5] h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
               loading="lazy"
             />
           </div>
         ) : (
-          <div className="order-1 flex items-end overflow-hidden rounded-[1.95rem] bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-5">
-            <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-paper/72">
+          <div className="order-1 flex items-end overflow-hidden rounded-[1.7rem] bg-gradient-to-br from-moss-900/40 via-black to-clay-900/40 p-4 sm:h-full">
+            <div className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-paper/72">
               Sin foto
             </div>
           </div>
         )}
 
-        <div className="order-2 flex min-h-full flex-col justify-between gap-6 px-1 pb-1 pt-2 md:px-2">
-          <div className="flex items-start justify-between gap-4">
+        <div className="order-2 flex min-h-full flex-col justify-between">
+          <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="metadata-label">Ejemplar</p>
-              <p className="mt-3 font-display text-[clamp(2.15rem,4.4vw,3.25rem)] leading-[0.95] text-paper">
+              <p className="font-display text-[clamp(2rem,4vw,2.6rem)] leading-none text-paper">
                 {bonsai.name}
               </p>
-              <p className="mt-4 max-w-md text-[1rem] leading-7 text-paper/54">
+              <p className="mt-3 text-[0.98rem] text-paper/52">
                 {bonsai.species}
               </p>
             </div>
             {isInactive ? (
-              <span className="shrink-0 rounded-full bg-clay-500/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.11em] text-clay-200">
+              <span className="shrink-0 rounded-full bg-clay-500/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-clay-200">
                 {COLLECTION_STATUS_LABELS[bonsai.collectionStatus]}
               </span>
             ) : null}
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <p className="metadata-label">
+          <div className="mt-7 grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Estado
               </p>
-              <p className="text-[1rem] text-paper/82">{bonsai.status}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.status}</p>
             </div>
-            <div className="space-y-1.5">
-              <p className="metadata-label">
+            <div className="space-y-1">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Ubicación
               </p>
-              <p className="text-[1rem] text-paper/82">{bonsai.location ?? "No indicada"}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.location ?? "No indicada"}</p>
             </div>
-            <div className="space-y-1.5">
-              <p className="metadata-label">
+            <div className="space-y-1">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Estilo
               </p>
-              <p className="text-[1rem] text-paper/82">{bonsai.style ?? "Sin definir"}</p>
+              <p className="text-[0.98rem] text-paper/80">{bonsai.style ?? "Sin definir"}</p>
             </div>
-            <div className="space-y-1.5">
-              <p className="metadata-label">
+            <div className="space-y-1">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/40">
                 Último cuidado
               </p>
-              <p className="text-[1rem] leading-7 text-paper/82">
+              <p className="text-[0.98rem] text-paper/80">
                 {latestCare
                   ? `${CARE_EVENT_LABELS[latestCare.type]} · ${formatDate(latestCare.performedAt)}`
                   : "Todavía no registrado"}
@@ -112,7 +110,7 @@ export function BonsaiCard({ bonsai, href = `/bonsais/${bonsai.id}` }: BonsaiCar
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-[0.82rem] font-semibold uppercase tracking-[0.08em] text-paper/42">
+          <div className="mt-8 flex flex-wrap gap-5 text-[0.78rem] font-semibold uppercase tracking-[0.1em] text-paper/42">
             <span>{bonsai._count.careEvents} cuidados</span>
             <span>{bonsai._count.photos} fotos</span>
             <span>{bonsai._count.journal} notas</span>

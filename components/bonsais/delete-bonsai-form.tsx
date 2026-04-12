@@ -20,7 +20,7 @@ export function DeleteBonsaiForm({ bonsaiId }: { bonsaiId: string }) {
       <input type="hidden" name="bonsaiId" value={bonsaiId} />
       <Button
         type="submit"
-        variant="danger"
+        className="bg-red-700 text-white hover:bg-red-800"
       >
         Eliminar bonsái
       </Button>

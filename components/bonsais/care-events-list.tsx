@@ -30,76 +30,97 @@ export function CareEventsList({
 }) {
   if (items.length === 0) {
     return (
-      <div className="rounded-[2rem] border border-dashed border-white/10 px-6 py-10 text-paper/56">
+      <p className="rounded-[1.8rem] bg-white/[0.035] px-5 py-6 text-sm text-paper/56">
         Aún no hay cuidados registrados.
-      </div>
+      </p>
     );
   }
 
   return (
-    <div className="relative space-y-8 before:absolute before:bottom-0 before:left-[1.1rem] before:top-2 before:w-px before:bg-gradient-to-b before:from-white/12 before:via-white/10 before:to-transparent sm:before:left-[9.6rem] lg:before:left-[12rem]">
-      {items.map((item) => {
+    <div className="space-y-4">
+      {items.map((item, index) => {
         const mainPhoto = item.photos[0] ?? null;
+        const extraPhotos = item.photos.slice(1, 4);
 
         return (
-          <article key={item.id} className="relative grid gap-4 sm:grid-cols-[8rem_1fr] lg:grid-cols-[10.5rem_1fr]">
-            <div className="relative z-10 pl-10 sm:pl-0">
-              <div className="absolute left-0 top-2 h-4 w-4 rounded-full border border-moss-400/40 bg-[#0d1312] shadow-[0_0_0_6px_rgba(10,13,12,1)] sm:left-auto sm:right-[-0.56rem] lg:right-[-0.62rem]" />
-              <p className="metadata-label">Fecha</p>
-              <p className="mt-2 text-sm leading-6 text-moss-100 sm:text-[0.98rem]">
-                {formatDateTime(item.performedAt)}
-              </p>
-            </div>
-
-            <div className="grid gap-4 rounded-[2rem] border border-white/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.028),rgba(255,255,255,0.012))] p-5 md:grid-cols-[1fr_auto] md:gap-6">
-              <div className="space-y-4">
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div>
-                    {readOnly ? (
-                      <h3 className="font-display text-[clamp(1.65rem,3vw,2.2rem)] leading-[0.98] text-paper">
-                        {CARE_EVENT_LABELS[item.type]}
-                      </h3>
-                    ) : (
-                      <Link
-                        href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
-                        className="inline-flex font-display text-[clamp(1.65rem,3vw,2.2rem)] leading-[0.98] text-paper transition hover:text-moss-200"
-                      >
-                        {CARE_EVENT_LABELS[item.type]}
-                      </Link>
-                    )}
-                    {item.title ? (
-                      <p className="mt-2 text-[0.98rem] text-paper/52">{item.title}</p>
-                    ) : null}
-                  </div>
-                  {!readOnly ? (
-                    <div className="shrink-0">
-                      <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
-                    </div>
-                  ) : null}
-                </div>
-
-                <p className="max-w-3xl text-[1rem] leading-8 text-paper/76">
-                  {item.notes ?? "Sin notas"}
+          <article
+            key={item.id}
+            className="relative overflow-hidden rounded-[2rem] surface-soft p-5 shadow-[0_26px_70px_-46px_rgba(0,0,0,0.95)] sm:p-6"
+          >
+            <div className="relative flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-7">
+              <div className="xl:w-[12rem] xl:shrink-0">
+                <p className="text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-paper/44">
+                  Fecha
+                </p>
+                <p className="mt-2 text-sm leading-6 text-moss-100 sm:text-base">
+                  {formatDateTime(item.performedAt)}
                 </p>
               </div>
 
-              <div className="md:w-[11rem]">
+              <div className="xl:w-[11rem] xl:shrink-0">
+                {readOnly ? (
+                  <p className="font-display text-[clamp(1.55rem,3.2vw,1.9rem)] leading-[1.02] text-paper">
+                    {CARE_EVENT_LABELS[item.type]}
+                  </p>
+                ) : (
+                  <Link
+                    href={`/bonsais/${bonsaiId}/eventos/${item.id}/editar`}
+                    className="inline-flex font-display text-[clamp(1.55rem,3.2vw,1.9rem)] leading-[1.02] text-paper transition hover:text-moss-200"
+                  >
+                    {CARE_EVENT_LABELS[item.type]}
+                  </Link>
+                )}
+              </div>
+
+              <div className="min-w-0 flex-1 space-y-3">
+                <p className="text-[0.98rem] leading-7 text-paper/78">
+                  {item.notes ?? "Sin notas"}
+                </p>
+                {extraPhotos.length > 0 ? (
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {extraPhotos.map((photo) => (
+                      <div
+                        key={photo.id}
+                        className="w-14 shrink-0 overflow-hidden rounded-[0.9rem] bg-black/20"
+                      >
+                        <img
+                          src={photo.imageUrl}
+                          alt={photo.caption ?? "Imagen del cuidado"}
+                          className="aspect-square w-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+
+              {!readOnly ? (
+                <div className="shrink-0 scale-[0.92] origin-left lg:origin-center">
+                  <DeleteCareEventForm bonsaiId={bonsaiId} careEventId={item.id} />
+                </div>
+              ) : null}
+
+              <div className="shrink-0 self-start xl:self-center">
                 {mainPhoto ? (
-                  <div className="overflow-hidden rounded-[1.6rem] border border-white/6 bg-black/20">
+                  <div className="w-[4.5rem] overflow-hidden rounded-[1rem] bg-black/20 sm:w-[5.5rem]">
                     <img
                       src={mainPhoto.imageUrl}
-                      alt={mainPhoto.caption ?? "Imagen del cuidado"}
+                      alt={mainPhoto.caption ?? "Imagen principal del cuidado"}
                       className="aspect-[4/5] w-full object-cover"
                       loading="lazy"
                     />
                   </div>
                 ) : (
-                  <div className="flex h-full min-h-[10rem] items-end rounded-[1.6rem] border border-white/6 bg-[linear-gradient(135deg,rgba(111,149,70,0.18),rgba(8,10,10,0.94))] p-4 text-[0.76rem] font-semibold uppercase tracking-[0.1em] text-paper/42">
+                  <div className="flex w-[4.5rem] items-end rounded-[1rem] bg-[linear-gradient(135deg,rgba(111,149,70,0.2),rgba(10,13,12,0.85))] p-2 text-[10px] font-medium uppercase tracking-[0.08em] text-paper/44 sm:w-[5.5rem] sm:p-3 sm:text-[11px]">
                     Sin imagen
                   </div>
                 )}
               </div>
             </div>
+            {index < items.length - 1 ? (
+              <div className="pointer-events-none absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/8 to-transparent" />
+            ) : null}
           </article>
         );
       })}

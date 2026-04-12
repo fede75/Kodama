@@ -36,150 +36,102 @@ export function BonsaiForm({
   const action = mode === "edit" ? updateBonsaiAction : createBonsaiAction;
 
   return (
-    <form action={action} className="grid gap-8">
+    <form action={action} className="grid gap-5">
       {mode === "edit" && bonsai ? (
         <input type="hidden" name="bonsaiId" value={bonsai.id} />
       ) : null}
 
-      <section className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="space-y-5">
-          <div>
-            <p className="metadata-label">Identidad</p>
-            <h2 className="mt-3 font-display text-3xl text-paper">
-              Datos del ejemplar
-            </h2>
-          </div>
+      <div className="grid gap-5 md:grid-cols-2">
+        <FormField label="Nombre">
+          <Input
+            name="name"
+            required
+            placeholder="Nombre del bonsái"
+            defaultValue={bonsai?.name ?? ""}
+          />
+        </FormField>
 
-          <div className="grid gap-5 md:grid-cols-2">
-            <FormField label="Nombre">
-              <Input
-                name="name"
-                required
-                placeholder="Nombre del bonsái"
-                defaultValue={bonsai?.name ?? ""}
-              />
-            </FormField>
+        <FormField label="Especie">
+          <Input
+            name="species"
+            required
+            placeholder="Juniperus procumbens nana"
+            defaultValue={bonsai?.species ?? ""}
+          />
+        </FormField>
 
-            <FormField label="Especie">
-              <Input
-                name="species"
-                required
-                placeholder="Juniperus procumbens nana"
-                defaultValue={bonsai?.species ?? ""}
-              />
-            </FormField>
+        <FormField label="Estilo">
+          <Input
+            name="style"
+            placeholder="Moyogi, Chokkan, Kengai..."
+            defaultValue={bonsai?.style ?? ""}
+          />
+        </FormField>
 
-            <FormField label="Estilo">
-              <Input
-                name="style"
-                placeholder="Moyogi, Chokkan, Kengai..."
-                defaultValue={bonsai?.style ?? ""}
-              />
-            </FormField>
+        <FormField label="Ubicación">
+          <Input
+            name="location"
+            placeholder="Terraza norte, interior..."
+            defaultValue={bonsai?.location ?? ""}
+          />
+        </FormField>
 
-            <FormField label="Ubicación">
-              <Input
-                name="location"
-                placeholder="Terraza norte, interior..."
-                defaultValue={bonsai?.location ?? ""}
-              />
-            </FormField>
-          </div>
-        </div>
+        <FormField label="Fecha de adquisición">
+          <Input
+            name="acquiredAt"
+            type="date"
+            defaultValue={formatDateInput(bonsai?.acquiredAt ?? null)}
+          />
+        </FormField>
 
-        <div className="rounded-[2rem] border border-white/6 bg-white/[0.025] p-5">
-          <p className="metadata-label">Contexto</p>
-          <div className="mt-4 grid gap-5">
-            <FormField label="Fecha de adquisición">
-              <Input
-                name="acquiredAt"
-                type="date"
-                defaultValue={formatDateInput(bonsai?.acquiredAt ?? null)}
-              />
-            </FormField>
+        <FormField
+          label="Edad al comprarlo"
+          hint="Edad estimada en años en el momento de adquisición"
+        >
+          <Input
+            name="ageAtAcquisitionYears"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="Ej. 8"
+            defaultValue={bonsai?.ageAtAcquisitionYears ?? ""}
+          />
+        </FormField>
 
-            <FormField
-              label="Edad al comprarlo"
-              hint="Edad estimada en años en el momento de adquisición"
-            >
-              <Input
-                name="ageAtAcquisitionYears"
-                type="number"
-                min="0"
-                step="1"
-                placeholder="Ej. 8"
-                defaultValue={bonsai?.ageAtAcquisitionYears ?? ""}
-              />
-            </FormField>
-
-            <FormField label="Estado en colección">
-              <Select
-                name="collectionStatus"
-                defaultValue={bonsai?.collectionStatus ?? "ACTIVE"}
-              >
-                {COLLECTION_STATUS_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Select>
-            </FormField>
-          </div>
-        </div>
-      </section>
-
-      <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-4">
-          <div>
-            <p className="metadata-label">Observación</p>
-            <h2 className="mt-3 font-display text-3xl text-paper">
-              Notas iniciales
-            </h2>
-          </div>
-
-          <FormField
-            label="Notas"
-            hint="Sustrato, procedencia, primeras impresiones o tareas pendientes"
+        <FormField label="Estado en colección">
+          <Select
+            name="collectionStatus"
+            defaultValue={bonsai?.collectionStatus ?? "ACTIVE"}
           >
-            <Textarea
-              name="notes"
-              placeholder="Observaciones iniciales, sustrato, procedencia..."
-              defaultValue={bonsai?.notes ?? ""}
-            />
-          </FormField>
-        </div>
+            {COLLECTION_STATUS_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </FormField>
+      </div>
 
-        <div className="space-y-4">
-          <div>
-            <p className="metadata-label">Visibilidad</p>
-            <h2 className="mt-3 font-display text-3xl text-paper">
-              Colección pública
-            </h2>
-          </div>
+      <FormField label="Notas">
+        <Textarea
+          name="notes"
+          placeholder="Observaciones iniciales, sustrato, procedencia..."
+          defaultValue={bonsai?.notes ?? ""}
+        />
+      </FormField>
 
-          <label className="flex items-start gap-4 rounded-[1.8rem] border border-white/8 bg-white/[0.025] px-5 py-5 text-paper/78">
-            <input
-              type="checkbox"
-              name="isPublic"
-              defaultChecked={bonsai?.isPublic ?? true}
-              className="mt-1 h-4 w-4 rounded border-white/20 bg-transparent"
-            />
-            <span className="space-y-2">
-              <span className="block text-[0.98rem] font-semibold text-paper">
-                Mostrar este bonsái en la colección pública
-              </span>
-              <span className="block text-sm leading-6 text-paper/48">
-                Permite que otros usuarios descubran el árbol, lo voten y comenten su evolución.
-              </span>
-            </span>
-          </label>
-        </div>
-      </section>
-
-      <div className="quiet-rule" />
+      <label className="flex items-center gap-3 rounded-[1.4rem] border border-white/8 bg-white/[0.04] px-4 py-4 text-sm text-paper/78">
+        <input
+          type="checkbox"
+          name="isPublic"
+          defaultChecked={bonsai?.isPublic ?? true}
+          className="h-4 w-4 rounded border-white/20 bg-transparent"
+        />
+        <span>Mostrar este bonsái en la colección pública</span>
+      </label>
 
       <div className="flex justify-end">
-        <Button type="submit" className="px-7 py-3">
+        <Button type="submit" className="bg-moss-500 text-paper hover:bg-moss-400">
           {mode === "edit" ? "Guardar cambios" : "Guardar bonsái"}
         </Button>
       </div>

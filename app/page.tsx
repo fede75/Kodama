@@ -45,17 +45,19 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-8 pb-8 sm:space-y-12 sm:pb-12">
-      <section className="hero-reveal relative overflow-hidden rounded-[2.8rem] border border-white/5 bg-[linear-gradient(180deg,rgba(8,11,10,0.94),rgba(7,9,8,0.98))]">
-        <div className="absolute left-[-4%] top-[-8%] h-72 w-72 rounded-full bg-moss-700/14 blur-3xl" />
-        <div className="absolute right-[-6%] top-[12%] h-72 w-72 rounded-full bg-clay-700/10 blur-3xl" />
-        <div className="grid min-h-[auto] lg:grid-cols-[0.78fr_1.22fr]">
-          <div className="order-2 hero-reveal-delay relative z-10 flex flex-col justify-between px-5 py-7 sm:px-7 sm:py-8 lg:order-1 lg:px-10 lg:py-12 xl:px-14">
-            <div className="max-w-xl space-y-8">
+      <section className="hero-reveal relative overflow-hidden rounded-[1.8rem] surface-panel sm:rounded-[2.6rem]">
+        <div className="absolute inset-y-0 left-0 w-full bg-[linear-gradient(125deg,rgba(255,255,255,0.02),transparent_35%)] lg:w-[42%]" />
+        <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_left,rgba(111,149,70,0.15),transparent_36%),linear-gradient(180deg,rgba(12,16,15,0.95),rgba(8,10,10,0.9))] lg:w-[42%]" />
+        <div className="absolute right-0 top-0 h-full w-full bg-gradient-to-l from-black/60 via-black/20 to-transparent lg:w-[66%]" />
+
+        <div className="grid min-h-[auto] lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="order-2 hero-reveal-delay relative z-10 flex flex-col justify-between px-5 py-6 sm:px-7 sm:py-7 lg:order-1 lg:px-9 lg:py-10 xl:px-12">
+            <div className="max-w-xl space-y-7">
               <p className="editorial-kicker text-xs">Cuaderno digital de bonsáis</p>
-              <h1 className="font-display text-[clamp(3.2rem,10vw,6.8rem)] leading-[0.84] text-paper">
+              <h1 className="font-display text-[clamp(2.6rem,9vw,5.8rem)] leading-[0.88] text-paper">
                 Una colección viva.
               </h1>
-              <p className="max-w-lg text-[1rem] leading-8 text-paper/58 sm:text-[1.06rem] lg:text-[1.14rem]">
+              <p className="max-w-lg text-sm leading-7 text-paper/56 sm:text-base sm:leading-8 lg:text-lg">
                 Cada bonsái pide tiempo, observación y un cuidado sereno. Kodama te ayuda a acompañar ese proceso y a recordar lo importante en cada etapa del árbol.
               </p>
 
@@ -90,18 +92,18 @@ export default async function HomePage() {
             </div>
 
             <SignedIn>
-              <div className="mt-10 grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
+              <div className="mt-8 grid gap-4 lg:grid-cols-2">
                 <Link
                   href="/bonsais"
-                  className="group rounded-[1.9rem] border border-white/6 bg-white/[0.03] p-5 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.05]"
+                  className="group rounded-[1.7rem] surface-soft p-5 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06]"
                 >
                   <p className="editorial-kicker text-[10px]">Colección</p>
-                  <p className="mt-4 font-display text-4xl text-paper">{bonsais.length}</p>
-                  <p className="mt-2 text-sm leading-7 text-paper/52">
+                  <p className="mt-4 font-display text-3xl text-paper">{bonsais.length}</p>
+                  <p className="mt-2 text-sm text-paper/52">
                     árboles registrados
                   </p>
                 </Link>
-                <div className="rounded-[1.9rem] border border-white/6 bg-black/22 p-5">
+                <div className="rounded-[1.7rem] surface-soft p-5">
                   <p className="editorial-kicker text-[10px]">Actividad reciente</p>
                   {recentCare.length > 0 ? (
                     <div className="mt-4 space-y-3">
@@ -123,7 +125,7 @@ export default async function HomePage() {
               </div>
             </SignedIn>
             <SignedOut>
-              <div className="mt-10 max-w-sm rounded-[1.9rem] border border-white/6 bg-white/[0.03] p-5">
+              <div className="mt-10 max-w-sm rounded-[1.7rem] surface-soft p-5">
                 <p className="editorial-kicker text-[10px]">Acceso</p>
                 <p className="mt-4 text-sm leading-7 text-paper/52">
                   Entra para registrar bonsáis, cuidados, fotos y el historial visual completo de tu colección.
@@ -141,32 +143,26 @@ export default async function HomePage() {
             </SignedOut>
           </div>
 
-          <div className="order-1 relative min-h-[320px] sm:min-h-[420px] lg:order-2 lg:min-h-full">
+          <div className="order-1 relative min-h-[280px] sm:min-h-[360px] lg:order-2 lg:min-h-full">
             <Image
               src={heroImage}
               alt="Bonsái protagonista de Kodama"
               priority
               fill
               sizes="(max-width: 1024px) 100vw, 68vw"
-              className="object-cover object-[70%_center]"
+              className="object-cover object-[68%_center]"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.5))]" />
-            <div className="absolute inset-y-0 left-0 hidden w-56 bg-gradient-to-r from-[#070908] via-[#070908]/72 to-transparent lg:block" />
-            <div className="absolute bottom-8 right-8 hidden max-w-xs rounded-[1.6rem] bg-black/28 p-5 text-paper/78 backdrop-blur-sm xl:block">
-              <p className="metadata-label">Mirar despacio</p>
-              <p className="mt-3 text-[1rem] leading-7">
-                Cada imagen conserva la forma cambiante del árbol y convierte el seguimiento en memoria visual.
-              </p>
-            </div>
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12),rgba(0,0,0,0.46))]" />
+            <div className="absolute inset-y-0 left-0 hidden w-48 bg-gradient-to-r from-[#0a0d0c] via-[#0a0d0c]/72 to-transparent lg:block" />
           </div>
         </div>
       </section>
 
       <SignedIn>
-        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1.15fr]">
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           <Link
             href="/bonsais/new"
-            className="group rounded-[2.2rem] border border-white/6 bg-white/[0.025] p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.05] sm:p-7"
+            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
             <p className="editorial-kicker text-[10px]">Registrar</p>
             <div className="mt-4 flex items-end justify-between gap-6">
@@ -186,7 +182,7 @@ export default async function HomePage() {
 
           <Link
             href="/bonsais-destacados"
-            className="group rounded-[2.2rem] border border-white/6 bg-black/22 p-6 transition duration-300 hover:-translate-y-1 hover:bg-black/28 sm:p-7"
+            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
             <p className="editorial-kicker text-[10px]">Destacados</p>
             <div className="mt-4 flex items-end justify-between gap-6">
@@ -206,7 +202,7 @@ export default async function HomePage() {
 
           <Link
             href="/colecciones-publicas"
-            className="group rounded-[2.2rem] border border-white/6 bg-white/[0.025] p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.05] sm:p-7"
+            className="group rounded-[2rem] surface-soft p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.06] sm:p-7"
           >
             <p className="editorial-kicker text-[10px]">Explorar</p>
             <div className="mt-4 flex items-end justify-between gap-6">
