@@ -73,7 +73,7 @@ const dictionaries = {
     },
     home: {
       kicker: "Cuaderno digital de bonsáis",
-      title: "Una colección viva.",
+      title: "Una colección viva",
       description:
         "Cada bonsái pide tiempo, observación y un cuidado sereno. Kodama te ayuda a acompañar ese proceso y a recordar lo importante en cada etapa del árbol.",
       myCollection: "Mi colección",
@@ -264,7 +264,7 @@ const dictionaries = {
     },
     home: {
       kicker: "Digital bonsai journal",
-      title: "A living collection.",
+      title: "A living collection",
       description:
         "Every bonsai asks for time, observation and calm care. Kodama helps you stay close to that process and remember what matters at each stage of the tree.",
       myCollection: "My collection",
@@ -455,7 +455,7 @@ const dictionaries = {
     },
     home: {
       kicker: "盆栽のデジタル手帳",
-      title: "生きたコレクション。",
+      title: "生きたコレクション",
       description:
         "盆栽には時間と観察、そして静かな手入れが必要です。Kodama は、その歩みに寄り添い、木の各段階で大切なことを記録する手助けをします。",
       myCollection: "マイコレクション",

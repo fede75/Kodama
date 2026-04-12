@@ -25,19 +25,26 @@ export function DeleteBonsaiForm({
       }}
     >
       <input type="hidden" name="bonsaiId" value={bonsaiId} />
-      <Button
-        type="submit"
-        className={
-          iconOnly
-            ? "h-12 w-12 px-0 text-red-200 hover:bg-transparent hover:text-red-100"
-            : "bg-red-700 text-white hover:bg-red-800"
-        }
-        aria-label="Eliminar bonsái"
-        title="Eliminar bonsái"
-      >
-        <AppIcon name="trash" className="h-[1.45rem] w-[1.45rem]" />
-        {iconOnly ? null : "Eliminar bonsái"}
-      </Button>
+      {iconOnly ? (
+        <button
+          type="submit"
+          className="inline-flex h-12 w-12 items-center justify-center text-red-200 transition hover:text-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/45"
+          aria-label="Eliminar bonsái"
+          title="Eliminar bonsái"
+        >
+          <AppIcon name="trash" className="h-[1.55rem] w-[1.55rem]" />
+        </button>
+      ) : (
+        <Button
+          type="submit"
+          className="bg-red-700 text-white hover:bg-red-800"
+          aria-label="Eliminar bonsái"
+          title="Eliminar bonsái"
+        >
+          <AppIcon name="trash" className="h-[1.45rem] w-[1.45rem]" />
+          Eliminar bonsái
+        </Button>
+      )}
     </form>
   );
 }
