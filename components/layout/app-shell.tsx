@@ -30,7 +30,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[96rem] flex-col px-3 py-3 sm:px-5 sm:py-5 lg:px-8">
-      <header className="sticky top-2 z-40 mb-6 bg-[linear-gradient(180deg,rgba(8,11,10,0.97),rgba(8,11,10,0.9),rgba(8,11,10,0.78))] px-1 py-3 backdrop-blur-xl sm:top-3 sm:mb-8 sm:px-2">
+      <header className="sticky top-2 z-40 mb-6 rounded-[1.35rem] bg-[linear-gradient(180deg,rgba(8,11,10,0.9),rgba(8,11,10,0.82),rgba(8,11,10,0.72))] px-3 py-3 backdrop-blur-xl sm:top-3 sm:mb-8 sm:rounded-[1.6rem] sm:px-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Link href="/" className="inline-flex items-center gap-3 self-start">
             <div className="flex h-11 w-11 items-center justify-center rounded-[0.95rem] bg-[linear-gradient(135deg,rgba(118,154,74,0.22),rgba(14,18,17,0.82))] text-base font-semibold text-paper shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:h-12 sm:w-12">
