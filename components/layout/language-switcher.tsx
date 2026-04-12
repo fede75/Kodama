@@ -26,7 +26,7 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
   }
 
   return (
-    <div className="flex items-center gap-1 rounded-full border border-white/8 bg-white/[0.035] p-1">
+    <div className="flex items-center gap-0.5">
       {SUPPORTED_LOCALES.map((item) => {
         const meta = LOCALE_META[item];
         const active = item === locale;
@@ -40,16 +40,15 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
             title={meta.label}
             aria-label={meta.label}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold transition sm:px-3",
+              "inline-flex h-8 w-8 items-center justify-center rounded-full text-base leading-none transition sm:h-9 sm:w-9",
               active
-                ? "bg-white/[0.08] text-paper shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-                : "text-paper/62 hover:bg-white/[0.05] hover:text-paper"
+                ? "bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                : "opacity-72 hover:bg-white/[0.04] hover:opacity-100"
             )}
           >
-            <span aria-hidden="true" className="text-sm leading-none">
+            <span aria-hidden="true">
               {meta.flag}
             </span>
-            <span>{meta.shortLabel}</span>
           </button>
         );
       })}
