@@ -4,7 +4,7 @@ import { BonsaiForm } from "@/components/bonsais/bonsai-form";
 import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { getBonsaiDetail } from "@/lib/bonsais";
-import { getLocale } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 

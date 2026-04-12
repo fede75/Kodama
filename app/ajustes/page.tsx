@@ -1,6 +1,7 @@
 import { CollectionSettingsForm } from "@/components/settings/collection-settings-form";
 import { requireCurrentUser } from "@/lib/auth-guards";
-import { getDictionary, getLocale } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 

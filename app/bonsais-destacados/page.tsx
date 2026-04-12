@@ -2,7 +2,8 @@ import Link from "next/link";
 import { FeaturedBonsaiCard } from "@/components/social/featured-bonsai-card";
 import { Button } from "@/components/ui/button";
 import { listFeaturedBonsais } from "@/lib/bonsais";
-import { getDictionary, getLocale } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 

@@ -13,7 +13,8 @@ import { Button } from "@/components/ui/button";
 import { FeaturedBonsaiCard } from "@/components/social/featured-bonsai-card";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { getTopVotedBonsaiLast30Days, listBonsais } from "@/lib/bonsais";
-import { getCareEventLabel, getDictionary, getIntlLocale, getLocale } from "@/lib/i18n";
+import { getCareEventLabel, getDictionary, getIntlLocale } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 import { formatDate } from "@/lib/utils";
 
 export default async function HomePage() {

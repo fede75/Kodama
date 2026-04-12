@@ -12,9 +12,9 @@ import { getBonsaiDetail, listBonsais } from "@/lib/bonsais";
 import {
   getCollectionStatusLabel,
   getDictionary,
-  getIntlLocale,
-  getLocale
+  getIntlLocale
 } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 import { calculateEstimatedAge, formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";

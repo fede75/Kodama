@@ -3,7 +3,8 @@ import { BonsaiCard } from "@/components/bonsais/bonsai-card";
 import { Button } from "@/components/ui/button";
 import { listBonsais } from "@/lib/bonsais";
 import { requireCurrentUser } from "@/lib/auth-guards";
-import { getDictionary, getLocale } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 

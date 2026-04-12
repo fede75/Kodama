@@ -3,7 +3,8 @@ import { UserButton } from "@clerk/nextjs";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { TopNav } from "@/components/layout/top-nav";
-import { getDictionary, getLocale } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();

@@ -3,7 +3,8 @@ import { BonsaiCard } from "@/components/bonsais/bonsai-card";
 import { VoteForm } from "@/components/social/vote-form";
 import { getCurrentUser } from "@/lib/auth-guards";
 import { getPublicCollection } from "@/lib/bonsais";
-import { getDictionary, getLocale } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 

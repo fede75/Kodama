@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-
 export const SUPPORTED_LOCALES = ["es", "en", "ja"] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
@@ -631,13 +629,6 @@ const collectionStatusLabels: Record<Locale, Record<CollectionStatusKey, string>
 
 export function isLocale(value: string): value is Locale {
   return (SUPPORTED_LOCALES as readonly string[]).includes(value);
-}
-
-export async function getLocale(): Promise<Locale> {
-  const cookieStore = await cookies();
-  const value = cookieStore.get(LOCALE_COOKIE_NAME)?.value;
-
-  return value && isLocale(value) ? value : "es";
 }
 
 export function getDictionary(locale: Locale): Dictionary {

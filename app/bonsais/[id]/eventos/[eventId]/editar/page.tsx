@@ -4,7 +4,7 @@ import { CareEventForm } from "@/components/bonsais/care-event-form";
 import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth-guards";
 import { getCareEventDetail } from "@/lib/bonsais";
-import { getLocale } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 

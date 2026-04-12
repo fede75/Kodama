@@ -3,7 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Fraunces, Manrope, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/layout/app-shell";
-import { getLocale } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 
 const bodyFont = Manrope({
   subsets: ["latin"],

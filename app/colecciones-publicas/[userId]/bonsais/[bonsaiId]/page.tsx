@@ -11,9 +11,9 @@ import {
   getCollectionStatusLabel,
   getDictionary,
   getIntlLocale,
-  getLocale,
   replaceTemplate
 } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
