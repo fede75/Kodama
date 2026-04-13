@@ -72,7 +72,7 @@ const dictionaries = {
       voteThisBonsai: "Vota este bonsái o abre su ficha para comentar."
     },
     home: {
-      kicker: "Cuaderno digital de bonsáis",
+      kicker: "Cuaderno digital de bonsáis.",
       title: "Una colección viva",
       description:
         "Cada bonsái pide tiempo, observación y un cuidado sereno. Kodama te ayuda a acompañar ese proceso y a recordar lo importante en cada etapa del árbol.",
