@@ -72,7 +72,7 @@ export default async function HomePage() {
                     </Button>
                   </Link>
                   <Link href="/colecciones-publicas" className="block sm:inline-flex">
-                    <Button className="w-full px-6 py-3 sm:w-auto sm:px-7">
+                    <Button variant="black" className="w-full px-6 py-3 sm:w-auto sm:px-7">
                       {dict.home.publicCollections}
                     </Button>
                   </Link>
@@ -86,7 +86,7 @@ export default async function HomePage() {
                     </span>
                   </SignInButton>
                   <Link href="/colecciones-publicas" className="block sm:inline-flex">
-                    <Button className="w-full px-6 py-3 sm:w-auto sm:px-7">
+                    <Button variant="black" className="w-full px-6 py-3 sm:w-auto sm:px-7">
                       {dict.home.publicCollections}
                     </Button>
                   </Link>
