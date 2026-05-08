@@ -76,7 +76,7 @@ const dictionaries = {
       title: "Una colección viva",
       description:
         "Cada bonsái pide tiempo, observación y un cuidado sereno. Kodama te ayuda a acompañar ese proceso y a recordar lo importante en cada etapa del árbol.",
-      myCollection: "Mi colección",
+      myCollection: "Coleccion",
       publicCollections: "Colecciones públicas",
       collection: "Colección",
       treesRegistered: "árboles registrados",
