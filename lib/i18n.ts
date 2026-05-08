@@ -30,7 +30,7 @@ const dictionaries = {
     },
     common: {
       access: "Acceder",
-      createAccount: "Crear cuenta",
+      createAccount: "Crea tu cuenta",
       back: "Volver",
       edit: "Editar",
       addCare: "Añadir cuidado",
